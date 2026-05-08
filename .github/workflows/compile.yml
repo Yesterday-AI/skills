@@ -16,11 +16,18 @@ permissions:
 
 # Single source of truth for the bot's git identity. The commit author name
 # (set in the push step) MUST match the loop-guard check (in the job's `if:`)
-# -- otherwise the workflow would re-trigger itself. Changing this here flips
-# both ends in one place.
+# -- otherwise the workflow would re-trigger itself. Sourced from repo-level
+# variables (`vars.*`) because `env` is NOT accessible in job-level `if:`.
+#
+# Set once via:
+#   gh variable set BOT_NAME --repo Yesterday-AI/skills --body 'yesterday-bot'
+#   gh variable set BOT_EMAIL --repo Yesterday-AI/skills --body 'yesterday-bot@users.noreply.github.com'
 env:
-  BOT_NAME: yesterday-bot
-  BOT_EMAIL: yesterday-bot@users.noreply.github.com
+  BOT_NAME: ${{ vars.BOT_NAME }}
+  BOT_EMAIL: ${{ vars.BOT_EMAIL }}
+  # Opt actions/checkout@v4 (and other JS actions still on Node 20) into the
+  # Node 24 runtime ahead of the June 2026 forced switch.
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
 
 concurrency:
   group: compile-${{ github.ref }}
@@ -33,9 +40,10 @@ jobs:
     timeout-minutes: 5
     # Skip when the push that triggered this run is itself the bot's recompile
     # commit. PAT pushes carry the PAT-owner as `github.actor`, so we can't
-    # rely on that -- match on the commit author identity (env.BOT_NAME) we
-    # set explicitly below.
-    if: github.event.head_commit.author.name != env.BOT_NAME
+    # rely on that -- match on the commit author identity (vars.BOT_NAME) we
+    # set explicitly below. `env` is not available in job-level `if:`; repo
+    # variables are.
+    if: github.event.head_commit.author.name != vars.BOT_NAME
     steps:
       - name: Checkout
         uses: actions/checkout@v4
