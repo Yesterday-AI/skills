@@ -1,10 +1,10 @@
 {
-  "name": "dev-operations",
-  "description": "BUNDLE: DevOps -- generic infrastructure-provisioning, deployment, and observability skills for agents. opentofu + railway-deploy + butler-deploy + land-and-deploy + canary + setup-deploy. Public, no Yesterday-infra dependencies.",
+  "name": "systems-operations",
+  "description": "BUNDLE: SysOps -- generic infrastructure-provisioning, deployment, and observability skills for agents. opentofu + railway-deploy + butler-deploy + land-and-deploy + canary + setup-deploy.",
   "author": {
     "name": "Yesterday"
   },
-  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/plugins/dev-operations",
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/plugins/systems-operations",
   "repository": "https://github.com/Yesterday-AI/skills",
   "license": "MIT",
   "keywords": [

@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="../../logo.svg" width="90" alt="dev-operations" />
+  <img src="../../logo.svg" width="90" />
 
-  <h1>dev-operations</h1>
+  <h1>systems-operations</h1>
 
   <p><em>Ops skills for Claude Code agents. Provision, deploy, observe.</em></p>
 
@@ -19,11 +19,11 @@
 
 ---
 
-## What dev-operations is
+## What systems-operations is
 
 The ops layer of the Yesterday plugin family. Skills for the deploy-arc that comes after `ytstack:ship` and `ytstack:document-release` (handled by `ytstack` core in M011): provisioning new infra, executing deploys, watching for post-deploy regressions.
 
-**Audience:** Claude Code agents (and their operators) that touch real infra -- K8s clusters, cloud environments, deployments. Operators install `dev-operations` so their agents have a curated set of patterns for safe deploy + observe loops.
+**Audience:** Claude Code agents (and their operators) that touch real infra -- K8s clusters, cloud environments, deployments. Operators install `systems-operations` so their agents have a curated set of patterns for safe deploy + observe loops.
 
 ## What's in it
 
@@ -48,25 +48,25 @@ Plus one cross-marketplace dependency (auto-pulled via plugin.json):
 
 ```bash
 /plugin marketplace add Yesterday-AI/skills
-/plugin install dev-operations@yesterday-public-plugins
+/plugin install systems-operations@yesterday-public-plugins
 ```
 
-Skills appear under `/dev-operations:<skill-name>`.
+Skills appear under `/systems-operations:<skill-name>`.
 
 ### Local dev
 
 ```bash
-claude --plugin-dir /path/to/dev-operations
+claude --plugin-dir /path/to/systems-operations
 ```
 
-## Why "dev-operations"
+## Why "systems-operations"
 
-Part of Yesterday's plugin family alongside `ytstack` (engineering OS), `office` (daily-work), `personal-agent` (agent core), and `dev-operations` (ops core).
+Part of Yesterday's plugin family alongside `ytstack` (engineering OS), `office` (daily-work), `personal-agent` (agent core), and `systems-operations` (ops core).
 
 ## Repo layout
 
 ```
-dev-operations/
+systems-operations/
 ├── .claude-plugin/
 │   └── plugin.json -> ../plugin.json
 ├── .cursor-plugin/

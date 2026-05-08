@@ -1,1 +1,17 @@
-../../../../skills/development-operations/paperclip-api/.plugin.json
+{
+  "name": "paperclip-api",
+  "description": "Manage Paperclip AI companies, agents, issues, projects, goals, routines, costs, and secrets via REST API. Use when creating companies, hiring agents, assigning tasks, managing budgets, or checking dashboards on a Paperclip instance.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/paperclip-api",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "yesterday",
+    "paperclip",
+    "agents",
+    "api-client"
+  ]
+}

@@ -31,25 +31,6 @@
       ]
     },
     {
-      "name": "dev-operations",
-      "description": "BUNDLE: DevOps -- generic infrastructure-provisioning, deployment, and observability skills for agents. opentofu + railway-deploy + butler-deploy + land-and-deploy + canary + setup-deploy. Public, no Yesterday-infra dependencies.",
-      "source": "./plugins/dev-operations",
-      "author": {
-        "name": "Yesterday"
-      },
-      "keywords": [
-        "claude-code",
-        "ops",
-        "deployment",
-        "infrastructure",
-        "observability",
-        "opentofu",
-        "railway",
-        "itch.io",
-        "yesterday"
-      ]
-    },
-    {
       "name": "office",
       "description": "BUNDLE: Daily-work core tier. Generic productivity, creative, and knowledge skills for daily work; nothing requires external SaaS keys at install time. Optional SaaS integrations (Figma, Miro, Voxtral TTS, VRR transit) live in office-extras.",
       "source": "./plugins/office",
@@ -92,6 +73,25 @@
         "agentic",
         "autonomous-agents",
         "agent-orchestration",
+        "yesterday"
+      ]
+    },
+    {
+      "name": "systems-operations",
+      "description": "BUNDLE: SysOps -- generic infrastructure-provisioning, deployment, and observability skills for agents. opentofu + railway-deploy + butler-deploy + land-and-deploy + canary + setup-deploy.",
+      "source": "./plugins/systems-operations",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "ops",
+        "deployment",
+        "infrastructure",
+        "observability",
+        "opentofu",
+        "railway",
+        "itch.io",
         "yesterday"
       ]
     },

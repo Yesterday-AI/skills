@@ -34,10 +34,27 @@
 // Idempotent. Wipes `.compiled/skill-plugins/` each run; do not hand-edit there.
 //
 
-import { readdir, readFile, mkdir, symlink, rm, writeFile, stat } from "node:fs/promises";
+import { readdir, readFile, mkdir, symlink, rm, writeFile, stat, copyFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { dirname, join, relative, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
+
+// Recursive copy that follows symlinks. Standalone-skill content must end up
+// as REAL files inside the plugin folder so it survives Claude Code's plugin
+// cache copy (cache preserves symlinks but external relative targets break).
+async function copyTree(src, dest) {
+  await mkdir(dest, { recursive: true });
+  for (const entry of await readdir(src, { withFileTypes: true })) {
+    const srcPath = join(src, entry.name);
+    const destPath = join(dest, entry.name);
+    const st = await stat(srcPath);
+    if (st.isDirectory()) {
+      await copyTree(srcPath, destPath);
+    } else if (st.isFile()) {
+      await copyFile(srcPath, destPath);
+    }
+  }
+}
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const SKILLS_DIR = join(ROOT, "skills");
@@ -196,28 +213,36 @@ async function compile() {
     const fm = parseFrontmatter(await readFile(skillMd, "utf8"));
     const pluginDir = join(OUT_DIR, slug);
 
-    // 1. skills/<slug> symlink -> source folder
-    await ensureSymlink(sourceDir, join(pluginDir, "skills", slug));
+    // 1. skills/<slug> -- COPY source content (not symlink). Claude Code
+    //    copies the plugin folder to ~/.claude/plugins/cache and preserves
+    //    symlinks, but external relative targets (../../../skills/...) don't
+    //    resolve at the cache location. Real files survive.
+    await copyTree(sourceDir, join(pluginDir, "skills", slug));
+    // Don't ship the source `.plugin.json` inside skills/ -- it confuses tools.
+    const innerPluginJson = join(pluginDir, "skills", slug, ".plugin.json");
+    if (existsSync(innerPluginJson)) await rm(innerPluginJson, { force: true });
 
-    // 2. plugin.json: symlink source/.plugin.json if present, else generate
+    // 2. plugin.json -- write as a real file (also for the same cache reason).
+    //    Source `.plugin.json` is the richer manifest if present; otherwise
+    //    generate a minimal one from SKILL.md frontmatter.
     const sourcePluginJson = join(sourceDir, ".plugin.json");
     const claudeTarget = join(pluginDir, ".claude-plugin", "plugin.json");
     const cursorTarget = join(pluginDir, ".cursor-plugin", "plugin.json");
 
+    let manifest;
     if (existsSync(sourcePluginJson)) {
-      await ensureSymlink(sourcePluginJson, claudeTarget);
-      await ensureSymlink(sourcePluginJson, cursorTarget);
+      manifest = JSON.parse(await readFile(sourcePluginJson, "utf8"));
     } else {
-      const generated = {
+      manifest = {
         name: fm.name || slug,
         description: fm.description || "",
       };
-      await writePluginJson(claudeTarget, generated);
-      await writePluginJson(cursorTarget, generated);
     }
+    await writePluginJson(claudeTarget, manifest);
+    await writePluginJson(cursorTarget, manifest);
 
     count++;
-    console.log(`  ${slug}  (${existsSync(sourcePluginJson) ? "symlinked" : "generated"})`);
+    console.log(`  ${slug}  (${existsSync(sourcePluginJson) ? "from .plugin.json" : "from SKILL.md"})`);
   }
 
   console.log(`\nCompiled ${count} skill-plugins -> ${relative(ROOT, OUT_DIR)}`);

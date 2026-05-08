@@ -71,7 +71,7 @@ claude --plugin-dir /path/to/personal-agent
 
 ## Why "personal-agent"
 
-Part of Yesterday's plugin family alongside `ytstack` (engineering OS), `office` (daily-work), `personal-agent` (agent core), and `dev-operations` (ops core).
+Part of Yesterday's plugin family alongside `ytstack` (engineering OS), `office` (daily-work), `personal-agent` (agent core), and `systems-operations` (ops core).
 
 ## Repo layout
 

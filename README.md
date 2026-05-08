@@ -33,7 +33,7 @@ Then install plugins individually:
 ```bash
 /plugin install office@yesterday-public-plugins
 /plugin install personal-agent@yesterday-public-plugins
-/plugin install dev-operations@yesterday-public-plugins
+/plugin install systems-operations@yesterday-public-plugins
 # ... etc
 ```
 
@@ -65,7 +65,7 @@ No auth required -- this catalog is public.
 | [office](./plugins/office) | Daily-work core -- 6 generic skills (exa search, excalidraw, slack, GitHub, web/x scrapers) |
 | [office-extras](./plugins/office-extras) | Daily-work extras tier -- 4 SaaS integrations (Figma, Miro, Voxtral TTS, VRR) |
 | [personal-agent](./plugins/personal-agent) | Agent core -- 14 generic agent skills (multi-agent, patrols, self-improvement) |
-| [dev-operations](./plugins/dev-operations) | Ops core -- 6 skills (opentofu, railway-deploy, butler-deploy, land-and-deploy, canary, setup-deploy) |
+| [systems-operations](./plugins/systems-operations) | Ops core -- 6 skills (opentofu, railway-deploy, butler-deploy, land-and-deploy, canary, setup-deploy) |
 
 ### Standalone skills (`./skills/`)
 

@@ -4,7 +4,7 @@ Yesterday Daily Stack -- **core tier**. Generic productivity, creative, and know
 
 ## Scope
 
-Skills that are useful in day-to-day work and do NOT require `.ytstack/` project state. Engineering-focused skills belong in `ytstack` (engineering OS); autonomous-agent skills belong in `personal-agent`; ops skills belong in `dev-operations`.
+Skills that are useful in day-to-day work and do NOT require `.ytstack/` project state. Engineering-focused skills belong in `ytstack` (engineering OS); autonomous-agent skills belong in `personal-agent`; ops skills belong in `systems-operations`.
 
 ## Skills shipped (6)
 

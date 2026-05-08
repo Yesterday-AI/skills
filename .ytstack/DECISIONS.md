@@ -19,6 +19,7 @@ Format for each entry:
 **Context:** Need to turn `skills/**/SKILL.md` sources into installable plugin folders for Claude Code + Cursor, plus a marketplace.json. ~GOAL.md spec is short (discover → scaffold → symlink-or-generate). Repo has no package.json / build infra.
 
 **Options considered:**
+
 - A) `compile.mjs` standalone Node script at repo root, no deps
 - B) Add Turborepo / pnpm package with TS + tests
 - C) Bash script
@@ -34,6 +35,7 @@ Format for each entry:
 **Context:** Per ~GOAL.md, compilation discovers skills via SKILL.md presence.
 
 **Options considered:**
+
 - A) Slug = parent dir name (`skills/concepts/web-design/SKILL.md` → `web-design`)
 - B) Slug = SKILL.md frontmatter `name`
 - C) Path-flattened (`concepts-web-design`)
@@ -44,11 +46,34 @@ Format for each entry:
 
 ---
 
+## 2026-05-08: Standalone-plugin content COPIED, not symlinked (cache survives)
+
+**Context:** Initial implementation symlinked `skills/<slug>` and the `plugin.json` files in `.compiled/skill-plugins/<slug>/` to the source files outside the plugin folder (e.g. `../../../../skills/concepts/web-design/`). When Claude Code installs a plugin from a marketplace, it copies the plugin folder to `~/.claude/plugins/cache/<marketplace>/<plugin>/<sha>/`. Spec docs claim symlinks are "preserved in the cache" -- in practice for **external relative targets**, the symlink survives but its target path no longer resolves at the cache location, so Claude Code sees an empty `skills/` folder and zero skills load.
+
+**Verification of the bug:** after install, `~/.claude/plugins/cache/yesterday-public-plugins/web-design/<sha>/skills/` was empty; the plugin was listed as enabled but no skills appeared in `/skills`.
+
+**Options considered:**
+
+- A) Keep symlinks (broken at cache)
+- B) Copy source content into `.compiled/skill-plugins/<slug>/` as real files; bundle plugins keep their internal `../plugin.json` symlinks (target stays inside plugin folder, cache-safe)
+- C) Restructure repo so each standalone skill lives at `.compiled/skill-plugins/<slug>/skills/<slug>/` directly (no compile step)
+
+**Chose:** B.
+
+**Reason:** B is the smallest fix that produces self-contained, install-correct plugin folders. C would break the source layout (`skills/<category>/<slug>/`) we want for navigation. A simply doesn't work.
+
+**Bundle plugins are unaffected** because their canonical `plugin.json` is at `plugins/<bundle>/plugin.json` and the editor-folder symlinks (`.claude-plugin/plugin.json` -> `../plugin.json`) point INSIDE the plugin folder -- those resolve at any cache location.
+
+**Implication for `.compiled/`:** the directory now contains real-file copies of every standalone skill, doubling on-disk size. Acceptable because `.compiled/` is the install-target tree and consumers expect it self-contained. `compile.mjs` always wipes + rebuilds, so duplication never drifts.
+
+---
+
 ## 2026-05-08: Symlink source folder, generate manifest only when missing
 
 **Context:** Per ~GOAL.md "symlink (when .plugin.json exists) or generate {.claude-plugin,.cursor-plugin}/plugin.json".
 
 **Options considered:**
+
 - A) Always symlink source folder; for plugin.json: symlink source `.plugin.json` if present, else generate from SKILL.md frontmatter
 - B) Always copy (no symlinks)
 - C) Always generate plugin.json from frontmatter (ignore source `.plugin.json`)
@@ -64,6 +89,7 @@ Format for each entry:
 **Context:** marketplace.json needs top-level metadata (name, description, owner) plus a `plugins[]` array mixing externals (e.g. ytstack via github), local bundles (`./plugins/<name>`), and standalone skills (`./.compiled/skill-plugins/<slug>`). marketplace.jsonc was only a one-shot reference template.
 
 **Options considered:**
+
 - A) Hand-maintain marketplace.json fully
 - B) Generate from a JSONC template + comment-strip
 - C) Auto-discover bundles + standalone, merge with hand-written header file (`./marketplace.json` containing only name/description/owner + optional externals)
@@ -79,6 +105,7 @@ Format for each entry:
 **Context:** Bundles previously had plugin.json only inside `.claude-plugin/`. Cursor expects the same file at `.cursor-plugin/plugin.json`. Two parallel files would drift.
 
 **Options considered:**
+
 - A) Keep plugin.json inside `.claude-plugin/`, copy to `.cursor-plugin/`
 - B) Move plugin.json to bundle root (`plugins/<name>/plugin.json`), symlink from both `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`
 - C) Generate `.cursor-plugin/plugin.json` at compile time
@@ -106,6 +133,7 @@ Format for each entry:
 **Context:** This repo consolidates content from several predecessor repos. The first instinct was to document the renames + origin in user-facing files (README "Migration note" table, NOTICE "Predecessors" section, plugin READMEs with "formerly X" framing). External users don't need that history -- they need to know what's installable now.
 
 **Options considered:**
+
 - A) Keep migration tables / "formerly X" labels in user-facing READMEs + NOTICE
 - B) Strip all migration framing from user-facing files; keep history only in `.ytstack/` (this file + KNOWLEDGE.md)
 - C) Hybrid: strip from READMEs, keep a short Predecessors block in NOTICE
@@ -122,7 +150,7 @@ Format for each entry:
 |---|---|
 | `Yesterday-AI/ystacks` (catalog) | this repo (`Yesterday-AI/skills`) -- marketplace + bundles + standalone |
 | `Yesterday-AI/yastack` | `plugins/personal-agent/` |
-| `Yesterday-AI/yopstack` | `plugins/dev-operations/` |
+| `Yesterday-AI/yopstack` | `plugins/systems-operations/` |
 | `Yesterday-AI/ydstack` | `plugins/office/` |
 | `Yesterday-AI/ydstack-extras` | `plugins/office-extras/` |
 | `Yesterday-AI/ytstack` | external (referenced via marketplace.json `plugins[]`, source still upstream) |
@@ -136,6 +164,7 @@ Predecessor repos remain available read-only for git history continuity. New dev
 **Context:** This catalog is PUBLIC. Anyone with a Claude Code or Cursor install can `marketplace add Yesterday-AI/skills` and pick a plugin. If a listed plugin needs Yesterday-internal infrastructure (private hostnames, internal-only auth providers, services that are not publicly available) it will fail at runtime for everyone outside Yesterday and damage user trust in the catalog.
 
 **Options considered:**
+
 - A) Document the rule in user-facing READMEs ("no Yesterday-infra dependencies")
 - B) Document the rule only in contributor-side artifacts (CONTRIBUTING, AGENTS, this file), keep user-facing READMEs free of internal-perspective framing
 - C) Allow infra-coupled plugins, mark them with metadata, let them fail gracefully
@@ -160,6 +189,7 @@ Plugins that fail either criterion belong elsewhere, not here.
 **Context:** Need a `clean.mjs` to wipe build outputs before a fresh `compile.mjs` run.
 
 **Options considered:**
+
 - A) Wipe `.claude-plugin/` and `.cursor-plugin/` folders entirely
 - B) Wipe only the generated `marketplace.json` symlink inside each, leave folders intact
 
