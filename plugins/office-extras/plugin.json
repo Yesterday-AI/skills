@@ -1,6 +1,6 @@
 {
   "name": "office-extras",
-  "description": "Daily-work extras tier. Optional integrations needing external SaaS accounts/keys (Figma, Miro, Voxtral TTS, VRR transit). Install alongside office when you actually use these services.",
+  "description": "BUNDLE: Daily-work extras tier. Optional integrations needing external SaaS accounts/keys (Figma, Miro, Voxtral TTS, VRR transit). Install alongside office when you actually use these services.",
   "author": {
     "name": "Yesterday"
   },

@@ -1,6 +1,6 @@
 {
   "name": "office",
-  "description": "Daily-work core tier. Generic productivity, creative, and knowledge skills for daily work; nothing requires external SaaS keys at install time. Optional SaaS integrations (Figma, Miro, Voxtral TTS, VRR transit) live in office-extras.",
+  "description": "BUNDLE: Daily-work core tier. Generic productivity, creative, and knowledge skills for daily work; nothing requires external SaaS keys at install time. Optional SaaS integrations (Figma, Miro, Voxtral TTS, VRR transit) live in office-extras.",
   "author": {
     "name": "Yesterday"
   },

@@ -1,6 +1,6 @@
 {
   "name": "dev-operations",
-  "description": "Ops Code -- generic infrastructure-provisioning, deployment, and observability skills for agents. opentofu + railway-deploy + butler-deploy + land-and-deploy + canary + setup-deploy. Public, no Yesterday-infra dependencies.",
+  "description": "BUNDLE: DevOps -- generic infrastructure-provisioning, deployment, and observability skills for agents. opentofu + railway-deploy + butler-deploy + land-and-deploy + canary + setup-deploy. Public, no Yesterday-infra dependencies.",
   "author": {
     "name": "Yesterday"
   },
