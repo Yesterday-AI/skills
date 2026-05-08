@@ -32,7 +32,7 @@
     },
     {
       "name": "dev-operations",
-      "description": "Ops Code -- generic infrastructure-provisioning, deployment, and observability skills for agents. opentofu + railway-deploy + butler-deploy + land-and-deploy + canary + setup-deploy. Public, no Yesterday-infra dependencies.",
+      "description": "BUNDLE: DevOps -- generic infrastructure-provisioning, deployment, and observability skills for agents. opentofu + railway-deploy + butler-deploy + land-and-deploy + canary + setup-deploy. Public, no Yesterday-infra dependencies.",
       "source": "./plugins/dev-operations",
       "author": {
         "name": "Yesterday"
@@ -51,7 +51,7 @@
     },
     {
       "name": "office",
-      "description": "Daily-work core tier. Generic productivity, creative, and knowledge skills for daily work; nothing requires external SaaS keys at install time. Optional SaaS integrations (Figma, Miro, Voxtral TTS, VRR transit) live in office-extras.",
+      "description": "BUNDLE: Daily-work core tier. Generic productivity, creative, and knowledge skills for daily work; nothing requires external SaaS keys at install time. Optional SaaS integrations (Figma, Miro, Voxtral TTS, VRR transit) live in office-extras.",
       "source": "./plugins/office",
       "author": {
         "name": "Yesterday"
@@ -67,7 +67,7 @@
     },
     {
       "name": "office-extras",
-      "description": "Daily-work extras tier. Optional integrations needing external SaaS accounts/keys (Figma, Miro, Voxtral TTS, VRR transit). Install alongside office when you actually use these services.",
+      "description": "BUNDLE: Daily-work extras tier. Optional integrations needing external SaaS accounts/keys (Figma, Miro, Voxtral TTS, VRR transit). Install alongside office when you actually use these services.",
       "source": "./plugins/office-extras",
       "author": {
         "name": "Yesterday"
@@ -82,7 +82,7 @@
     },
     {
       "name": "personal-agent",
-      "description": "Yesterday Agent Stack -- generic skills for AI agents in human-AI collaboration and AI-as-expert workflows (Levels of AGI 3-4). Stateful patrols, agent-to-agent orchestration, self-improvement, durable infra ops. No Yesterday-infra dependencies; works for any team running long-running Claude Code agents.",
+      "description": "BUNDLE: Yesterday Agent Stack -- generic skills for AI agents in human-AI collaboration and AI-as-expert workflows (Levels of AGI 3-4). Stateful patrols, agent-to-agent orchestration, self-improvement, durable infra ops. No Yesterday-infra dependencies; works for any team running long-running Claude Code agents.",
       "source": "./plugins/personal-agent",
       "author": {
         "name": "Yesterday"
