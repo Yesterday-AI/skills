@@ -1,0 +1,22 @@
+{
+  "name": "personal-agent",
+  "description": "Yesterday Agent Stack -- generic skills for AI agents in human-AI collaboration and AI-as-expert workflows (Levels of AGI 3-4). Stateful patrols, agent-to-agent orchestration, self-improvement, durable infra ops. No Yesterday-infra dependencies; works for any team running long-running Claude Code agents.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/plugins/personal-agent",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "agentic",
+    "autonomous-agents",
+    "agent-orchestration",
+    "yesterday"
+  ],
+  "dependencies": [
+    "creative-productivity",
+    "para-memory-files",
+    "office"
+  ]
+}

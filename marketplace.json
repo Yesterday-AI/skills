@@ -1,0 +1,34 @@
+{
+  "name": "yesterday-public-plugins",
+  "description": "Yesterday's PUBLIC plugin catalog.",
+  "owner": {
+    "name": "Yesterday"
+  },
+  "allowCrossMarketplaceDependenciesOn": [
+    "claude-plugins-official"
+  ],
+  "plugins": [
+    {
+      "name": "ytstack",
+      "description": "Yesterday Technologies Stack -- opinionated software-development OS for AI agents. Curated superpowers + gstack skills plus Project-OS artifact discipline (PROJECT.md, DECISIONS.md, KNOWLEDGE.md, milestone/slice/task hierarchy), orchestrated via SessionStart hooks.",
+      "source": {
+        "source": "github",
+        "repo": "Yesterday-AI/ytstack"
+      },
+      "author": {
+        "name": "Yesterday"
+      },
+      "homepage": "https://github.com/Yesterday-AI/ytstack",
+      "repository": "https://github.com/Yesterday-AI/ytstack",
+      "license": "MIT",
+      "keywords": [
+        "claude-code",
+        "agentic",
+        "development-methodology",
+        "project-management",
+        "artifact-discipline",
+        "yesterday"
+      ]
+    }
+  ]
+}

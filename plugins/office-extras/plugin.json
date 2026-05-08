@@ -1,0 +1,23 @@
+{
+  "name": "office-extras",
+  "description": "Daily-work extras tier. Optional integrations needing external SaaS accounts/keys (Figma, Miro, Voxtral TTS, VRR transit). Install alongside office when you actually use these services.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/plugins/office-extras",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "yesterday",
+    "productivity",
+    "daily-work",
+    "extras"
+  ],
+  "dependencies": [
+    "figma-console-mcp",
+    "miro-board",
+    "voxtral-tts-api",
+    "vrr-efa-api"
+  ]
+}

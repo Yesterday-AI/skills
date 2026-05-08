@@ -1,0 +1,23 @@
+{
+  "name": "office",
+  "description": "Daily-work core tier. Generic productivity, creative, and knowledge skills for daily work; nothing requires external SaaS keys at install time. Optional SaaS integrations (Figma, Miro, Voxtral TTS, VRR transit) live in office-extras.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/plugins/office",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "yesterday",
+    "productivity",
+    "daily-work",
+    "knowledge-management",
+    "creative"
+  ],
+  "dependencies": [
+    "creative-productivity",
+    "para-memory-files",
+    "excalidraw-diagram"
+  ]
+}

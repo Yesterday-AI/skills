@@ -1,0 +1,18 @@
+{
+  "name": "figma-console-mcp",
+  "description": "Connect AI agents to Figma via the Figma Console MCP server. Design system extraction, UI component creation, variable/token management, visual debugging, FigJam boards, Slides presentations.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/figma-console-mcp",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "yesterday",
+    "figma",
+    "design-system",
+    "mcp",
+    "ui"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "miro-board",
+  "description": "Create and read Miro board content via MCP tools. Diagrams (flowcharts, mindmaps, UML, ER), documents (markdown), tables, and context extraction.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/miro-board",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "yesterday",
+    "miro",
+    "diagrams",
+    "mcp",
+    "whiteboard"
+  ]
+}
