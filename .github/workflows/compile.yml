@@ -1,0 +1,88 @@
+name: Compile
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - 'plugins/**'
+      - 'marketplace.json'
+      - 'compile.mjs'
+      - 'clean.mjs'
+      - '.github/workflows/compile.yml'
+
+permissions:
+  contents: write
+
+# Single source of truth for the bot's git identity. The commit author name
+# (set in the push step) MUST match the loop-guard check (in the job's `if:`)
+# -- otherwise the workflow would re-trigger itself. Changing this here flips
+# both ends in one place.
+env:
+  BOT_NAME: yesterday-bot
+  BOT_EMAIL: yesterday-bot@users.noreply.github.com
+
+concurrency:
+  group: compile-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  compile:
+    name: Regenerate .compiled/ + marketplace symlinks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # Skip when the push that triggered this run is itself the bot's recompile
+    # commit. PAT pushes carry the PAT-owner as `github.actor`, so we can't
+    # rely on that -- match on the commit author identity (env.BOT_NAME) we
+    # set explicitly below.
+    if: github.event.head_commit.author.name != env.BOT_NAME
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # Default GITHUB_TOKEN is read-only (org policy caps writes).
+          # We only need write rights for the push at the very end -- inject
+          # COMPILE_PUSH_TOKEN there via an explicit `git push` URL so the
+          # PAT never sits on disk in the runner's git credential store.
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run compile
+        run: |
+          node clean.mjs
+          node compile.mjs
+
+      - name: Detect changes (incl. new bundle symlinks)
+        id: diff
+        run: |
+          # `git status --porcelain` covers both modified-tracked AND
+          # new-untracked files. compile.mjs scaffolds bundle symlinks under
+          # plugins/<name>/.claude-plugin/ and .cursor-plugin/; for a brand-new
+          # bundle those would be untracked and `git diff --quiet` alone would
+          # silently miss them.
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes after compile."
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected:"
+            git status --short
+          fi
+
+      - name: Commit + push regenerated artifacts
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          # PAT (fine-grained, Yesterday-AI/skills, contents:write).
+          # Secret name must not start with GITHUB_ (reserved prefix).
+          COMPILE_PUSH_TOKEN: ${{ secrets.COMPILE_PUSH_TOKEN }}
+        run: |
+          git config user.name "${BOT_NAME}"
+          git config user.email "${BOT_EMAIL}"
+          git add .compiled .claude-plugin .cursor-plugin plugins
+          git commit -m "compile: regenerate artifacts"
+          git push "https://x-access-token:${COMPILE_PUSH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:main
