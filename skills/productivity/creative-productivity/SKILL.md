@@ -7,7 +7,7 @@ description: >
   documents, pitch decks, workshop materials, or any creative deliverable for client-facing or
   internal use. Covers the full "Consulting as Code" creative pipeline.
 metadata:
-  author: Yesterday-AI
+  author: Yesterday
   version: "1.0"
   category: design
 compatibility: Any agent with file access and shell execution. Optional dependencies per tool (see Setup section).

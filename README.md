@@ -69,13 +69,6 @@ No auth required -- this catalog is public.
 
 ### Standalone skills (`./skills/`)
 
-#### Concepts
-
-| Skill | Purpose |
-|---|---|
-| [creative-productivity](./skills/concepts/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
-| [web-design](./skills/concepts/web-design) | Build distinctive, production-grade frontend interfaces |
-
 #### Capabilities
 
 | Skill | Purpose |
@@ -87,9 +80,11 @@ No auth required -- this catalog is public.
 
 | Skill | Purpose |
 |---|---|
+| [creative-productivity](./skills/concepts/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
 | [excalidraw-diagram](./skills/productivity/excalidraw-diagram) | Hand-drawn diagrams as Excalidraw JSON |
 | [figma-console-mcp](./skills/productivity/figma-console-mcp) | Figma + FigJam + Slides via MCP |
 | [miro-board](./skills/productivity/miro-board) | Miro board content via MCP |
+| [web-design](./skills/concepts/web-design) | Build distinctive, production-grade frontend interfaces |
 
 #### Development operations
 
