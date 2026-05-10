@@ -2,6 +2,29 @@
 
 Gesammelt beim Erkunden der Acme-Instanz auf Railway. Ergänzt die offizielle Doku mit dem was tatsächlich funktioniert.
 
+## executionPolicy — empirisch verifiziert (2026-05-10)
+
+Vorher als unverifiziert behandelt nach 0% Compliance-Stichprobe in Fleet (CTO-Routinen attachten die Policy nie). Nach kontrolliertem Test auf Fleet-Issue FLE-1963 (cancelled): **executionPolicy funktioniert exakt wie dokumentiert.**
+
+### Verifizierte Mechaniken
+1. **Policy-attach** via `POST /api/companies/{cid}/issues` mit `executionPolicy: {...}` persistiert sofort.
+2. **Runtime intercept Engineer→`done`:** PATCH `status:done` als Engineer-assignee → Server setzt status zu `in_review` (nicht done), populiert `executionState`, reassigned `assigneeAgentId` zum Stage-1-Reviewer.
+3. **Wake-on-assignment** feuert nach Auto-Reassign — Reviewer-lease 71 Sekunden nach Reassign acquired (interval-heartbeat war off).
+4. **Stage-Advancement Reviewer→`done`:** Reviewer PATCHes status:done → Runtime advanced auf Stage 2, reassigns Approver/Gatekeeper, populiert `lastDecisionOutcome: "approved"`.
+5. **`returnAssignee`** wird beim ersten intercept gesetzt (= Original-Engineer) für changes-requested-Loop.
+
+### Stage-Participant Enforcement
+Once `executionState` populiert ist, gibt der Server `422 Unprocessable Entity` für jeden PATCH von einem Actor der nicht `currentParticipant` ist. **Auch board-User bekommen 422** — nicht "board kann alles". Engineer der nach Stage-1-Entry auch noch transitionieren wollte: 422.
+
+### Subtile Gotcha — Silent-drop bei Cancel mid-stage
+PATCH `status:cancelled` während currentStage `pending` ist, gibt **HTTP 200** zurück, aber **Status ändert sich NICHT**. Server droppt silent. Recovery: erst `executionPolicy:null` setzen (das returnt Issue zu Original-Executor mit status:in_progress per Doku), dann cancel.
+
+### Compliance-Gap (separates Problem von der Mechanik)
+Routinen-Description die LLMs anweist "attach this JSON in the executionPolicy field on every issue you create" haben **0% Compliance** (Fleet 0/8 issues, ClawRAG 0/13, SunoFlow 0/13). Der LLM erstellt die Issues ohne das Feld trotz expliziter Anweisung. Workarounds:
+- UI-basiert (Operator setzt Reviewer/Approver per Issue manuell)
+- Tool-Wrapper (eigenes "create_issue" Tool das Policy-Default injecten würde)
+- Patrol-Routinen als Fallback wake-mechanism (so läuft Fleet heute)
+
 ## Auth
 
 Paperclip unterstützt **drei** Auth-Pfade ([canonical docs](https://docs.paperclip.ing/reference/api/authentication.md)):

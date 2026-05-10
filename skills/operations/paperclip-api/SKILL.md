@@ -884,6 +884,7 @@ curl -H "Authorization: Bearer $PAPERCLIP_API_TOKEN" \
 | Approving an `in_review` issue you're not the current participant for | Server returns `422` | Inspect `executionState.currentParticipant` first |
 | `PATCH status: "todo"` on a `done` issue | Rejected — terminal transitions require `reopen` | Send `PATCH { reopen: true, comment: "…" }` |
 | Forgetting `X-Paperclip-Run-Id` on agent mutations | Rejected as checkout-ownership violation | Always pass current heartbeat run id on agent PATCH/POST |
+| `PATCH status: "cancelled"` while `executionState` is `pending` | Returns HTTP 200 but **silently drops the cancel** — status stays unchanged. No 422, no error message. | First clear policy: `PATCH executionPolicy: null` (returns issue to original executor with status `in_progress`), then `PATCH status: "cancelled"`. |
 
 ---
 
