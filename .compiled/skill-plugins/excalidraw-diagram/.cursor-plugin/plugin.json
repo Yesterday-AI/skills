@@ -1,18 +1,1 @@
-{
-  "name": "excalidraw-diagram",
-  "description": "Generate Excalidraw diagrams. Create various types of diagrams, such as flowcharts, wireframes, infographics, and mind maps, to help visualize ideas and concepts.",
-  "author": {
-    "name": "Yesterday"
-  },
-  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/excalidraw-diagram",
-  "repository": "https://github.com/Yesterday-AI/skills",
-  "license": "MIT",
-  "keywords": [
-    "claude-code",
-    "yesterday",
-    "excalidraw",
-    "diagram",
-    "mcp",
-    "ui"
-  ]
-}
+../../../../skills/productivity/excalidraw-diagram/.plugin.json

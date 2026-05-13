@@ -1,18 +1,1 @@
-{
-  "name": "voxtral-tts-api",
-  "description": "Mistral Voxtral TTS API client. Natural, emotionally expressive speech in 9 languages. Voice cloning from 3s samples, preset voices, streaming, cross-lingual synthesis.",
-  "author": {
-    "name": "Yesterday"
-  },
-  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/voxtral-tts-api",
-  "repository": "https://github.com/Yesterday-AI/skills",
-  "license": "MIT",
-  "keywords": [
-    "claude-code",
-    "yesterday",
-    "tts",
-    "voice",
-    "mistral",
-    "api-client"
-  ]
-}
+../../../../skills/capabilities/tts/voxtral-tts-api/.plugin.json

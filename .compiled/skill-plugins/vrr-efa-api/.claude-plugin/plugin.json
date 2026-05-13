@@ -1,18 +1,1 @@
-{
-  "name": "vrr-efa-api",
-  "description": "VRR (Verkehrsverbund Rhein-Ruhr) live transit API client. Departures, connections, stops via EFA API -- real-time, free, no API key. Niche regional vertical (German public transit).",
-  "author": {
-    "name": "Yesterday"
-  },
-  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/vrr-efa-api",
-  "repository": "https://github.com/Yesterday-AI/skills",
-  "license": "MIT",
-  "keywords": [
-    "claude-code",
-    "yesterday",
-    "transit",
-    "vrr",
-    "germany",
-    "api-client"
-  ]
-}
+../../../../skills/travel/vrr-efa-api/.plugin.json

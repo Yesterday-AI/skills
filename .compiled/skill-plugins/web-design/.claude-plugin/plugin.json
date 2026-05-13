@@ -1,18 +1,1 @@
-{
-  "name": "web-design",
-  "description": "Build distinctive, production-grade frontend interfaces with high design quality. Use when building websites, landing pages, dashboards, web apps, or any UI that should look polished and modern.",
-  "author": {
-    "name": "Yesterday"
-  },
-  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/web-design",
-  "repository": "https://github.com/Yesterday-AI/skills",
-  "license": "MIT",
-  "keywords": [
-    "claude-code",
-    "yesterday",
-    "design",
-    "frontend",
-    "ui",
-    "ux"
-  ]
-}
+../../../../skills/productivity/web-design/.plugin.json
