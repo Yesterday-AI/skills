@@ -46,28 +46,6 @@ Format for each entry:
 
 ---
 
-## 2026-05-08: Standalone-plugin content COPIED, not symlinked (cache survives)
-
-**Context:** Initial implementation symlinked `skills/<slug>` and the `plugin.json` files in `.compiled/skill-plugins/<slug>/` to the source files outside the plugin folder (e.g. `../../../../skills/concepts/web-design/`). When Claude Code installs a plugin from a marketplace, it copies the plugin folder to `~/.claude/plugins/cache/<marketplace>/<plugin>/<sha>/`. Spec docs claim symlinks are "preserved in the cache" -- in practice for **external relative targets**, the symlink survives but its target path no longer resolves at the cache location, so Claude Code sees an empty `skills/` folder and zero skills load.
-
-**Verification of the bug:** after install, `~/.claude/plugins/cache/yesterday-public-plugins/web-design/<sha>/skills/` was empty; the plugin was listed as enabled but no skills appeared in `/skills`.
-
-**Options considered:**
-
-- A) Keep symlinks (broken at cache)
-- B) Copy source content into `.compiled/skill-plugins/<slug>/` as real files; bundle plugins keep their internal `../plugin.json` symlinks (target stays inside plugin folder, cache-safe)
-- C) Restructure repo so each standalone skill lives at `.compiled/skill-plugins/<slug>/skills/<slug>/` directly (no compile step)
-
-**Chose:** B.
-
-**Reason:** B is the smallest fix that produces self-contained, install-correct plugin folders. C would break the source layout (`skills/<category>/<slug>/`) we want for navigation. A simply doesn't work.
-
-**Bundle plugins are unaffected** because their canonical `plugin.json` is at `plugins/<bundle>/plugin.json` and the editor-folder symlinks (`.claude-plugin/plugin.json` -> `../plugin.json`) point INSIDE the plugin folder -- those resolve at any cache location.
-
-**Implication for `.compiled/`:** the directory now contains real-file copies of every standalone skill, doubling on-disk size. Acceptable because `.compiled/` is the install-target tree and consumers expect it self-contained. `compile.mjs` always wipes + rebuilds, so duplication never drifts.
-
----
-
 ## 2026-05-08: Symlink source folder, generate manifest only when missing
 
 **Context:** Per ~GOAL.md "symlink (when .plugin.json exists) or generate {.claude-plugin,.cursor-plugin}/plugin.json".
