@@ -19,9 +19,5 @@
     "yesterday"
   ],
   "dependencies": [
-    {
-      "name": "skill-creator",
-      "marketplace": "claude-plugins-official"
-    }
   ]
 }
