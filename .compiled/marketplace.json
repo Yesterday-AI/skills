@@ -96,6 +96,21 @@
       ]
     },
     {
+      "name": "create-shareable-skill",
+      "description": "Turn an existing skill or a fresh idea into a catalog-ready shareable skill -- run the quality gate, decide catalog and standalone-vs-bundle placement, pick the category, scaffold SKILL.md (+ optional .plugin.json), update the catalog docs, and open a PR. Use when adding a new skill to the catalog or promoting a personal skill into a shareable one.",
+      "source": "./.compiled/skill-plugins/create-shareable-skill",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "skill-authoring",
+        "meta",
+        "contributing"
+      ]
+    },
+    {
       "name": "creative-productivity",
       "description": "Generate professional consulting deliverables: Excalidraw diagrams, Mermaid visualizations, Reveal.js/Marp presentations, draw.io architecture diagrams, one-pagers, proposal documents. Orchestrator with enriched assets over the underlying tool plugins.",
       "source": "./.compiled/skill-plugins/creative-productivity",
@@ -157,21 +172,6 @@
         "diagrams",
         "mcp",
         "whiteboard"
-      ]
-    },
-    {
-      "name": "new-shareable-skill",
-      "description": "Turn an existing skill or a fresh idea into a catalog-ready shareable skill -- run the quality gate, decide catalog and standalone-vs-bundle placement, pick the category, scaffold SKILL.md (+ optional .plugin.json), update the catalog docs, and open a PR. Use when adding a new skill to the catalog or promoting a personal skill into a shareable one.",
-      "source": "./.compiled/skill-plugins/new-shareable-skill",
-      "author": {
-        "name": "Yesterday"
-      },
-      "keywords": [
-        "claude-code",
-        "yesterday",
-        "skill-authoring",
-        "meta",
-        "contributing"
       ]
     },
     {
