@@ -24,6 +24,12 @@ Catalog repos rot when they accumulate plugin-side concerns. This repo has three
 - Per-bundle marketplace.json files (consolidated into the top-level catalog).
 - Generated artifacts (`.compiled/` is rebuilt on every `node compile.mjs`; never commit hand-edits there).
 
+## Authoring a new skill (guided)
+
+The fastest correct path is the `new-shareable-skill` agent skill at [`.agents/skills/new-shareable-skill/SKILL.md`](./.agents/skills/new-shareable-skill/SKILL.md). It walks one skill end to end -- intake, the "shareable by default" quality gate, the public-vs-private and standalone-vs-bundle placement decision, category selection, scaffold, `compile.mjs` + `audit-skills`, docs, and the PR to `main`. It refuses to scaffold a skill that cannot meet the bar.
+
+The sections below are the manual reference for each step it automates.
+
 ## Adding a standalone skill
 
 1. Create `skills/<category>/<slug>/SKILL.md` with frontmatter:
