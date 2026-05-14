@@ -160,6 +160,21 @@
       ]
     },
     {
+      "name": "new-shareable-skill",
+      "description": "Turn an existing skill or a fresh idea into a catalog-ready shareable skill -- run the quality gate, decide catalog and standalone-vs-bundle placement, pick the category, scaffold SKILL.md (+ optional .plugin.json), update the catalog docs, and open a PR. Use when adding a new skill to the catalog or promoting a personal skill into a shareable one.",
+      "source": "./.compiled/skill-plugins/new-shareable-skill",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "skill-authoring",
+        "meta",
+        "contributing"
+      ]
+    },
+    {
       "name": "paperclip-api",
       "description": "Manage Paperclip AI companies, agents, issues, projects, goals, routines, costs, and secrets via REST API. Use when creating companies, hiring agents, assigning tasks, managing budgets, or checking dashboards on a Paperclip instance.",
       "source": "./.compiled/skill-plugins/paperclip-api",
