@@ -1,28 +1,34 @@
 ---
 project: skills
 slug: skills
-last_updated: 2026-05-13T00:00:00Z
-current_milestone: none
+last_updated: 2026-05-14T12:10:58Z
+current_milestone: M001
 active_slice: none
 active_task: none
 ---
 
 # State
 
-**Status:** Public catalog live at `Yesterday-AI/skills` with 14 plugins (1 external + 4 bundles + 9 standalone). Compile pipeline working, marketplace symlinks generated, GitHub Actions workflow in place. Open question on plugin install path (cache resolution).
+**Status:** M001 done -- `new-shareable-skill` meta-skill authored in `.agents/skills/` + contributor docs updated. Executed directly (no formal slice/task pass) on explicit user instruction. PR pending push.
+
+**Next action:** Push branch `add-new-shareable-skill` and open the PR to `main` (awaiting user "push" go-ahead).
+
+**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 14 plugins (1 external + 4 bundles + 9 standalone). Compile pipeline working, marketplace symlinks generated, GitHub Actions workflow in place. Open question on plugin install path (cache resolution).
 
 ## What's done
 
 - Compile pipeline (`compile.mjs`, `clean.mjs`) -- symlink-based; auto-scaffolds bundle `.claude-plugin` + `.cursor-plugin` symlinks
 - Top-level `marketplace.json` header with `name=yesterday-public-plugins`, `allowCrossMarketplaceDependenciesOn=["claude-plugins-official"]`, externals incl. `ytstack` via github source
-- 4 bundle plugins (office, office-extras, personal-agent, dev-operations) -- canonical `plugin.json` at bundle root, editor-folder manifests symlinked
+- 4 bundle plugins (office, office-extras, personal-agent, systems-operations) -- canonical `plugin.json` at bundle root, editor-folder manifests symlinked
 - 9 standalone skills under `skills/<category>/<slug>/` (concepts, capabilities, productivity, development-operations, travel)
 - OSS scaffold: README, LICENSE (MIT), CONTRIBUTING, NOTICE, AGENTS.md
 - `.ytstack/` project memory (this file + DECISIONS, KNOWLEDGE, RUNTIME, PROJECT, PREFERENCES)
 - `.agents/skills/audit-skills/` -- 3-axis repo audit skill (leaks, consistency, spec compliance)
+- `.agents/skills/new-shareable-skill/` -- authoring meta-skill: intake → quality gate → public/private + standalone/bundle placement → scaffold → compile+audit → docs → PR (M001; counterpart to audit-skills)
 - GitHub Actions: `compile.yml` (auto-recompile on main push, PAT-pushed via `COMPILE_PUSH_TOKEN`, bot identity from `vars.BOT_NAME` / `vars.BOT_EMAIL`); `secret-scan.yml` (gitleaks)
 - Repo created on GitHub (Yesterday-AI/skills, public), 12 topics set
-- Sister repo `Yesterday-AI/yesterday-skills` (private catalog) brought to parity: same compile pipeline, OSS scaffold, `.ytstack/`
+- Sister repo `Yesterday-AI/yesterday-skills` (private catalog) brought to parity: same compile pipeline, OSS scaffold, `.ytstack/`, and as of 2026-05-13 also `compile.yml` + folder/name parity rule + normalized bundle READMEs
+- 2026-05-13: removed install-breaking cross-marketplace dep (`skill-creator@claude-plugins-official`) from `plugins/systems-operations/plugin.json` -- `/doctor` was erroring on clean installs (see DECISIONS.md)
 
 ## Open
 
@@ -34,21 +40,20 @@ active_task: none
   - `/plugin marketplace update` then re-test
   - Search GitHub issues for `actions/checkout` symlink dereferencing
   - Check what `git clone` does with symlinks across platforms
-- **Compile workflow PAT.** `COMPILE_PUSH_TOKEN` set up but failed last run with 403 ("Permission to Yesterday-AI/skills.git denied to yesterday-bot"). User regenerating PAT scoped to `Yesterday-AI` org with `Contents: Read and write`. Needs verification that next push triggers a successful regenerate-and-push cycle.
 
-### Sister-repo (`yesterday-skills`) leftover from earlier audit
+### Stale content in user-facing files (cleanup needed)
 
-Reported but not yet fixed (user may handle separately):
-
-- `yesterday-dev-operations` deps target `development-operations` -- public plugin is named `dev-operations` (install-blocking)
-- `marketplace.json` missing `allowCrossMarketplaceDependenciesOn: ["yesterday-public-plugins"]` (install-blocking for cross-mp deps)
-- 5 stale bundle READMEs (heading still `# yastack-internal` etc., reference old marketplace names)
-- Description leaks in `yesterday-office/plugin.json` and `yesterday-personal-agent/plugin.json` (still mention `ydstack`, `yastack`, `ystacks`, `yopstack-internal`)
+- `plugins/systems-operations/README.md` still lists `skill-creator` as a cross-marketplace dep in its "What's in it" table -- the dep was removed from `plugin.json` 2026-05-13. README must be updated to match.
+- `plugins/systems-operations/README.md` has an internal-perspective leak: "the deploy-arc that comes after `ytstack:ship` and `ytstack:document-release` (handled by `ytstack` core in M011)" -- the `M011` milestone reference is internal framing, should be scrubbed per the no-internal-perspective rule.
 
 ### Architectural questions surfaced
 
 - Should we adopt dotagents-style distribution (`.agents/skills/`, `agents.toml`, `agents.lock`) alongside or instead of marketplace catalog?
 - If the cache-symlink-resolution is genuinely a Claude Code limitation, what's the right architecture? (Don't decide without evidence. Don't refactor compile.mjs without explicit approval.)
+
+### Cross-repo artifact (context, not a task here)
+
+- AI strategy doc created 2026-05-13 at `company-orga/03_technologies/32_strategy/04_ai-skills-und-plugins.md` -- explains skills/plugins as Yesterday's knowledge- + tool-sharing layer. Not yet linked from the `company-orga` README index; the `37_concepts/agentic-engineering/agent-skills/` stub could cross-reference it.
 
 ## Recent summaries
 

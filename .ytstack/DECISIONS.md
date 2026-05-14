@@ -162,6 +162,24 @@ Plugins that fail either criterion belong elsewhere, not here.
 
 ---
 
+## 2026-05-13: Public bundles avoid install-breaking cross-marketplace deps
+
+**Context:** `systems-operations` declared a dependency on `skill-creator@claude-plugins-official`. Even with `allowCrossMarketplaceDependenciesOn: ["claude-plugins-official"]` correctly set in `marketplace.json`, `/doctor` reported a plugin error after install: the dep is NOT auto-installed -- the user must separately `/plugin marketplace add` the official catalog AND `/plugin install skill-creator@claude-plugins-official`. For a public catalog this is a broken first-run experience.
+
+**Options considered:**
+
+- A) Keep the dep, document the manual two-step in the README
+- B) Drop the cross-marketplace dep from the bundle
+- C) Vendor the needed skill into the catalog
+
+**Chose:** B. Removed the `dependencies` block from `plugins/systems-operations/plugin.json`.
+
+**Reason:** `allowCrossMarketplaceDependenciesOn` is a *permission whitelist*, not an installer. A public-catalog bundle that errors in `/doctor` on a clean install damages trust. `skill-creator` is a nice-to-have meta-skill, not a runtime requirement of the ops skills.
+
+**Rule going forward:** public-catalog bundles must be installable + `/doctor`-clean with a single `/plugin install`. A cross-marketplace dep is allowed only when (1) the dependency is genuinely essential AND (2) the bundle README spells out the manual marketplace-add + install prerequisite steps. Note: this rule is public-catalog-specific -- the private `yesterday-skills` catalog intentionally relies on cross-mp deps (Yesterday-team installs add both marketplaces).
+
+---
+
 ## 2026-05-08: clean.mjs targets only generated artifacts, never folder roots
 
 **Context:** Need a `clean.mjs` to wipe build outputs before a fresh `compile.mjs` run.
@@ -174,3 +192,31 @@ Plugins that fail either criterion belong elsewhere, not here.
 **Chose:** B.
 
 **Reason:** Those folders may later contain other content (workspace-level plugin.json, READMEs). Targeting the named generated files keeps the tool surgical and reversible. Same principle for `.compiled/`: list `skill-plugins/` and `marketplace.json` explicitly rather than wiping `.compiled/` (which would also blow away `~GOAL.md`-referenced legacy `marketplace.jsonc`).
+
+---
+
+## 2026-05-14: `new-shareable-skill` lives in `.agents/skills/`, not the marketplace tree
+
+**Context:** M001 adds a `new-shareable-skill` meta-skill that guides authoring a shareable skill: quality gate, public-vs-private catalog routing, standalone-vs-bundle placement, category selection, docs, PR. By design it must reason about -- and name -- the private `Yesterday-AI/yesterday-skills` catalog and the routing rules between the two catalogs.
+
+**Options considered:**
+
+- A) Standalone skill in the marketplace tree (`skills/<category>/new-shareable-skill/`) -- gets compiled + published to `yesterday-public-plugins`
+- B) Repo-local tooling in `.agents/skills/new-shareable-skill/` -- alongside `audit-skills`, not compiled, not published
+- C) Two copies: a generic one published publicly, a full one with private routing in `yesterday-skills`
+
+**Chose:** B.
+
+**Reason:** A marketplace-published skill is a user-facing artifact. A published skill that says "if the skill needs private infra, route it to `Yesterday-AI/yesterday-skills`" leaks the existence + name of the private catalog into the public marketplace -- exactly the internal-perspective leak the "Acceptance criterion" and "Migration history" decisions forbid. Option A would force stripping the very public/private routing the skill exists to provide. Option C duplicates a workflow skill for no gain and creates a drift surface. `.agents/skills/` is contributor tooling (same tier as `audit-skills`, which itself documents `-internal` patterns) and is explicitly excluded from the leak audit -- so the full routing logic can live there honestly. `compile.mjs` only walks `skills/`, so `.agents/` content is never compiled or published; marketplace count stays at 14.
+
+**Rule going forward:** a meta-skill *about* the catalog (authoring, auditing, releasing) belongs in `.agents/skills/`. A skill that delivers a user-facing capability belongs in `skills/<category>/`. If publishing a skill would force an internal-perspective leak or stripping its core content, that is the signal it is `.agents/` tooling, not a catalog entry.
+
+---
+
+## 2026-05-14: New catalog skills enter via PR to `main`, never direct push
+
+**Context:** M001 also had to decide the contribution path for the meta-skill itself, and the meta-skill encodes that path for every future skill.
+
+**Chose:** Branch (`add-<slug>`) → atomic commit (`add <slug>`, CONTRIBUTING commit format) → push → `gh pr create --base main` → human signoff → merge. Never self-merge; never commit a new skill directly on `main`.
+
+**Reason:** CI (`compile.yml` + `secret-scan.yml`) re-runs compile + a gitleaks scan on the PR -- that gate only fires on a PR. A new catalog entry changes what installers receive and is hard to walk back once `main` moves, so it needs human review. This matches the existing CONTRIBUTING "PR. CI will re-run compile + audit" guidance and makes it explicit + non-optional.
