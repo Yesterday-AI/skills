@@ -220,3 +220,27 @@ Plugins that fail either criterion belong elsewhere, not here.
 **Chose:** Branch (`add-<slug>`) → atomic commit (`add <slug>`, CONTRIBUTING commit format) → push → `gh pr create --base main` → human signoff → merge. Never self-merge; never commit a new skill directly on `main`.
 
 **Reason:** CI (`compile.yml` + `secret-scan.yml`) re-runs compile + a gitleaks scan on the PR -- that gate only fires on a PR. A new catalog entry changes what installers receive and is hard to walk back once `main` moves, so it needs human review. This matches the existing CONTRIBUTING "PR. CI will re-run compile + audit" guidance and makes it explicit + non-optional.
+
+---
+
+## 2026-05-14: `new-shareable-skill` ships as a standalone catalog skill (supersedes the `.agents/` placement)
+
+**Context:** The prior entry placed `new-shareable-skill` in `.agents/skills/` to avoid naming the private `yesterday-skills` catalog in a published artifact. The user rejected that on review: `new-shareable-skill` is to be a standalone, compiled, marketplace-published skill like any other -- "authoring a shareable skill" is itself a user-facing capability, not just internal tooling.
+
+**Chose:** Standalone skill at `skills/operations/new-shareable-skill/` (+ `.plugin.json`). Compiled by `compile.mjs`, listed in the marketplace (count 14 -> 15). Only `audit-skills` stays in `.agents/` -- it is pure verification machinery with no user-facing capability.
+
+**Reason:** User decision; user instructions outrank an agent's architectural judgement. The leak concern is handled at the content level instead of by hiding the file: the actual username path example was depersonalized, gratuitous pattern tokens were softened. The two catalogs are still named -- that was an explicit requirement ("der die policies dieses und des yesterday-skills repos kennt"), and `yesterday-skills` is not an `-internal`-suffixed repo.
+
+**Known consequence:** `references/quality-bar.md` documents leak patterns (grep commands, `-internal`, migration-framing examples). Now that the skill lives under `skills/` it is in `audit-skills`' scan scope, so axis-1 will surface known false positives from this skill's own pattern documentation -- the same reason `audit-skills` excludes `.agents/`. The clean structural fix, if the noise is unwanted, is to add `skills/operations/new-shareable-skill/references/` to `audit-skills`' `-not -path` exclusions; not done here because it modifies a second skill that was not in scope.
+
+**Supersedes:** "2026-05-14: `new-shareable-skill` lives in `.agents/skills/`, not the marketplace tree". The "meta-skill -> `.agents/`" rule from that entry no longer holds as a blanket rule; `.agents/` is now specifically for non-user-facing verification / build machinery.
+
+---
+
+## 2026-05-14: Renamed `new-shareable-skill` -> `create-shareable-skill`
+
+**Context:** User review of PR #2. The slug `new-shareable-skill` reads as a state ("a skill that is new + shareable") rather than an action; the skill's job is to *create* a shareable skill from an idea or an existing one.
+
+**Chose:** Slug `create-shareable-skill`. Folder `skills/operations/create-shareable-skill/`, `.plugin.json` `name`, SKILL.md frontmatter `name`, the `digraph`, and every cross-reference (README, CONTRIBUTING, AGENTS, `.ytstack/` memory) renamed to match. `compile.mjs` re-run so the marketplace entry + `.compiled/skill-plugins/` symlink dir follow the slug.
+
+**Reason:** Slug = folder name = `.plugin.json` `name` (parity rule). An action-verb slug matches the catalog's other capability skills and is self-explanatory in a `/skills` list. The earlier entries above keep the old name verbatim -- DECISIONS.md is append-only and those record the decisions as they stood at the time.

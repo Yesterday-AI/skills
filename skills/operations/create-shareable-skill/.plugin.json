@@ -1,0 +1,17 @@
+{
+  "name": "create-shareable-skill",
+  "description": "Turn an existing skill or a fresh idea into a catalog-ready shareable skill -- run the quality gate, decide catalog and standalone-vs-bundle placement, pick the category, scaffold SKILL.md (+ optional .plugin.json), update the catalog docs, and open a PR. Use when adding a new skill to the catalog or promoting a personal skill into a shareable one.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/create-shareable-skill",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "yesterday",
+    "skill-authoring",
+    "meta",
+    "contributing"
+  ]
+}

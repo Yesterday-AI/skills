@@ -9,11 +9,11 @@ active_task: none
 
 # State
 
-**Status:** M001 done -- `new-shareable-skill` meta-skill authored in `.agents/skills/` + contributor docs updated. Executed directly (no formal slice/task pass) on explicit user instruction. PR pending push.
+**Status:** M001 done -- `create-shareable-skill` is a standalone catalog skill at `skills/operations/create-shareable-skill/` + contributor docs updated. Executed directly (no formal slice/task pass) on explicit user instruction. Initial `.agents/` placement was reversed on user review (see DECISIONS.md supersede entry).
 
-**Next action:** Push branch `add-new-shareable-skill` and open the PR to `main` (awaiting user "push" go-ahead).
+**Next action:** None pending for M001. Run `ytstack:reassess-roadmap` if continuing.
 
-**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 14 plugins (1 external + 4 bundles + 9 standalone). Compile pipeline working, marketplace symlinks generated, GitHub Actions workflow in place. Open question on plugin install path (cache resolution).
+**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 15 plugins (1 external + 4 bundles + 10 standalone). Compile pipeline working, marketplace symlinks generated, GitHub Actions workflow in place. Open question on plugin install path (cache resolution).
 
 ## What's done
 
@@ -24,7 +24,7 @@ active_task: none
 - OSS scaffold: README, LICENSE (MIT), CONTRIBUTING, NOTICE, AGENTS.md
 - `.ytstack/` project memory (this file + DECISIONS, KNOWLEDGE, RUNTIME, PROJECT, PREFERENCES)
 - `.agents/skills/audit-skills/` -- 3-axis repo audit skill (leaks, consistency, spec compliance)
-- `.agents/skills/new-shareable-skill/` -- authoring meta-skill: intake → quality gate → public/private + standalone/bundle placement → scaffold → compile+audit → docs → PR (M001; counterpart to audit-skills)
+- `skills/operations/create-shareable-skill/` -- standalone authoring skill: intake → quality gate → catalog + standalone/bundle placement → scaffold → compile+audit → docs → PR (M001; counterpart to audit-skills)
 - GitHub Actions: `compile.yml` (auto-recompile on main push, PAT-pushed via `COMPILE_PUSH_TOKEN`, bot identity from `vars.BOT_NAME` / `vars.BOT_EMAIL`); `secret-scan.yml` (gitleaks)
 - Repo created on GitHub (Yesterday-AI/skills, public), 12 topics set
 - Sister repo `Yesterday-AI/yesterday-skills` (private catalog) brought to parity: same compile pipeline, OSS scaffold, `.ytstack/`, and as of 2026-05-13 also `compile.yml` + folder/name parity rule + normalized bundle READMEs

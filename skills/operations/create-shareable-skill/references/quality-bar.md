@@ -1,6 +1,6 @@
 # Quality bar -- shareable by default
 
-A skill is only a good skill if someone else -- a colleague, a customer, a stranger's Claude Code -- can install and use it with no follow-up questions. Every item below is a gate, not a suggestion. If a skill cannot pass, `new-shareable-skill` stops and reports the gap instead of scaffolding it.
+A skill is only a good skill if someone else -- a colleague, a customer, a stranger's Claude Code -- can install and use it with no follow-up questions. Every item below is a gate, not a suggestion. If a skill cannot pass, `create-shareable-skill` stops and reports the gap instead of scaffolding it.
 
 ## The gates
 
@@ -8,8 +8,8 @@ A skill is only a good skill if someone else -- a colleague, a customer, a stran
 
 No personal data survives into a shared skill -- not even in the private catalog.
 
-- No usernames in paths -- `/Users/alex/...`, `/home/<name>/...`, `C:\Users\<name>\...` -> `/Users/<you>/` or strip the path entirely
-- No personal hostnames / machine names / LAN IPs (`192.168.x.x`, `*.local`, `*.lan`, personal NAS names)
+- No usernames in paths -- `/Users/<username>/...`, `/home/<username>/...`, `C:\Users\<username>\...` -> replace the username with a placeholder or strip the path entirely
+- No personal hostnames / machine names / LAN IPs (RFC1918 ranges like 192.168/16 or 10/8, `*.local`, `*.lan`, personal NAS names)
 - No personal tokens / keys (`sk-…`, `ghp_…`, `xox[baprs]-…`, `AKIA…`) -- revoke and remove
 - No personal handles, real contributor names (other than the `Yesterday` org / public author handles), private emails
 - No browser bookmarks, session cookies, OAuth callback URLs with state tokens

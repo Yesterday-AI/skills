@@ -56,7 +56,7 @@ No auth required -- this catalog is public.
 
 ## What's in the catalog
 
-14 plugins total: 1 external, 4 bundles, 9 standalone skills.
+15 plugins total: 1 external, 4 bundles, 10 standalone skills.
 
 ### Bundles (`./plugins/`)
 
@@ -90,6 +90,7 @@ No auth required -- this catalog is public.
 
 | Skill | Purpose |
 |---|---|
+| [create-shareable-skill](./skills/operations/create-shareable-skill) | Author a catalog-ready skill: quality gate, placement routing, scaffold, docs, PR |
 | [paperclip-api](./skills/development-operations/paperclip-api) | Paperclip AI REST API client (companies, agents, issues, budgets) |
 
 #### Travel
