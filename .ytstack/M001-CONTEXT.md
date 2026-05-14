@@ -33,12 +33,14 @@ M -- see `M001-ROADMAP.md` for slice breakdown.
 
 ## Decisions locked in discuss phase
 
-- 2026-05-14: `new-shareable-skill` lebt in `.agents/skills/`, NICHT im Marketplace-`skills/`-Baum
-  -- weil es das public↔private Catalog-Routing kennen muss; das Benennen des privaten
-  `yesterday-skills`-Repos in einem marketplace-publizierten Skill wäre genau der
-  internal-perspective-Leak, den die Repo-Regeln verbieten. `.agents/` ist Contributor-Tooling
-  (wie `audit-skills`), von der no-internal-perspective-Regel ausgenommen. Voller Eintrag in
-  `DECISIONS.md`.
+- 2026-05-14 (REVIDIERT, siehe nächster Punkt): zunächst entschieden, `new-shareable-skill` in
+  `.agents/skills/` zu legen statt im Marketplace-`skills/`-Baum -- wegen des Leak-Risikos beim
+  Benennen des privaten `yesterday-skills`-Repos. Per PR #1 so umgesetzt.
+- 2026-05-14: Auf User-Review revidiert -- `new-shareable-skill` ist ein **standalone Catalog-Skill**
+  unter `skills/operations/new-shareable-skill/`, kompiliert + im Marketplace gelistet (Count 14→15).
+  Authoring ist selbst eine user-facing Capability. Nur `audit-skills` bleibt in `.agents/`
+  (reine Verifikations-Maschinerie). User-Anweisung schlägt Agent-Architektur-Urteil. Voller
+  Eintrag + Supersede in `DECISIONS.md`.
 - 2026-05-14: Kein Mirror im privaten `yesterday-skills`. Der Skill *kennt* beide Kataloge und
   routet zwischen ihnen; er muss nicht doppelt existieren. Ein Repo, ein Skill.
 - 2026-05-14: Policies werden NICHT dupliziert -- der Skill verweist auf die Single Source of
