@@ -2,15 +2,14 @@
 name: new-shareable-skill
 description: Turn an existing skill or a fresh idea into a catalog-ready shareable skill -- run the quality gate, decide public-vs-private catalog and standalone-vs-bundle placement, pick the category, scaffold SKILL.md (+ optional .plugin.json), update the catalog docs, and open a PR to main. Use when adding a new skill to this repo, promoting a personal or ad-hoc skill into a shareable one, or routing a skill into the right catalog.
 metadata:
-  category: authoring
-  scope: repo-local
+  category: skill-authoring
 ---
 
 # new-shareable-skill
 
-The authoring counterpart to [`audit-skills`](../audit-skills/SKILL.md): `audit-skills` verifies what is already in the catalog, `new-shareable-skill` gets a skill *into* the catalog correctly. It walks one skill end to end -- intake, quality gate, placement decision, scaffold, compile + audit, docs, PR -- and refuses to scaffold a skill that cannot meet the bar.
+The authoring counterpart to `audit-skills` (`.agents/skills/audit-skills/SKILL.md`): `audit-skills` verifies what is already in the catalog, `new-shareable-skill` gets a skill *into* the catalog correctly. It walks one skill end to end -- intake, quality gate, placement decision, scaffold, compile + audit, docs, PR -- and refuses to scaffold a skill that cannot meet the bar.
 
-This skill is **repo-local tooling**, not a marketplace plugin. It lives in `.agents/skills/` because it must reason about the private `yesterday-skills` catalog and the public↔private routing rules -- naming the private catalog in a marketplace-published skill would be exactly the internal-perspective leak the catalog rules forbid. `compile.mjs` only walks `skills/`, so this skill is never compiled or published.
+`new-shareable-skill` is itself a standalone skill in the catalog (`skills/operations/new-shareable-skill/`), discovered and compiled by `compile.mjs` like any other. `audit-skills` stays repo-local tooling under `.agents/skills/` because it is pure verification machinery; this skill is the user-facing authoring workflow, so it ships in the catalog.
 
 ## When to use
 
@@ -53,7 +52,7 @@ Apply [`references/quality-bar.md`](references/quality-bar.md) -- the "shareable
 
 - **Depersonalize.** Strip usernames in paths, personal hostnames, personal tokens/keys, personal handles. (Blocking in *both* catalogs.)
 - **Self-contained.** The skill carries its own knowledge in `SKILL.md` + `references/`. No links to private notes, no un-shared paths, no "ask <person>".
-- **No internal-perspective framing** in user-facing fields (description, README, frontmatter, `.plugin.json`). Write from the user's vantage ("install with X", "requires SaaS Y"), not Yesterday's ("no Yesterday-infra deps", "formerly Z"). Migration / org framing belongs in `.ytstack/DECISIONS.md`.
+- **No internal-perspective framing** in user-facing fields (description, README, frontmatter, `.plugin.json`). Write from the user's vantage ("install with X", "requires SaaS Y"), not the maintainer org's (infra-dependency disclaimers, rename / migration history). Migration / org framing belongs in `.ytstack/DECISIONS.md`.
 - **Description line.** One paragraph, says what the skill does AND when to invoke it. Routing depends entirely on this line (Anthropic Progressive Disclosure level 1) -- vague description = the skill never fires.
 - **Slug.** Specific, self-explanatory, kebab-case, collision-free. Names the concrete capability, not the tool or domain in general (`github-worktrees`, not `github`). Slug = folder name = `.plugin.json` `name`.
 
@@ -176,8 +175,8 @@ new-shareable-skill: <slug>
 
 - [`references/placement.md`](references/placement.md) -- public-vs-private, standalone-vs-bundle, category selection, with the current repo facts
 - [`references/quality-bar.md`](references/quality-bar.md) -- the shareable-by-default checklist, the `SKILL.md` + `.plugin.json` templates, the depersonalization checklist
-- [`../audit-skills/SKILL.md`](../audit-skills/SKILL.md) -- the verification counterpart; run it as step 5
+- `audit-skills` (`.agents/skills/audit-skills/SKILL.md`) -- the verification counterpart; run it as step 5
 - `CONTRIBUTING.md` -- adding a standalone skill / bundle / external; commit message format; versioning policy
 - `AGENTS.md` -- hard rules for agents working on this repo
-- `.ytstack/DECISIONS.md` -- public-installability acceptance criterion; no-internal-perspective rule; no-`version` policy
+- `.ytstack/DECISIONS.md` -- public-installability acceptance criterion; the internal-perspective-framing rule; no-`version` policy
 - company-orga `03_technologies/32_strategy/04_ai-skills-und-plugins.md` -- the "shareable by default" quality standard and the two-catalog strategy

@@ -23,7 +23,7 @@ A single Node script (`compile.mjs`) discovers both and produces `.compiled/skil
 
 | Task | Where to edit |
 |---|---|
-| Author / promote a skill (guided) | `.agents/skills/new-shareable-skill/SKILL.md` -- walks intake → quality gate → placement → scaffold → compile + audit → docs → PR |
+| Author / promote a skill (guided) | `skills/operations/new-shareable-skill/SKILL.md` -- walks intake → quality gate → placement → scaffold → compile + audit → docs → PR |
 | Add a standalone skill | `skills/<category>/<slug>/SKILL.md` (+ optional `.plugin.json`), then `node compile.mjs` |
 | Add a bundle | `plugins/<name>/plugin.json` (canonical), then `node compile.mjs` |
 | Add an external plugin (github-hosted) | `marketplace.json` (top-level, `plugins[]` array), then `node compile.mjs` |
