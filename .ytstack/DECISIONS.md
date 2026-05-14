@@ -234,3 +234,13 @@ Plugins that fail either criterion belong elsewhere, not here.
 **Known consequence:** `references/quality-bar.md` documents leak patterns (grep commands, `-internal`, migration-framing examples). Now that the skill lives under `skills/` it is in `audit-skills`' scan scope, so axis-1 will surface known false positives from this skill's own pattern documentation -- the same reason `audit-skills` excludes `.agents/`. The clean structural fix, if the noise is unwanted, is to add `skills/operations/new-shareable-skill/references/` to `audit-skills`' `-not -path` exclusions; not done here because it modifies a second skill that was not in scope.
 
 **Supersedes:** "2026-05-14: `new-shareable-skill` lives in `.agents/skills/`, not the marketplace tree". The "meta-skill -> `.agents/`" rule from that entry no longer holds as a blanket rule; `.agents/` is now specifically for non-user-facing verification / build machinery.
+
+---
+
+## 2026-05-14: Renamed `new-shareable-skill` -> `create-shareable-skill`
+
+**Context:** User review of PR #2. The slug `new-shareable-skill` reads as a state ("a skill that is new + shareable") rather than an action; the skill's job is to *create* a shareable skill from an idea or an existing one.
+
+**Chose:** Slug `create-shareable-skill`. Folder `skills/operations/create-shareable-skill/`, `.plugin.json` `name`, SKILL.md frontmatter `name`, the `digraph`, and every cross-reference (README, CONTRIBUTING, AGENTS, `.ytstack/` memory) renamed to match. `compile.mjs` re-run so the marketplace entry + `.compiled/skill-plugins/` symlink dir follow the slug.
+
+**Reason:** Slug = folder name = `.plugin.json` `name` (parity rule). An action-verb slug matches the catalog's other capability skills and is self-explanatory in a `/skills` list. The earlier entries above keep the old name verbatim -- DECISIONS.md is append-only and those record the decisions as they stood at the time.

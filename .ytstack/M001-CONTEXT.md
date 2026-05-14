@@ -9,7 +9,7 @@ size: M
 
 ## Goal
 
-Ein `new-shareable-skill` Metaskill, der Agent/User durch das Shareable-Machen eines
+Ein `create-shareable-skill` Metaskill, der Agent/User durch das Shareable-Machen eines
 bestehenden oder das Neuerstellen eines Skills führt: Routing ins richtige Repo
 (public `skills` vs. privates `yesterday-skills`) und Placement (standalone + Kategorie
 vs. Bundle-Erweiterung mit Confirmation), Qualitäts-Gate, Doku-Updates, PR auf main --
@@ -17,7 +17,7 @@ abgeglichen mit der company-orga AI-Skills-Strategie.
 
 ## Exit criteria
 
-- `new-shareable-skill` SKILL.md liegt in der richtigen Kategorie, `node compile.mjs`
+- `create-shareable-skill` SKILL.md liegt in der richtigen Kategorie, `node compile.mjs`
   läuft sauber durch, der Skill erscheint im Marketplace-Output.
 - Skill kodiert die Repo-Policies: public-installability, no-internal-perspective,
   folder/name-Parität, standalone-vs-bundle Entscheidungsbaum, public-vs-private
@@ -33,11 +33,11 @@ M -- see `M001-ROADMAP.md` for slice breakdown.
 
 ## Decisions locked in discuss phase
 
-- 2026-05-14 (REVIDIERT, siehe nächster Punkt): zunächst entschieden, `new-shareable-skill` in
+- 2026-05-14 (REVIDIERT, siehe nächster Punkt): zunächst entschieden, `create-shareable-skill` in
   `.agents/skills/` zu legen statt im Marketplace-`skills/`-Baum -- wegen des Leak-Risikos beim
   Benennen des privaten `yesterday-skills`-Repos. Per PR #1 so umgesetzt.
-- 2026-05-14: Auf User-Review revidiert -- `new-shareable-skill` ist ein **standalone Catalog-Skill**
-  unter `skills/operations/new-shareable-skill/`, kompiliert + im Marketplace gelistet (Count 14→15).
+- 2026-05-14: Auf User-Review revidiert -- `create-shareable-skill` ist ein **standalone Catalog-Skill**
+  unter `skills/operations/create-shareable-skill/`, kompiliert + im Marketplace gelistet (Count 14→15).
   Authoring ist selbst eine user-facing Capability. Nur `audit-skills` bleibt in `.agents/`
   (reine Verifikations-Maschinerie). User-Anweisung schlägt Agent-Architektur-Urteil. Voller
   Eintrag + Supersede in `DECISIONS.md`.

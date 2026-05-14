@@ -1,6 +1,6 @@
 # Quality bar -- shareable by default
 
-A skill is only a good skill if someone else -- a colleague, a customer, a stranger's Claude Code -- can install and use it with no follow-up questions. Every item below is a gate, not a suggestion. If a skill cannot pass, `new-shareable-skill` stops and reports the gap instead of scaffolding it.
+A skill is only a good skill if someone else -- a colleague, a customer, a stranger's Claude Code -- can install and use it with no follow-up questions. Every item below is a gate, not a suggestion. If a skill cannot pass, `create-shareable-skill` stops and reports the gap instead of scaffolding it.
 
 ## The gates
 

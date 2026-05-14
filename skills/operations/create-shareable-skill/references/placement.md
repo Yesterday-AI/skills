@@ -76,4 +76,4 @@ Naming rules for the slug (also enforced by `audit-skills`):
 | Private bundle member | `plugins/<bundle>/...` in `Yesterday-AI/yesterday-skills` -- **confirm first** |
 | Repo-local tooling (pure verification / build machinery) | `.agents/skills/<slug>/SKILL.md` -- not compiled, not published |
 
-The last row is where `audit-skills` lives -- it is pure verification machinery, not a user-facing capability, so it stays repo-local. `new-shareable-skill` itself ships in the catalog as a standalone skill (`skills/operations/new-shareable-skill/`): authoring a shareable skill *is* a user-facing capability.
+The last row is where `audit-skills` lives -- it is pure verification machinery, not a user-facing capability, so it stays repo-local. `create-shareable-skill` itself ships in the catalog as a standalone skill (`skills/operations/create-shareable-skill/`): authoring a shareable skill *is* a user-facing capability.

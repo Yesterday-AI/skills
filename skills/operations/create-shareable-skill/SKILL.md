@@ -1,15 +1,15 @@
 ---
-name: new-shareable-skill
+name: create-shareable-skill
 description: Turn an existing skill or a fresh idea into a catalog-ready shareable skill -- run the quality gate, decide public-vs-private catalog and standalone-vs-bundle placement, pick the category, scaffold SKILL.md (+ optional .plugin.json), update the catalog docs, and open a PR to main. Use when adding a new skill to this repo, promoting a personal or ad-hoc skill into a shareable one, or routing a skill into the right catalog.
 metadata:
   category: skill-authoring
 ---
 
-# new-shareable-skill
+# create-shareable-skill
 
-The authoring counterpart to `audit-skills` (`.agents/skills/audit-skills/SKILL.md`): `audit-skills` verifies what is already in the catalog, `new-shareable-skill` gets a skill *into* the catalog correctly. It walks one skill end to end -- intake, quality gate, placement decision, scaffold, compile + audit, docs, PR -- and refuses to scaffold a skill that cannot meet the bar.
+The authoring counterpart to `audit-skills` (`.agents/skills/audit-skills/SKILL.md`): `audit-skills` verifies what is already in the catalog, `create-shareable-skill` gets a skill *into* the catalog correctly. It walks one skill end to end -- intake, quality gate, placement decision, scaffold, compile + audit, docs, PR -- and refuses to scaffold a skill that cannot meet the bar.
 
-`new-shareable-skill` is itself a standalone skill in the catalog (`skills/operations/new-shareable-skill/`), discovered and compiled by `compile.mjs` like any other. `audit-skills` stays repo-local tooling under `.agents/skills/` because it is pure verification machinery; this skill is the user-facing authoring workflow, so it ships in the catalog.
+`create-shareable-skill` is itself a standalone skill in the catalog (`skills/operations/create-shareable-skill/`), discovered and compiled by `compile.mjs` like any other. `audit-skills` stays repo-local tooling under `.agents/skills/` because it is pure verification machinery; this skill is the user-facing authoring workflow, so it ships in the catalog.
 
 ## When to use
 
@@ -113,7 +113,7 @@ CI (`.github/workflows/compile.yml` + `secret-scan.yml`) re-runs compile + a git
 ## Decision flow
 
 ```dot
-digraph new_shareable_skill {
+digraph create_shareable_skill {
     "Intake: source + capability" [shape=box];
     "Quality gate" [shape=box];
     "Clears the bar?" [shape=diamond];
@@ -152,7 +152,7 @@ digraph new_shareable_skill {
 Report each phase as you complete it. End with a summary block:
 
 ```
-new-shareable-skill: <slug>
+create-shareable-skill: <slug>
   Catalog:     public skills | private yesterday-skills
   Form:        standalone (skills/<category>/<slug>/) | bundle member of <bundle>
   Quality:     <N> issues found, <N> fixed   (depersonalization, framing, description, slug)

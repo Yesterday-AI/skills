@@ -90,7 +90,7 @@ No auth required -- this catalog is public.
 
 | Skill | Purpose |
 |---|---|
-| [new-shareable-skill](./skills/operations/new-shareable-skill) | Author a catalog-ready skill: quality gate, placement routing, scaffold, docs, PR |
+| [create-shareable-skill](./skills/operations/create-shareable-skill) | Author a catalog-ready skill: quality gate, placement routing, scaffold, docs, PR |
 | [paperclip-api](./skills/development-operations/paperclip-api) | Paperclip AI REST API client (companies, agents, issues, budgets) |
 
 #### Travel
