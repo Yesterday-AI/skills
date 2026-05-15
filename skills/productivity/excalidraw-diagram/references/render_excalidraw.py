@@ -74,8 +74,17 @@ def render(
     output_path: Path | None = None,
     scale: int = 2,
     max_width: int = 1920,
+    module_timeout_ms: int = 90_000,
+    render_timeout_ms: int = 60_000,
+    theme: str = "dark",
 ) -> Path:
-    """Render an .excalidraw file to PNG. Returns the output PNG path."""
+    """Render an .excalidraw file to PNG. Returns the output PNG path.
+
+    Timeouts (in milliseconds) are tunable for large diagrams that exceed the
+    defaults. ``module_timeout_ms`` covers the Excalidraw ES-module load from
+    esm.sh; ``render_timeout_ms`` covers the actual draw-to-SVG once the
+    diagram JSON is injected.
+    """
     # Import playwright here so validation errors show before import errors
     try:
         from playwright.sync_api import sync_playwright
@@ -141,11 +150,12 @@ def render(
         page.goto(template_url)
 
         # Wait for the ES module to load (imports from esm.sh)
-        page.wait_for_function("window.__moduleReady === true", timeout=30000)
+        page.wait_for_function("window.__moduleReady === true", timeout=module_timeout_ms)
 
         # Inject the diagram data and render
         json_str = json.dumps(data)
-        result = page.evaluate(f"window.renderDiagram({json_str})")
+        opts_str = json.dumps({"theme": theme})
+        result = page.evaluate(f"window.renderDiagram({json_str}, {opts_str})")
 
         if not result or not result.get("success"):
             error_msg = result.get("error", "Unknown render error") if result else "renderDiagram returned null"
@@ -154,7 +164,7 @@ def render(
             sys.exit(1)
 
         # Wait for render completion signal
-        page.wait_for_function("window.__renderComplete === true", timeout=15000)
+        page.wait_for_function("window.__renderComplete === true", timeout=render_timeout_ms)
 
         # Screenshot the SVG element
         svg_el = page.query_selector("#root svg")
@@ -169,20 +179,105 @@ def render(
     return output_path
 
 
+def crop_png(png_path: Path, crop_spec: str) -> Path:
+    """Crop a region from a rendered PNG.
+
+    crop_spec format: "x,y,w,h" in Excalidraw coordinates.
+
+    The mapping from Excalidraw coords to pixel coords is computed by comparing
+    the actual PNG dimensions against the element bounding box. This handles
+    whatever internal scaling Excalidraw's SVG export applies.
+
+    Returns path to the cropped PNG (saved as *-crop.png).
+    """
+    from PIL import Image
+    Image.MAX_IMAGE_PIXELS = None  # disable decompression bomb check
+
+    parts = [int(p.strip()) for p in crop_spec.split(",")]
+    if len(parts) != 4:
+        print(f"ERROR: --crop requires 'x,y,w,h' format, got: {crop_spec}", file=sys.stderr)
+        sys.exit(1)
+
+    cx, cy, cw, ch = parts
+
+    # Read the excalidraw to get bounding box
+    excalidraw_path = png_path.with_suffix(".excalidraw")
+    if not excalidraw_path.exists():
+        print(f"ERROR: Need .excalidraw file next to PNG for coordinate mapping", file=sys.stderr)
+        sys.exit(1)
+
+    data = json.loads(excalidraw_path.read_text(encoding="utf-8"))
+    elements = [e for e in data["elements"] if not e.get("isDeleted")]
+    min_x, min_y, max_x, max_y = compute_bounding_box(elements)
+    padding = 80
+
+    # Excalidraw coordinate space (with padding)
+    exc_w = max_x - min_x + padding * 2
+    exc_h = max_y - min_y + padding * 2
+
+    # Actual PNG pixel dimensions
+    img = Image.open(png_path)
+    png_w, png_h = img.size
+
+    # Compute scale factors (PNG pixels per Excalidraw unit)
+    sx = png_w / exc_w
+    sy = png_h / exc_h
+
+    # Convert Excalidraw coords to pixel coords
+    px = int((cx - min_x + padding) * sx)
+    py = int((cy - min_y + padding) * sy)
+    pw = int(cw * sx)
+    ph = int(ch * sy)
+
+    # Clamp to image bounds
+    px = max(0, min(px, png_w))
+    py = max(0, min(py, png_h))
+    pw = min(pw, png_w - px)
+    ph = min(ph, png_h - py)
+
+    cropped = img.crop((px, py, px + pw, py + ph))
+
+    crop_path = png_path.with_stem(png_path.stem + "-crop")
+    cropped.save(crop_path)
+
+    print(f"Crop: excalidraw({cx},{cy},{cw},{ch}) → pixel({px},{py},{pw},{ph})", file=sys.stderr)
+    return crop_path
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Render Excalidraw JSON to PNG")
     parser.add_argument("input", type=Path, help="Path to .excalidraw JSON file")
     parser.add_argument("--output", "-o", type=Path, default=None, help="Output PNG path (default: same name with .png)")
     parser.add_argument("--scale", "-s", type=int, default=2, help="Device scale factor (default: 2)")
     parser.add_argument("--width", "-w", type=int, default=1920, help="Max viewport width (default: 1920)")
+    parser.add_argument("--crop", "-c", type=str, default=None,
+                        help="Crop region in Excalidraw coords: 'x,y,width,height'. "
+                             "Renders full diagram first, then extracts the region. "
+                             "Output saved as *-crop.png next to the full render.")
+    parser.add_argument("--module-timeout", type=int, default=90_000,
+                        help="Module-load timeout in ms (default: 90000). Bump for slow networks.")
+    parser.add_argument("--render-timeout", type=int, default=60_000,
+                        help="Render-completion timeout in ms (default: 60000). "
+                             "Bump for very large diagrams (~150+ elements).")
+    parser.add_argument("--theme", choices=["dark", "light"], default="dark",
+                        help="Color theme (default: dark). Sets background + Excalidraw dark-mode export.")
     args = parser.parse_args()
 
     if not args.input.exists():
         print(f"ERROR: File not found: {args.input}", file=sys.stderr)
         sys.exit(1)
 
-    png_path = render(args.input, args.output, args.scale, args.width)
+    png_path = render(
+        args.input, args.output, args.scale, args.width,
+        module_timeout_ms=args.module_timeout,
+        render_timeout_ms=args.render_timeout,
+        theme=args.theme,
+    )
     print(str(png_path))
+
+    if args.crop:
+        crop_path = crop_png(png_path, args.crop)
+        print(str(crop_path))
 
 
 if __name__ == "__main__":
