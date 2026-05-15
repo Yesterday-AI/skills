@@ -17,6 +17,7 @@
   "dependencies": [
     "creative-productivity",
     "para-memory-files",
-    "office"
+    "office",
+    "sunoflow"
   ]
 }
