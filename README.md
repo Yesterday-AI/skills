@@ -104,6 +104,7 @@ No auth required -- this catalog is public.
 | Plugin | Source | Purpose |
 |---|---|---|
 | ytstack | github `Yesterday-AI/ytstack` | Engineering OS for AI coding agents -- project-OS artifact discipline + curated skill wrappers |
+| sunoflow | github `lx-0/SunoFlow` | SunoFlow MCP skill -- AI music generation, lyrics, stems, music videos, playlist mgmt |
 
 ---
 

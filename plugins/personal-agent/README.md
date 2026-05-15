@@ -53,6 +53,7 @@ Plus cross-marketplace dependencies (auto-pulled via plugin.json):
 | [creative-productivity](../../skills/concepts/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
 | [para-memory-files](../../skills/capabilities/memory/para-memory-files) | Agent-side persistence using the PARA method |
 | [office](../office) | Daily-work skills (excalidraw, exa search, GitHub, slack, web/x scrapers) -- maintained for humans, equally useful when an agent needs them |
+| sunoflow (external, `lx-0/SunoFlow`) | AI music creation: songs, lyrics, sound effects, stem separation, music videos, playlist mgmt via the SunoFlow MCP server |
 
 ## Install
 
