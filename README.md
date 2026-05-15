@@ -56,7 +56,7 @@ No auth required -- this catalog is public.
 
 ## What's in the catalog
 
-15 plugins total: 1 external, 4 bundles, 10 standalone skills.
+14 plugins total: 1 external, 4 bundles, 10 standalone skills.
 
 ### Bundles (`./plugins/`)
 
@@ -104,7 +104,6 @@ No auth required -- this catalog is public.
 | Plugin | Source | Purpose |
 |---|---|---|
 | ytstack | github `Yesterday-AI/ytstack` | Engineering OS for AI coding agents -- project-OS artifact discipline + curated skill wrappers |
-| sunoflow | github `lx-0/SunoFlow` | SunoFlow MCP skill -- AI music generation, lyrics, stems, music videos, playlist mgmt |
 
 ---
 
