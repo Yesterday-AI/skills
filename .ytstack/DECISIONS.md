@@ -244,3 +244,27 @@ Plugins that fail either criterion belong elsewhere, not here.
 **Chose:** Slug `create-shareable-skill`. Folder `skills/operations/create-shareable-skill/`, `.plugin.json` `name`, SKILL.md frontmatter `name`, the `digraph`, and every cross-reference (README, CONTRIBUTING, AGENTS, `.ytstack/` memory) renamed to match. `compile.mjs` re-run so the marketplace entry + `.compiled/skill-plugins/` symlink dir follow the slug.
 
 **Reason:** Slug = folder name = `.plugin.json` `name` (parity rule). An action-verb slug matches the catalog's other capability skills and is self-explanatory in a `/skills` list. The earlier entries above keep the old name verbatim -- DECISIONS.md is append-only and those record the decisions as they stood at the time.
+
+---
+
+## 2026-05-15: `sunoflow` external listing moved out to `lx-0/skills`
+
+**Context:** `sunoflow` was listed as an external github-sourced plugin in `Yesterday-AI/skills/marketplace.json` and pulled in as a transitive dep of the `personal-agent` bundle. The upstream repo is `lx-0/SunoFlow` -- an lx-0-personal project, not a Yesterday-team asset. On 2026-05-15 the user scaffolded a parallel personal marketplace pair (`lx-0/skills` public, `lx-0/skills-private` private) and asked to relocate the listing to its natural home.
+
+**Options considered:**
+- A. Keep both — dual-list sunoflow in yesterday + lx-0 catalogs (rejected: user said "verschoben", not "kopiert").
+- B. Move + cross-mp wire — relocate to lx-0, add `lx-0-public-plugins` to yesterday's `allowCrossMarketplaceDependenciesOn`, pin `personal-agent`'s dep with explicit `marketplace` field.
+- C. Move + cut the dep — relocate to lx-0, remove sunoflow from `personal-agent` dependencies entirely.
+
+**Chose:** C (move + cut the dep).
+
+**Reason:** Cross-marketplace deps are an install-tax we already chose to avoid for public bundles ("Public bundles avoid install-breaking cross-marketplace deps" entry, 2026-05-13). Forcing every personal-agent installer to also add lx-0's catalog reintroduces the same `/doctor` failure mode for an optional creative-output skill. Cutting the dep keeps `personal-agent`'s install graph self-contained inside `yesterday-public-plugins`; users who want sunoflow add it explicitly. Plugin count 15 → 14.
+
+**Touched files:**
+- `marketplace.json` -- removed sunoflow entry from `plugins[]`
+- `plugins/personal-agent/plugin.json` -- removed `"sunoflow"` from `dependencies`
+- `plugins/personal-agent/README.md` -- removed sunoflow row from cross-mp deps table
+- `README.md` -- removed sunoflow from External table, count 15 → 14
+- `.compiled/marketplace.json` -- regenerated
+
+Mirror entry added to `lx-0/skills/marketplace.json` as its first external plugin.

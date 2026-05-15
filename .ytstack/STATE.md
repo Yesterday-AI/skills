@@ -1,7 +1,7 @@
 ---
 project: skills
 slug: skills
-last_updated: 2026-05-14T12:10:58Z
+last_updated: 2026-05-15T11:00:00Z
 current_milestone: M001
 active_slice: none
 active_task: none
@@ -13,7 +13,9 @@ active_task: none
 
 **Next action:** None pending for M001. Run `ytstack:reassess-roadmap` if continuing.
 
-**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 15 plugins (1 external + 4 bundles + 10 standalone). Compile pipeline working, marketplace symlinks generated, GitHub Actions workflow in place. Open question on plugin install path (cache resolution).
+**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 14 plugins (1 external + 4 bundles + 10 standalone). Compile pipeline working, marketplace symlinks generated, GitHub Actions workflow in place. Open question on plugin install path (cache resolution).
+
+**2026-05-15 marketplace surgery:** `sunoflow` external listing moved out to `lx-0/skills` (lx-0's personal public catalog). `personal-agent` no longer depends on it. README + plugin counts updated. Commit `8dafe09`.
 
 ## What's done
 
