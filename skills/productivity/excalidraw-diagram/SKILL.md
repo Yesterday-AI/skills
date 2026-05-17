@@ -6,7 +6,7 @@ description: >
   Covers design methodology, section-by-section building, render-validate loop, and quality checklist.
 metadata:
   author: Yesterday-AI
-  version: "1.0"
+  version: "1.1"
   category: design
   source: https://github.com/coleam00/excalidraw-diagram-skill
 compatibility: >
@@ -128,6 +128,22 @@ Evidence artifacts, code snippets, and concrete examples within each section. Th
 
 ---
 
+## Steady-State Principle (Not a Changelog)
+
+**A diagram is a portrait of what the system IS today, not how it got there.** Release-history content belongs in a changelog or release notes, not on the canvas.
+
+**Hard "never" list — these turn the diagram into a changelog:**
+- "SHIPPED <month> <year>" / "Recent additions" / "What's new" sections.
+- Ticket-id badges (`PROJ-123`, `M007`, `JIRA-…`) anywhere on the canvas.
+- Date stamps next to pills or captions (`(added 2026-05-15)`, `(sandboxed 2026-…)`).
+- Ticket tags inside feature titles (`Dashboard (M003)`, `Auth Service (PROJ-42)`) — the title is the *thing*, not the work item it shipped under.
+
+**How to integrate a newly-shipped capability instead:** make it a noun in the body. Extend a pillar's description, add a small caption next to the box that owns it, increment a stat-card if the count moved, add a chip to a list of substrates. If a feature has no place in the steady-state portrait it isn't diagram-worthy — document it elsewhere (PROCESS docs, KNOWLEDGE log, release notes).
+
+**Test**: read the diagram cold six months from now. Is every box still true, or are some captions only true if you remember when they shipped? Strip the time-bound captions.
+
+---
+
 ## Container vs. Free-Floating Text
 
 **Not every piece of text needs a shape around it.** Default to free-floating text. Add containers only when they serve a purpose.
@@ -141,6 +157,20 @@ Evidence artifacts, code snippets, and concrete examples within each section. Th
 | It represents a distinct "thing" in the system | It's a section title, subtitle, or annotation |
 
 **The container test**: For each boxed element, ask "Would this work as free-floating text?" If yes, remove the container.
+
+### Mutating bound text: the `containerId` footgun
+
+When a text element has `containerId: "<rect_id>"`, the renderer reads the *container's* position and lays the text inside it. **Changing the text's `x` / `y` does nothing visually** — the move is silently ignored.
+
+Symptom: you re-position a bound text in JSON, re-render, and the text either disappears or stays at the old location while the new (empty) rectangle sits at the moved coordinates.
+
+To relocate a bound text from card A → card B:
+1. On the text element: set `containerId: "<B_rect_id>"`.
+2. On `A.boundElements`: remove `{id: "<text_id>", type: "text"}`.
+3. On `B.boundElements`: append `{id: "<text_id>", type: "text"}`.
+4. On the text element: update `originalText` to match the current `text` field (Excalidraw uses `originalText` for wrap calculations; mismatch causes layout glitches).
+
+When in doubt, prefer `containerId: null` + `boundElements: []` from the start — gives you free positioning at the cost of losing auto-text-wrap-to-container.
 
 ---
 
@@ -409,6 +439,27 @@ cd skills/excalidraw-diagram/references && uv run python render_excalidraw.py <p
 
 This outputs a PNG next to the `.excalidraw` file. Then use the **Read tool** on the PNG to actually view it.
 
+**Scale caveat for large diagrams.** The default `--scale 2` produces a 2× device-pixel PNG. On diagrams whose final pixel dimensions exceed ~10 000 px per side, the Chrome canvas-pixel ceiling silently drops content from the rendered SVG — entire boxes vanish with no error. The renderer auto-downgrades to `--scale 1` when the projected size would cross this threshold (and logs a warning); you can force `--scale 1` manually if a section is missing from a `--scale 2` render. A smaller PNG with all content always beats a sharper PNG with missing boxes.
+
+### Static checks before render (cheap, catch the obvious)
+
+The render loop is the only complete validator, but two programmatic checks catch the most common defects before paying for a chromium round-trip. Run them after every JSON edit:
+
+**Bbox-overlap scan** — for every pair of `text` elements, compute bbox-intersection area. Flag any pair >100 px². Catches a multi-line text spilling through siblings (e.g. you set a `text` element's text to 3 lines but its parent rect is sized for 1).
+
+**Glyph-width estimation** — for every text element, estimate the rendered width of the widest line:
+
+```python
+fs = el.get("fontSize", 20)
+coef = 0.60 if el.get("fontFamily") == 3 else 0.55   # 3 = Cascadia mono; else proportional
+widest_chars = max(len(line) for line in el["text"].split("\n"))
+est_w = widest_chars * fs * coef
+```
+
+Compare `est_w` against the element's declared `width` AND against the containing card's *interior* width. Flag any element where `est_w > declared_width + 5`. This catches monospace strings overflowing a card sideways with no warning — bbox says "fits", glyphs say "no".
+
+Both checks are ~10 lines of Python and run in milliseconds. Use them as a pre-flight gate before the slow render-validate loop, not as a replacement for it.
+
 ### What to Check Each Pass
 
 **Vision check** -- compare rendered result to your design intent:
@@ -428,6 +479,9 @@ This outputs a PNG next to the `.excalidraw` file. Then use the **Read tool** on
 - Uneven spacing between elements that should be evenly spaced
 - Text too small to read at the rendered size
 - Overall composition lopsided or unbalanced
+- Whole sections missing from the PNG (scale=2 canvas-ceiling silent-drop; try `--scale 1`)
+
+**Don't trust the full-image thumbnail alone.** When the Read tool displays a large PNG, it downscales for viewing — overlaps and clipping under ~20 px vanish. For every edited region, also crop ~25% × 25% around the change and view at ≥1600 px wide. The thumbnail is for vibe; the zoom-crop is for review.
 
 ### When to Stop
 
@@ -481,9 +535,15 @@ uv run playwright install chromium
 
 ### Visual Validation (Render Required)
 21. **Rendered to PNG**: Diagram has been rendered and visually inspected
-22. **No text overflow**: All text fits within its container
+22. **No text overflow**: All text fits within its container (bbox AND glyph-width estimate)
 23. **No overlapping elements**: Shapes and text don't overlap unintentionally
 24. **Even spacing**: Similar elements have consistent spacing
 25. **Arrows land correctly**: Arrows connect to intended elements
 26. **Readable at export size**: Text is legible in the rendered PNG
 27. **Balanced composition**: No large empty voids or overcrowded regions
+28. **Zoom-crop reviewed**: Every edited region viewed at ≥1600 px wide, not just full-image thumbnail
+29. **No silent-drop**: All sections present (verify if diagram is large and scale=2 was used)
+
+### Steady-State Discipline
+30. **No release-history captions**: Zero "SHIPPED <month>" sections, ticket-id badges, date stamps, or ticket-tagged titles
+31. **Present-tense reading**: Every caption reads true six months from now without remembering when it shipped

@@ -119,6 +119,25 @@ def render(
     vp_width = min(int(diagram_w), max_width)
     vp_height = max(int(diagram_h), 600)
 
+    # Chrome's canvas-pixel ceiling silently drops content from large SVGs.
+    # Empirically: a 3141 × 2955 canvas at --scale 2 produced a 12132 × 11902 PNG
+    # with a whole section missing; at --scale 1 the 3033 × 2976 PNG was complete.
+    # SVG export inflates each side by roughly (scale × 2), so the projected max
+    # dimension is `max(diagram_w, diagram_h) * scale * 2`. Auto-downgrade when
+    # that crosses the conservative 10 000 px threshold.
+    MAX_PNG_DIM = 10_000
+    SVG_INFLATION = 2  # observed Excalidraw SVG export inflation per scale unit
+    projected_max = int(max(diagram_w, diagram_h) * scale * SVG_INFLATION)
+    if projected_max > MAX_PNG_DIM and scale > 1:
+        new_scale = max(1, MAX_PNG_DIM // int(max(diagram_w, diagram_h) * SVG_INFLATION))
+        print(
+            f"WARN: projected PNG max dimension ~{projected_max}px exceeds "
+            f"{MAX_PNG_DIM}px ceiling (Chrome silently drops content). "
+            f"Downgrading --scale from {scale} to {new_scale}.",
+            file=sys.stderr,
+        )
+        scale = new_scale
+
     # Output path
     if output_path is None:
         output_path = excalidraw_path.with_suffix(".png")
