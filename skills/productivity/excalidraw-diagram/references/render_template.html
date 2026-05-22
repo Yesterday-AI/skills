@@ -31,8 +31,12 @@
         // Theme handling. Excalidraw's `exportWithDarkMode` is a CSS
         // `filter: invert(93%) hue-rotate(180deg)` on the SVG, so the
         // viewBackgroundColor we set is itself inverted. Keep it white in
-        // dark mode so the filter produces a near-#121212 canvas.
-        appState.viewBackgroundColor = "#ffffff";
+        // dark mode so the filter produces a near-#121212 canvas. In light
+        // mode, respect the file's own viewBackgroundColor (e.g. a premium
+        // cream canvas) and only fall back to white when unset.
+        appState.viewBackgroundColor = isDark
+          ? "#ffffff"
+          : (appState.viewBackgroundColor || "#ffffff");
         appState.exportWithDarkMode = isDark;
 
         const svg = await exportToSvg({

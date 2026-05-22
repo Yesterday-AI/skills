@@ -32,6 +32,105 @@ To make this skill produce diagrams in a different brand style, edit `color-pale
 
 ---
 
+## Premium Infographic Mode (opt-in)
+
+Use this mode when the goal is an **eye-catching, educational infographic** in the
+hand-drawn Daily-Dose-of-DS / Akshay-Pachaar style (think a single shareable
+visual that *teaches* a concept), not a plain architecture/flow diagram. It is
+**opt-in**: the skill's defaults (monospace font, `roughness: 0`, white canvas,
+container discipline) are unchanged unless you explicitly switch this on.
+
+**To switch on, set these across the whole diagram:**
+
+| Setting | Value | Why |
+|---------|-------|-----|
+| Font (`fontFamily`) | `5` Excalifont (or `1` Virgil) -- both hand-drawn | the signature warm look -- verified to load in the renderer |
+| Title accent (optional) | `7` Lilita One (bold display) | chunky headline weight when a hand-drawn title needs more punch |
+| Sans labels (optional) | `6` Nunito (rounded) -- or `2`/`9` Helvetica/Liberation | clean labels/annotations when hand-drawn is too casual |
+| Code/data (`fontFamily`) | `3` Cascadia or `8` Comic Shanns (mono) ONLY | mono everywhere = "cheap terminal" look |
+| `roughness` | `1` | hand-drawn wobble, not sterile |
+| Canvas `viewBackgroundColor` | `#F7F3E9` (warm cream) | NOT pure white |
+| Render command | `--theme light` | dark theme inverts colors + forces white bg |
+| Palette | "Premium Infographic Palette" in `color-palette.md` | 6-hue, state-coded |
+| Containers | pastel pills are encouraged here | the colored pills ARE the style (the default <30%-container rule is relaxed in this mode) |
+
+**Fonts available.** The renderer ships 8 built-in families (no custom fonts):
+hand-drawn `1` Virgil / `5` Excalifont; sans `2` Helvetica / `6` Nunito / `9`
+Liberation Sans; bold display `7` Lilita One; mono `3` Cascadia / `8` Comic
+Shanns. (`4` is unused.) These are the ONLY fonts — an unregistered
+`fontFamily` silently falls back, so don't reference Google Fonts or arbitrary
+typefaces. Type ramp for a premium figure: title `5`/`7`, body `5`, labels
+`6`, code `3`/`8`. Visual swatches: `references/font-catalog.png`.
+
+**Signature elements** (assemble these -- see `references/element-templates.md` for
+JSON and `references/libraries/` for drop-in shapes):
+
+- **Title pill** -- the headline in a filled rounded-rect, color-coded.
+- **State-coded pastel pills** -- green=good/done, coral=bad, lavender=special, blue=neutral, butter=highlight.
+- **Highlighter swipe** -- a thin filled rounded-rect behind a free-floating arrow label.
+- **Mascot / narrator** -- a stick figure (confused at the problem, happy at the resolution) from the bundled `stick-figures` library.
+- **Speech / thought bubble** -- short commentary in the narrator's voice (bundled `bubbles` library).
+- **Evidence pills** -- concrete data/code in `fontFamily: 3` mono inside light pills.
+- **Numbered steps** -- small butter circles (1..n) sitting on the flow arrows.
+- **Dashed = pending / grouping** -- masked/optional items, grouping banners, outer loops.
+- **Card grid / matrix** -- his dominant format: N identical self-contained mini-diagrams in a grid, each with a colored title pill, for enumerating/comparing variants ("8 RAG Architectures").
+- **Consistent concept-icon system** -- reuse the SAME glyph for the same concept across the whole figure (embedding-brain, LLM-brain, vector-DB+✦, doc-stack, envelope=query, gear, globe, graph-nodes, brand logos). The consistency IS the signature.
+- **Bottom-summary thesis (MANDATORY)** -- one plain-language sentence at the bottom stating the single argument the graphic makes.
+
+**Full element vocabulary:** the basics above are a starting set. The complete
+rich catalog -- card-grid, left-edge section tabs, insight-column panels, formula
+annotation, the concept-icon system + library mapping, the `+` combiner glyph,
+color-coded keywords in prose, tensor grids, token-sequence columns, math
+limitations, and which styles to AVOID (dark-neon) -- lives in
+`references/signature-elements.md`. **Read it before building a premium infographic.**
+
+**The one-thesis rule:** every premium infographic argues exactly ONE thing.
+Decide that sentence first (it becomes the bottom-summary), then build the visual
+to prove it. If you can't write the bottom-summary, the diagram has no point yet.
+
+### From research to storyline (the conceptual layer)
+
+A great infographic is a *story*, not a labelled diagram. Before any JSON:
+
+1. **Distill** the source (article, transcript, paper, wiki) down to the single
+   thesis — the one sentence a reader should leave with. That sentence is the
+   bottom-summary.
+2. **Pick the narrative shape** that fits the thesis. The shape *is* the layout —
+   choose it deliberately, don't default to boxes-and-arrows:
+
+   | If the thesis is about… | Narrative shape | Layout | Example |
+   |---|---|---|---|
+   | a before→after change | **transformation** | banded comparison / before-after panels | `rag-infographic`, `micro-venture-studio` |
+   | how something flows step by step | **journey / process** | linear pipeline + numbered steps | `innovation-pipeline` |
+   | "how does this end / which path?" | **decision / fork** | one source → branched outcomes | `three-exit-framework` |
+   | "it's X, not Y" | **contrast** | side-by-side panels | `micro-venture-studio` |
+   | "what's really going on inside" | **dissection** | formula sheet + insight column / concept-space | `set-diagram`, `typography-grid` |
+   | "N things, and here's the point" | **enumeration that argues** | card grid (the grid must make ONE point, not be a list) | — |
+
+3. **Give it an arc:** a **hook** (title as a question or a provocation, e.g.
+   "How does a project end?"), a **tension** (the problem / the naive approach /
+   the confused mascot), and a **payoff** (the thesis, bottom-summary, happy
+   mascot). Add the narrator (mascot) to carry the emotion: confused at the hook,
+   resolved at the payoff.
+4. **Make reading-order = story-order.** The eye must traverse the canvas in the
+   order the story is told (left→right or top→bottom); the thesis lands LAST.
+
+If the figure doesn't read as hook → tension → payoff, it's a diagram, not a story.
+
+**Worked examples (reference):** nine in `references/examples/` spanning the
+shapes above — `rag-infographic` (transformation + mascot), `innovation-pipeline`
+(journey), `three-exit-framework` (fork), `micro-venture-studio` (contrast),
+`set-diagram` (dissection), `typography-grid` (type ramp), `yesterday-ci-infographic`
+(Yesterday CI theme), `dark-agent-memory` + `dark-inference-grid` (flat dark-mode
+technical-reference theme). Open the PNGs to see the target quality bar before building.
+
+**Three opt-in themes** (all in `color-palette.md`): default = light pastel
+hand-drawn (DDoDS/Pachaar); **Yesterday CI** = clean cream+orange editorial;
+**Dark Technical Reference** = flat dark-mode for dense reference posters (render
+`--theme light`). Builder palettes: `PREMIUM` / `YESTERDAY` / `DARK`.
+
+---
+
 ## Core Philosophy
 
 **Diagrams should ARGUE, not DISPLAY.**
@@ -212,6 +311,10 @@ Before JSON, mentally trace how the eye moves through the diagram. There should 
 
 ### Step 5: Generate JSON
 Only now create the Excalidraw elements. **See below for how to handle large diagrams.**
+
+Two ways to produce the elements:
+- **Write JSON directly** -- fine for simple/conceptual diagrams. Use `references/element-templates.md` for the per-element shapes and copy items from `references/libraries/`.
+- **Use the builder (recommended for premium / complex infographics)** -- `references/infographic_builder.py` is a thin composition layer so you don't hand-write 100+ raw element dicts or redo coordinate math. It *places library items by name* (`s.place("Vector DB", x, y, h=90)`) and adds the connective tissue (`title`, `arrow(..., numbered=1)`, `pill`, `thesis`), then `s.save(path)`. Palettes (`PREMIUM`, `YESTERDAY`) and font IDs (`FONT`) are constants in the module. A library gives you shapes; the builder gives you layout. Example at the bottom of the module's docstring.
 
 ### Step 6: Render & Validate (MANDATORY)
 After generating the JSON, you MUST run the render-view-fix loop until the diagram looks right. See the **Render & Validate** section below.
@@ -515,6 +618,12 @@ uv run playwright install chromium
 7. **Argument**: Does the diagram SHOW something text alone couldn't?
 8. **Variety**: Does each major concept use a different visual pattern?
 9. **No uniform containers**: Avoided card grids and equal boxes?
+
+### Storyline (premium infographics)
+- **One thesis**: Can you state, in one sentence, the single thing the figure argues? Is it written as the bottom-summary?
+- **Narrative shape chosen**: Did you pick a shape (transformation / journey / fork / contrast / dissection / arguing-enumeration) on purpose, not default to boxes-and-arrows?
+- **Arc present**: Is there a hook (title question/provocation), a tension (problem / naive path / confused mascot), and a payoff (the thesis)?
+- **Reading-order = story-order**: Does the eye traverse the canvas in the order the story is told, with the thesis landing last?
 
 ### Container Discipline
 10. **Minimal containers**: Could any boxed element work as free-floating text instead?

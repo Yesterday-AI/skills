@@ -33,3 +33,6 @@ desktop.ini
 # Tmp
 ~*.md
 ~*/
+
+# Skill design relevant files
+.design/

@@ -2,7 +2,12 @@
 
 Pre-bundled libraries from <https://libraries.excalidraw.com/> chosen to cover the full architecture-diagramming spectrum without overlap. Use them as **shape vocabularies** — copy-paste relevant library items into your diagram, then arrange / connect / annotate per the skill's design methodology in `../../SKILL.md`.
 
-All four libraries are MIT-licensed.
+Ten libraries are bundled. **Nine** are MIT-licensed upstream downloads: **four**
+cover architecture diagramming (below), **five** supply third-party signature
+elements for **Premium Infographic Mode**. The **tenth — `infographic-elements`
+— is built in-house**: the drop-in implementation of the atoms, concept icons,
+data-viz primitives and composites catalogued in `../signature-elements.md`
+(see "In-house infographic elements" below).
 
 ## Decision matrix — when to use which
 
@@ -12,6 +17,38 @@ All four libraries are MIT-licensed.
 | **Generic system architecture** ("a database", "a cache", "a load balancer", "a message queue") | `system-design` | 24 well-drawn shapes: 6 DB types, server variants, cache, DNS, LB, queue, pipeline, CDN, archive, mobile, web app — when the *category* of the box is what matters |
 | **Concrete tech stack** ("this runs on Kubernetes + Postgres + Redis + Kafka") | `technology-logos` | 18 cloud-native logos: K8s, Docker, git, Cloud Foundry, Terraform, Spring, Quarkus, Micronaut, Knative, Camunda, Azure, Kafka, Kotlin, OpenStack, paketo.io, Neo4J, Redis — when the *brand* of the box is the argument |
 | **Distributed-system patterns** (retry, circuit breaker, sharding, throttling, queue-based load leveling) | `cloud-design-patterns` | 24 multi-element pattern compositions — each tile is a *complete mini-diagram* that argues a pattern visually, not just an icon |
+
+## Premium infographic signature libraries
+
+These five power **Premium Infographic Mode** (see `../../SKILL.md` → "Premium
+Infographic Mode") — the hand-drawn Daily-Dose-of-DS / Akshay-Pachaar look. Drop
+them in as the warm, narrative-driving elements that plain diagrams don't need.
+
+| For this signature element… | Reach for | Why |
+|---|---|---|
+| **Mascot / narrator** (confused at the problem, happy at the resolution) | `stick-figures` | 9 hand-drawn figures (Shrug, Happy, Sad, Guy, Girl, Grandma, Child…) — the narrator voice that makes the graphic feel alive |
+| **Speech / thought bubbles** (commentary in the narrator's voice) | `bubbles` | 4 simple speech + thought bubbles |
+| **Emoji accents** (✓ ✗ 🧠 ⚡ used sparingly as semantic punctuation) | `emojis` | 48 drawn emojis that match the hand-drawn aesthetic (font emoji may not render) |
+| **Title pills / highlighter swipes / labels** | `sticky-notes` | 7 colored note/pill shapes for headlines and annotation backgrounds |
+| **Inline icons in pills** (magnifier, gear, doc, db…) | `awesome-icons` | 24 general-purpose hand-drawn icons |
+
+## In-house infographic elements
+
+`infographic-elements.excalidrawlib` (32 items) is **our own** library — the
+executable counterpart to `../signature-elements.md`. Where the upstream libs are
+generic shape packs, this one ships the *specific* recurring building blocks of
+the DDoDS / Pachaar look, pre-styled with the premium palette so they drop in
+ready to use. Prefer these over redrawing.
+
+| Group | Items |
+|---|---|
+| Atoms | Title pill · Highlighter title · Numbered badge · Check / Cross marker · Plus combiner · Sparkle · VS badge · Dashed flow arrow + badge · Checkbox item · Pro / con pair |
+| Concept icons | Brain (embed/LLM) · Vector DB · Document · Query envelope · Gear · Search · Graph |
+| Data-viz | Token column · Tensor grid · Set / region pair · Distribution curve · Capacity meter bar · Gauge ring · Step strip (3 stations) |
+| Composites | Card frame + title pill · Speech bubble · Speech bubble (left tail) · Thought bubble · macOS code window · Verdict bar (Yesterday CI) · Mono kicker (CI) |
+
+Regenerate it from `~skill-designing/builds/build_library.py` (the generator is
+the source of truth; edit there, not the JSON by hand).
 
 ## What they look like
 
@@ -23,6 +60,12 @@ Open the `*-preview.png` next to each `.excalidrawlib` to see all items in that 
 | System Design Components (Rohan Pithadiya / rohanp) | 24 | `system-design-preview.png` |
 | Technology Logos (Matthias Haeussler / maeddes) | 18 | `technology-logos-preview.png` |
 | Cloud Design Patterns (Michel Caradec / michelcaradec) | 24 | `cloud-design-patterns-preview.png` |
+| Stick Figures (Youri Tjang / youritjang) | 9 | `stick-figures-preview.png` |
+| Bubbles (Oscar Capraro / ocapraro) | 4 | `bubbles-preview.png` |
+| Emojis (Anumitha Apollo / anumithaapollo12) | 48 | `emojis-preview.png` |
+| Simple Sticky Notes (kleinpetr) | 7 | `sticky-notes-preview.png` |
+| Awesome Icons (ferminrp) | 24 | `awesome-icons-preview.png` |
+| **Infographic Elements (in-house)** | 32 | `infographic-elements-preview.png` |
 
 ## Compositional logic
 
@@ -73,3 +116,15 @@ Sources of the four bundled libraries (as of 2026-05-02):
 - `rohanp/system-design.excalidrawlib`
 - `maeddes/technology-logos.excalidrawlib`
 - `michelcaradec/cloud-design-patterns.excalidrawlib`
+
+Premium infographic libraries (added 2026-05-22):
+
+- `youritjang/stick-figures.excalidrawlib`
+- `ocapraro/bubbles.excalidrawlib`
+- `anumithaapollo12/emojis.excalidrawlib`
+- `kleinpetr/simple-sticky-notes.excalidrawlib`
+- `ferminrp/awesome-icons.excalidrawlib`
+
+`infographic-elements.excalidrawlib` is **not** an upstream download — it is
+generated in-house. Do not refresh it with `curl`; regenerate from
+`~skill-designing/builds/build_library.py` and re-render its preview.
