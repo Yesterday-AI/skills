@@ -268,3 +268,25 @@ Plugins that fail either criterion belong elsewhere, not here.
 - `.compiled/marketplace.json` -- regenerated
 
 Mirror entry added to `lx-0/skills/marketplace.json` as its first external plugin.
+
+---
+
+## 2026-05-22: excalidraw-diagram premium infographic system — 3 themes, in-house library, builder
+
+**Context:** M002 set out to add an opt-in "premium infographic" (DDoDS/Pachaar) capability. During execution the scope expanded substantially based on user direction (more depth, real examples, a second + third brand theme, a reusable builder). This entry records the architecture that landed (committed `d977b89`).
+
+**Decisions:**
+
+1. **Three opt-in themes, default unchanged.** (a) light pastel hand-drawn (DDoDS/Pachaar) — the premium default; (b) **Yesterday CI** editorial (cream + orange/gold, roughness 0); (c) **Dark Technical Reference** flat dark-mode (dark canvas + `--theme light`). All live in `references/color-palette.md`; builder palettes `PREMIUM`/`YESTERDAY`/`DARK`. The skill's original default behavior is preserved.
+
+2. **A shape library cannot provide layout — so we ship both.** `references/libraries/infographic-elements.excalidrawlib` (32 in-house items) is the *vocabulary* (drop-in atoms/icons/composites, the executable counterpart to `references/signature-elements.md`). `references/infographic_builder.py` is the *composition layer* (places library items by name + adds connective tissue + dumps valid JSON). Rationale: answers "why hand-write 100+ element dicts?" — the library gives shapes, the builder gives arrangement. One-off `build_*.py` scripts are design-time only and stay gitignored in `.design/`.
+
+3. **Flat dark-mode IS a reproducible style (corrected).** Earlier classification lumped all dark infographics into "avoid". Corrected: only the **glowing-neon / illustrated** family is non-reproducible (avoid); **flat dark-mode** (flat colored cards on a dark canvas) renders fine via a dark `viewBackgroundColor` + `--theme light`. `signature-elements.md` §5 now distinguishes the two.
+
+4. **Custom fonts rejected (closed registry).** Tested: the esm.sh-bundled renderer exposes no font-registration API; unregistered `fontFamily` falls back. Themes map to the 8 built-in fonts only (display→Lilita One `7`, body→Nunito `6`, mono→Cascadia `3`, hand→Excalifont `5`). The real CI serif (Source Serif 4) is therefore not reproducible — documented as a known limitation, not worked around. (Detail in KNOWLEDGE.md.)
+
+5. **Gradient header approximated, not faked native.** `exportToSvg` has no native gradient; the dark theme's gradient header band is approximated with 5-6 stacked solid segments. Documented as the one limitation of that theme.
+
+**Touched (committed d977b89):** `SKILL.md`, `references/color-palette.md`, `references/signature-elements.md`, `references/infographic_builder.py`, `references/libraries/` (5 MIT libs + in-house lib + previews + README), `references/examples/` (9 worked examples), `references/font-catalog.png`, `references/render_template.html` (light theme respects file bg).
+
+**Process learning:** every infographic went through a render → view PNG → fix → re-render loop; the user repeatedly caught visual-polish defects (speech-bubble tail must point at the speaker; numbers must be centered in circles — see `Scene.numbered_circle`; top accent bars must be inset+rounded on rounded cards — see `Scene.top_accent`). These are baked into the builder + documented in `color-palette.md` / `signature-elements.md`.
