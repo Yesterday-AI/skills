@@ -56,7 +56,7 @@ No auth required -- this catalog is public.
 
 ## What's in the catalog
 
-16 plugins total: 1 external, 5 bundles, 10 standalone skills.
+18 plugins total: 1 external, 5 bundles, 2 MCP servers, 10 standalone skills.
 
 ### Bundles (`./plugins/`)
 
@@ -67,6 +67,15 @@ No auth required -- this catalog is public.
 | [personal-agent](./plugins/personal-agent) | Agent core -- 14 generic agent skills (multi-agent, patrols, self-improvement) |
 | [systems-operations](./plugins/systems-operations) | Ops core -- 6 skills (opentofu, railway-deploy, butler-deploy, land-and-deploy, canary, setup-deploy) |
 | [webflow](./plugins/webflow) | Ships the Webflow MCP server (`.mcp.json`, HTTP/OAuth) + the `webflow` skill -- manage Webflow sites (pages, CMS, assets, styles, publish) |
+
+### MCP servers (`./plugins/`)
+
+Single-source MCP-server plugins -- depend on one of these from a bundle instead of redeclaring the server (avoids the Claude Code "MCP server skipped -- same command/URL" dedupe warning).
+
+| Plugin | Purpose |
+|---|---|
+| [y-exa](./plugins/y-exa) | Exa semantic-web-search MCP (`npx exa-mcp-server`) -- prompts for the API key via `userConfig` |
+| [y-context7](./plugins/y-context7) | Context7 live-docs MCP (`npx @upstash/context7-mcp`) -- no API key |
 
 ### Standalone skills (`./skills/`)
 

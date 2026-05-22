@@ -1,0 +1,25 @@
+{
+  "name": "y-exa",
+  "description": "Single-source MCP plugin that adds the Exa semantic-web-search server (npx exa-mcp-server), giving agents full-text web search and content retrieval. Lets any bundle depend on one shared definition instead of redeclaring the server (avoids the Claude Code MCP-name dedupe warning). Prompts for an Exa API key on enable via userConfig; get one at https://exa.ai/.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/plugins/y-exa",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "yesterday",
+    "exa",
+    "mcp",
+    "web-search"
+  ],
+  "userConfig": {
+    "exa_api_key": {
+      "type": "string",
+      "title": "Exa API key",
+      "description": "API key for Exa semantic web search. Get one at https://exa.ai/ -> dashboard -> API keys.",
+      "sensitive": true
+    }
+  }
+}

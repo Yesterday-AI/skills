@@ -112,6 +112,36 @@
       ]
     },
     {
+      "name": "y-context7",
+      "description": "Single-source MCP plugin that adds the Context7 server (npx @upstash/context7-mcp) for live, version-accurate library documentation lookups. Lets any bundle depend on one shared definition instead of redeclaring the server (avoids the Claude Code MCP-name dedupe warning). No API key required.",
+      "source": "./plugins/y-context7",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "context7",
+        "mcp",
+        "docs"
+      ]
+    },
+    {
+      "name": "y-exa",
+      "description": "Single-source MCP plugin that adds the Exa semantic-web-search server (npx exa-mcp-server), giving agents full-text web search and content retrieval. Lets any bundle depend on one shared definition instead of redeclaring the server (avoids the Claude Code MCP-name dedupe warning). Prompts for an Exa API key on enable via userConfig; get one at https://exa.ai/.",
+      "source": "./plugins/y-exa",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "exa",
+        "mcp",
+        "web-search"
+      ]
+    },
+    {
       "name": "create-shareable-skill",
       "description": "Turn an existing skill or a fresh idea into a catalog-ready shareable skill -- run the quality gate, decide catalog and standalone-vs-bundle placement, pick the category, scaffold SKILL.md (+ optional .plugin.json), update the catalog docs, and open a PR. Use when adding a new skill to the catalog or promoting a personal skill into a shareable one.",
       "source": "./.compiled/skill-plugins/create-shareable-skill",
