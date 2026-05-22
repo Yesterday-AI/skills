@@ -56,7 +56,7 @@ No auth required -- this catalog is public.
 
 ## What's in the catalog
 
-14 plugins total: 1 external, 4 bundles, 10 standalone skills.
+16 plugins total: 1 external, 5 bundles, 10 standalone skills.
 
 ### Bundles (`./plugins/`)
 
@@ -66,6 +66,7 @@ No auth required -- this catalog is public.
 | [office-extras](./plugins/office-extras) | Daily-work extras tier -- 4 SaaS integrations (Figma, Miro, Voxtral TTS, VRR) |
 | [personal-agent](./plugins/personal-agent) | Agent core -- 14 generic agent skills (multi-agent, patrols, self-improvement) |
 | [systems-operations](./plugins/systems-operations) | Ops core -- 6 skills (opentofu, railway-deploy, butler-deploy, land-and-deploy, canary, setup-deploy) |
+| [webflow](./plugins/webflow) | Ships the Webflow MCP server (`.mcp.json`, HTTP/OAuth) + the `webflow` skill -- manage Webflow sites (pages, CMS, assets, styles, publish) |
 
 ### Standalone skills (`./skills/`)
 

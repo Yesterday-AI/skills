@@ -96,6 +96,22 @@
       ]
     },
     {
+      "name": "webflow",
+      "description": "Ships the Webflow MCP server (remote HTTP, OAuth at mcp.webflow.com) plus the `webflow` skill, so any project or bundle can declare a single dependency to read and edit Webflow sites -- pages, CMS, assets, components, styles, variables, custom code, comments, localization, and publishing.",
+      "source": "./plugins/webflow",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "webflow",
+        "mcp",
+        "cms",
+        "web"
+      ]
+    },
+    {
       "name": "create-shareable-skill",
       "description": "Turn an existing skill or a fresh idea into a catalog-ready shareable skill -- run the quality gate, decide catalog and standalone-vs-bundle placement, pick the category, scaffold SKILL.md (+ optional .plugin.json), update the catalog docs, and open a PR. Use when adding a new skill to the catalog or promoting a personal skill into a shareable one.",
       "source": "./.compiled/skill-plugins/create-shareable-skill",
