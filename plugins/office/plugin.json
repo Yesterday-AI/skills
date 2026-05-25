@@ -18,6 +18,7 @@
   "dependencies": [
     "creative-productivity",
     "para-memory-files",
-    "excalidraw-diagram"
+    "excalidraw-diagram",
+    "wrapup"
   ]
 }

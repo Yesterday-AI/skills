@@ -23,6 +23,7 @@ Skills that are useful in day-to-day work and do NOT require `.ytstack/` project
 |---|---|
 | [creative-productivity](../../skills/concepts/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
 | [para-memory-files](../../skills/capabilities/memory/para-memory-files) | PARA-method agent memory |
+| [wrapup](../../skills/operations/wrapup) | End-of-conversation sweep -- memorize learnings, extend project docs, prep resume prompt for after `/compact` |
 | `skill-creator` (from `claude-plugins-official`) | Meta-skill for creating new skills |
 
 For optional SaaS integrations (Figma, Miro, Voxtral TTS, VRR transit) install [office-extras](../office-extras) alongside.
