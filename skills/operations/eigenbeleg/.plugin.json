@@ -1,0 +1,19 @@
+{
+  "name": "eigenbeleg",
+  "description": "Create German Eigenbelege (substitute receipts) as signature-ready PDFs from payment-notification emails or bank records — verified payee data, embedded payment proof, correct German tax treatment. For expenses without an invoice: parking machines, vending machines, tips, lost receipts.",
+  "author": { "name": "Yesterday" },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/eigenbeleg",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "yesterday",
+    "bookkeeping",
+    "eigenbeleg",
+    "ersatzbeleg",
+    "receipts",
+    "german-accounting",
+    "lexware",
+    "datev"
+  ]
+}

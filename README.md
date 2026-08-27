@@ -56,7 +56,7 @@ No auth required -- this catalog is public.
 
 ## What's in the catalog
 
-18 plugins total: 1 external, 5 bundles, 2 MCP servers, 10 standalone skills.
+20 plugins total: 1 external, 5 bundles, 2 MCP servers, 12 standalone skills.
 
 ### Bundles (`./plugins/`)
 
@@ -101,7 +101,9 @@ Single-source MCP-server plugins -- depend on one of these from a bundle instead
 | Skill | Purpose |
 |---|---|
 | [create-shareable-skill](./skills/operations/create-shareable-skill) | Author a catalog-ready skill: quality gate, placement routing, scaffold, docs, PR |
+| [eigenbeleg](./skills/operations/eigenbeleg) | German substitute receipts (Eigenbelege) as signature-ready PDFs from payment evidence |
 | [paperclip-api](./skills/development-operations/paperclip-api) | Paperclip AI REST API client (companies, agents, issues, budgets) |
+| [wrapup](./skills/operations/wrapup) | End-of-conversation sweep -- memorize learnings, extend project docs, prep resume prompt |
 
 #### Travel
 

@@ -17,13 +17,14 @@ Skills that are useful in day-to-day work and do NOT require `.ytstack/` project
 | `web-scraper` | Tiered web scraping (lightweight fetch -> full browser) |
 | `x-reader` | Twitter/X reader with login-wall + JS handling |
 
-## Cross-marketplace plugins (3, auto-pulled via plugin.json)
+## Cross-marketplace plugins (5, auto-pulled via plugin.json)
 
 | Plugin | Purpose |
 |---|---|
 | [creative-productivity](../../skills/concepts/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
 | [para-memory-files](../../skills/capabilities/memory/para-memory-files) | PARA-method agent memory |
 | [wrapup](../../skills/operations/wrapup) | End-of-conversation sweep -- memorize learnings, extend project docs, prep resume prompt for after `/compact` |
+| [eigenbeleg](../../skills/operations/eigenbeleg) | German substitute receipts (Eigenbelege) as signature-ready PDFs from payment evidence |
 | `skill-creator` (from `claude-plugins-official`) | Meta-skill for creating new skills |
 
 For optional SaaS integrations (Figma, Miro, Voxtral TTS, VRR transit) install [office-extras](../office-extras) alongside.
