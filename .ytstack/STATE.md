@@ -39,15 +39,15 @@ active_task: none
 
 **M001 (done):** `create-shareable-skill` standalone catalog skill at `skills/operations/create-shareable-skill/` + contributor docs; marketplace/compile infra. Executed directly (no formal slice/task pass) on explicit user instruction. `.agents/` placement reversed on user review (see DECISIONS.md supersede entry).
 
-**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 14 plugins (1 external + 4 bundles + 10 standalone). Compile pipeline working, marketplace symlinks generated, GitHub Actions workflow in place. Open question on plugin install path (cache resolution).
+**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 14 plugins (1 external + 4 bundles + 10 standalone). Compile pipeline working, marketplace manifests generated as copies, GitHub Actions workflow in place. The plugin-install blocker (symlinks in a Windows checkout) was resolved 2026-09-03.
 
 **2026-05-15 marketplace surgery:** `sunoflow` external listing moved out to `lx-0/skills` (lx-0's personal public catalog). `personal-agent` no longer depends on it. README + plugin counts updated. Commit `8dafe09`.
 
 ## What's done
 
-- Compile pipeline (`compile.mjs`, `clean.mjs`) -- symlink-based; auto-scaffolds bundle `.claude-plugin` + `.cursor-plugin` symlinks
+- Compile pipeline (`compile.mjs`, `clean.mjs`) -- copy-based since 2026-09-03 (no symlinks anywhere in the tree; writes bundle `.claude-plugin` + `.cursor-plugin` manifests as copies)
 - Top-level `marketplace.json` header with `name=yesterday-public-plugins`, `allowCrossMarketplaceDependenciesOn=["claude-plugins-official"]`, externals incl. `ytstack` via github source
-- 4 bundle plugins (office, office-extras, personal-agent, systems-operations) -- canonical `plugin.json` at bundle root, editor-folder manifests symlinked
+- 4 bundle plugins (office, office-extras, personal-agent, systems-operations) -- canonical `plugin.json` at bundle root, editor-folder manifests written as copies by `compile.mjs`
 - 9 standalone skills under `skills/<category>/<slug>/` (concepts, capabilities, productivity, development-operations, travel)
 - OSS scaffold: README, LICENSE (MIT), CONTRIBUTING, NOTICE, AGENTS.md
 - `.ytstack/` project memory (this file + DECISIONS, KNOWLEDGE, RUNTIME, PROJECT, PREFERENCES)
@@ -60,14 +60,9 @@ active_task: none
 
 ## Open
 
-### Critical -- blocks plugin install
+### Resolved 2026-09-03 -- was: Critical, blocks plugin install
 
-- **Cache symlink resolution unclear.** After `/plugin install web-design@yesterday-public-plugins`, the plugin shows enabled in `/plugins` but no skills appear in `/skills`. Cache at `~/.claude/plugins/cache/yesterday-public-plugins/web-design/<sha>/skills/` was observed empty. The Claude Code spec claims "symlinks are preserved in the cache, resolve at runtime" -- but the observed cache state contradicts that. Needs proper investigation BEFORE any code change:
-  - `readlink` the cache-side symlinks to see actual target string
-  - Compare cache `<sha>` against latest commit -- could be stale
-  - `/plugin marketplace update` then re-test
-  - Search GitHub issues for `actions/checkout` symlink dereferencing
-  - Check what `git clone` does with symlinks across platforms
+- **Symlinks broke every Windows install** (formerly "Cache symlink resolution unclear"). The last item on the investigation list -- "check what `git clone` does with symlinks across platforms" -- was the answer: a Windows clone without Developer Mode materialises each of the catalog's 49 tracked symlinks as a text file holding the target path, so `/plugin marketplace add` failed with `JSON Parse error: Unexpected token '.'` on `.claude-plugin/marketplace.json`, and every bundle manifest and standalone skill folder would have failed one step later. Reproduced with a fresh clone on Windows for this catalog and for the private sister. Fix: `compile.mjs` writes copies, never symlinks (DECISIONS.md 2026-09-03). The macOS/Linux "empty cache" observation from May is not re-explained by this and may have been a stale `<sha>`; re-test after the change lands before reopening it.
 
 ### Stale content in user-facing files (cleanup needed)
 
@@ -77,7 +72,7 @@ active_task: none
 ### Architectural questions surfaced
 
 - Should we adopt dotagents-style distribution (`.agents/skills/`, `agents.toml`, `agents.lock`) alongside or instead of marketplace catalog?
-- If the cache-symlink-resolution is genuinely a Claude Code limitation, what's the right architecture? (Don't decide without evidence. Don't refactor compile.mjs without explicit approval.)
+- ~~If the cache-symlink-resolution is genuinely a Claude Code limitation, what's the right architecture?~~ Answered 2026-09-03 with evidence and owner approval: copies, never symlinks (DECISIONS.md).
 
 ### Cross-repo artifact (context, not a task here)
 

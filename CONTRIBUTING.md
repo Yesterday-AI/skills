@@ -45,7 +45,7 @@ The sections below are the manual reference for each step it automates.
 
 ## Adding a bundle plugin
 
-1. Create `plugins/<name>/plugin.json` (canonical location; symlinked from `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json`).
+1. Create `plugins/<name>/plugin.json` (canonical location; `compile.mjs` writes `.claude-plugin/plugin.json` and `.cursor-plugin/plugin.json` as copies of it -- never symlinks, never hand-edited).
 2. Drop skills into `plugins/<name>/skills/<skill-name>/SKILL.md`.
 3. Add a README + LICENSE + NOTICE per plugin if you want.
 4. PR.

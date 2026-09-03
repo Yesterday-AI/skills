@@ -1,1 +1,18 @@
-../../../../skills/operations/wrapup/.plugin.json
+{
+  "name": "wrapup",
+  "description": "Wrapup of the conversation -- memorize features and requirements, extend roadmap / changelog / planning / agent context / decisions / specs, distill learnings, and prepare a resume prompt for after /compact. Lightweight, project-agnostic counterpart to ytstack:summarize-task / ytstack:handoff-session.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/wrapup",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "yesterday",
+    "session-lifecycle",
+    "wrapup",
+    "documentation",
+    "compact"
+  ]
+}

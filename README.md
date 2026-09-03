@@ -46,7 +46,7 @@ Cursor reads the same marketplace catalog -- the manifest is mirrored at `./.cur
 ```bash
 git clone https://github.com/Yesterday-AI/skills
 cd skills
-node compile.mjs                       # build .compiled/ + symlinks
+node compile.mjs                       # build .compiled/ + manifest copies
 /plugin marketplace add ./             # add this repo as a local marketplace
 ```
 
@@ -122,11 +122,11 @@ Single-source MCP-server plugins -- depend on one of these from a bundle instead
 `compile.mjs` discovers `skills/**/SKILL.md`, generates per-skill plugin scaffolds in `.compiled/skill-plugins/`, and produces `.compiled/marketplace.json` from the top-level header (`./marketplace.json`) merged with auto-discovered bundles + standalone.
 
 ```bash
-node clean.mjs    # wipe .compiled/ + root symlinks
-node compile.mjs  # rebuild from sources
+node clean.mjs    # wipe .compiled/ + root manifest copies
+node compile.mjs  # rebuild from sources (rewrites bundle manifest copies)
 ```
 
-See [`.ytstack/DECISIONS.md`](./.ytstack/DECISIONS.md) for the rationale (single Node script, no build infra, symlink-first strategy).
+See [`.ytstack/DECISIONS.md`](./.ytstack/DECISIONS.md) for the rationale (single Node script, no build infra, copies instead of symlinks since 2026-09-03).
 
 ---
 

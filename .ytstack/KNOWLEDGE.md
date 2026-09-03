@@ -5,7 +5,7 @@ Patterns, rules, and lessons learned while building skills. This file is read by
 ## Conventions
 
 - **Skill source layout:** `skills/<category>/<slug>/SKILL.md` (frontmatter required: `name`, `description`). Optional `.plugin.json` next to it for richer manifest.
-- **Bundle source layout:** `plugins/<bundle-name>/plugin.json` (canonical) + `.claude-plugin/plugin.json` + `.cursor-plugin/plugin.json` (both symlinks to `../plugin.json`).
+- **Bundle source layout:** `plugins/<bundle-name>/plugin.json` (canonical) + `.claude-plugin/plugin.json` + `.cursor-plugin/plugin.json` (both copies of `../plugin.json`, rewritten by `compile.mjs` on every run).
 - **Top-level marketplace header:** `./marketplace.json` carries only `name`, `description`, `owner`, and optional `plugins[]` array of externals (e.g. github-sourced plugins). Auto-discovered entries are appended.
 - **Compile output:** never edit `.compiled/` by hand — it's wiped + regenerated each `node compile.mjs` run.
 
@@ -13,8 +13,8 @@ Patterns, rules, and lessons learned while building skills. This file is read by
 
 - `~GOAL.md` is the spec. Read it before changing the compile pipeline.
 - Slug = parent dir name; SKILL.md frontmatter `name` is for discoverability/UI, not for path identity.
-- Symlink paths must be relative to the link's own directory, not to ROOT — `relative(dirname(linkPath), target)`.
-- **Architectural changes need explicit user approval.** A single observed symptom is not a license to refactor the compile pipeline. Investigate, read the spec carefully, propose alternatives, ask. Lesson reinforced 2026-05-08: jumped from one `ls` showing empty cache folders straight to "rip out symlinks, copy files instead" without (a) reading the spec section that says symlinks ARE preserved, (b) verifying with `readlink` whether the cache symlinks resolved, (c) checking whether the cache version was stale, (d) asking. Reverted; fix the methodology, not the code, first.
+- **A symlink anywhere in this repo breaks every Windows install.** Git on Windows without Developer Mode (`core.symlinks=false`, the default) checks a symlink out as a plain text file containing its target path. Claude Code clones the catalog on `/plugin marketplace add` and then reads `.claude-plugin/marketplace.json` -> the literal text `../.compiled/marketplace.json` -> `JSON Parse error: Unexpected token '.'`; the same happens one step later for every bundle `plugin.json` and every standalone skill folder. `compile.mjs` therefore writes copies only; `git ls-files -s | grep ^120000` must stay empty. Reproduce: `git clone` the catalog on a Windows box and `cat .claude-plugin/marketplace.json`.
+- **Architectural changes need explicit user approval.** A single observed symptom is not a license to refactor the compile pipeline. Investigate, read the spec carefully, propose alternatives, ask. Lesson reinforced 2026-05-08: jumped from one `ls` showing empty cache folders straight to "rip out symlinks, copy files instead" without (a) reading the spec section that says symlinks ARE preserved, (b) verifying with `readlink` whether the cache symlinks resolved, (c) checking whether the cache version was stale, (d) asking. Reverted; fix the methodology, not the code, first. Closed 2026-09-03 the right way round: the cross-platform `git clone` check on that list was run, reproduced the failure on Windows, the options went to the owner, and only then did the copy-based pipeline land (DECISIONS.md 2026-09-03).
 - **Repo variables (`vars.*`) work in job-level `if:`, `env.*` does not.** When a value needs to gate a workflow (loop guards, conditionals), put it in repo vars. `env:` blocks are only available in step-level `if:`.
 - **`actions/checkout` and `actions/setup-node` are at v6 with native Node 24 runtime.** No `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` env workaround needed.
 

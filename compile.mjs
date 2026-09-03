@@ -13,8 +13,8 @@
 // 2. Discovers every `skills/**/SKILL.md`. Slug = parent-folder name.
 //    Collisions are skipped with a warning.
 // 3. Per skill, creates `.compiled/skill-plugins/<slug>/`:
-//      - skills/<slug>                 -> symlink to source folder
-//      - .claude-plugin/plugin.json    -> symlink to source `.plugin.json` if it
+//      - skills/<slug>                 -> copy of the source folder
+//      - .claude-plugin/plugin.json    -> copy of source `.plugin.json` if it
 //                                         exists, else generated from SKILL.md
 //                                         frontmatter (name + description)
 //      - .cursor-plugin/plugin.json    -> same
@@ -24,8 +24,14 @@
 //         github-sourced ytstack)
 //      - bundles auto-discovered from `plugins/<bundle>/plugin.json`
 //      - standalone auto-discovered from `.compiled/skill-plugins/<slug>/`
-//    Then symlinks it into `./.claude-plugin/marketplace.json` and
+//    Then copies it to `./.claude-plugin/marketplace.json` and
 //    `./.cursor-plugin/marketplace.json` at workspace root.
+//
+// Everything is a real file, never a symlink. A git checkout on Windows without
+// symlink support (the default) materialises a symlink as a text file holding
+// its target path -- Claude Code then fails to parse `../.compiled/marketplace.json`
+// as JSON and every install breaks the same way. Copies cost nothing here: the
+// generated tree is rebuilt by CI on every push, so it cannot drift from source.
 //
 // Run
 // ---
@@ -34,7 +40,7 @@
 // Idempotent. Wipes `.compiled/skill-plugins/` each run; do not hand-edit there.
 //
 
-import { readdir, readFile, mkdir, symlink, rm, writeFile, stat } from "node:fs/promises";
+import { readdir, readFile, mkdir, cp, rm, writeFile, stat, lstat } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { dirname, join, relative, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -73,11 +79,23 @@ function parseFrontmatter(md) {
   return fm;
 }
 
-async function ensureSymlink(target, linkPath) {
-  if (existsSync(linkPath)) await rm(linkPath, { recursive: true, force: true });
-  await mkdir(dirname(linkPath), { recursive: true });
-  const rel = relative(dirname(linkPath), target);
-  await symlink(rel, linkPath);
+// lstat-based: a stale symlink from an older checkout must be removed too,
+// and existsSync() reports false for a dangling one.
+async function lexists(p) {
+  try {
+    await lstat(p);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// Replace whatever is at destPath (file, directory or leftover symlink) with a
+// real copy of source. Files and directories alike; never a symlink.
+async function ensureCopy(source, destPath) {
+  if (await lexists(destPath)) await rm(destPath, { recursive: true, force: true });
+  await mkdir(dirname(destPath), { recursive: true });
+  await cp(source, destPath, { recursive: true });
 }
 
 async function writePluginJson(linkPath, data) {
@@ -97,10 +115,10 @@ function toMarketplaceEntry(plugin, source) {
   return entry;
 }
 
-// For each bundle with a canonical `plugins/<name>/plugin.json`, ensure the
-// editor-specific manifest folders exist with a relative symlink back to the
-// canonical file. Idempotent: existing correct symlinks are left alone.
-async function scaffoldBundleSymlinks() {
+// For each bundle with a canonical `plugins/<name>/plugin.json`, write the
+// editor-specific manifest folders as copies of the canonical file. Idempotent:
+// each run rewrites them from the canonical source.
+async function scaffoldBundleManifests() {
   if (!existsSync(PLUGINS_DIR)) return;
   for (const entry of await readdir(PLUGINS_DIR, { withFileTypes: true })) {
     if (!entry.isDirectory() || entry.name.startsWith(".")) continue;
@@ -108,7 +126,7 @@ async function scaffoldBundleSymlinks() {
     const canonical = join(bundleDir, "plugin.json");
     if (!existsSync(canonical)) continue;
     for (const sub of [".claude-plugin", ".cursor-plugin"]) {
-      await ensureSymlink(canonical, join(bundleDir, sub, "plugin.json"));
+      await ensureCopy(canonical, join(bundleDir, sub, "plugin.json"));
     }
   }
 }
@@ -160,12 +178,12 @@ async function compileMarketplace() {
 
   if (existsSync(MARKETPLACE_OUT)) await rm(MARKETPLACE_OUT, { force: true });
   await writeFile(MARKETPLACE_OUT, JSON.stringify(data, null, 2) + "\n");
-  await ensureSymlink(MARKETPLACE_OUT, join(ROOT, ".claude-plugin", "marketplace.json"));
-  await ensureSymlink(MARKETPLACE_OUT, join(ROOT, ".cursor-plugin", "marketplace.json"));
+  await ensureCopy(MARKETPLACE_OUT, join(ROOT, ".claude-plugin", "marketplace.json"));
+  await ensureCopy(MARKETPLACE_OUT, join(ROOT, ".cursor-plugin", "marketplace.json"));
   console.log(
     `\nMarketplace -> ${relative(ROOT, MARKETPLACE_OUT)}  ` +
       `(${externals.length} external + ${bundles.length} bundles + ${standalone.length} standalone)` +
-      `\n              + symlinks: ./.claude-plugin/marketplace.json, ./.cursor-plugin/marketplace.json`,
+      `\n              + copies: ./.claude-plugin/marketplace.json, ./.cursor-plugin/marketplace.json`,
   );
 }
 
@@ -177,7 +195,7 @@ async function compile() {
   await rm(OUT_DIR, { recursive: true, force: true });
   await mkdir(OUT_DIR, { recursive: true });
 
-  await scaffoldBundleSymlinks();
+  await scaffoldBundleManifests();
 
   const skillFiles = await walk(SKILLS_DIR);
   const seen = new Map();
@@ -196,17 +214,17 @@ async function compile() {
     const fm = parseFrontmatter(await readFile(skillMd, "utf8"));
     const pluginDir = join(OUT_DIR, slug);
 
-    // 1. skills/<slug> symlink -> source folder
-    await ensureSymlink(sourceDir, join(pluginDir, "skills", slug));
+    // 1. skills/<slug> -> copy of the source folder
+    await ensureCopy(sourceDir, join(pluginDir, "skills", slug));
 
-    // 2. plugin.json: symlink source/.plugin.json if present, else generate
+    // 2. plugin.json: copy source/.plugin.json if present, else generate
     const sourcePluginJson = join(sourceDir, ".plugin.json");
     const claudeTarget = join(pluginDir, ".claude-plugin", "plugin.json");
     const cursorTarget = join(pluginDir, ".cursor-plugin", "plugin.json");
 
     if (existsSync(sourcePluginJson)) {
-      await ensureSymlink(sourcePluginJson, claudeTarget);
-      await ensureSymlink(sourcePluginJson, cursorTarget);
+      await ensureCopy(sourcePluginJson, claudeTarget);
+      await ensureCopy(sourcePluginJson, cursorTarget);
     } else {
       const generated = {
         name: fm.name || slug,
@@ -217,7 +235,7 @@ async function compile() {
     }
 
     count++;
-    console.log(`  ${slug}  (${existsSync(sourcePluginJson) ? "symlinked" : "generated"})`);
+    console.log(`  ${slug}  (${existsSync(sourcePluginJson) ? "copied" : "generated"})`);
   }
 
   console.log(`\nCompiled ${count} skill-plugins -> ${relative(ROOT, OUT_DIR)}`);

@@ -1,1 +1,18 @@
-../plugin.json
+{
+  "name": "webflow",
+  "description": "Ships the Webflow MCP server (remote HTTP, OAuth at mcp.webflow.com) plus the `webflow` skill, so any project or bundle can declare a single dependency to read and edit Webflow sites -- pages, CMS, assets, components, styles, variables, custom code, comments, localization, and publishing.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/plugins/webflow",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "yesterday",
+    "webflow",
+    "mcp",
+    "cms",
+    "web"
+  ]
+}
