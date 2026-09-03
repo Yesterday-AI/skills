@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Wipe all compiled artifacts so `node compile.mjs` rebuilds from scratch.
-// Touches only `.compiled/` -- bundle symlinks under `plugins/*/` are source-of-truth and stay.
+// Touches only `.compiled/` + the root marketplace copies -- the bundle manifest copies under
+// `plugins/*/.claude-plugin/` + `.cursor-plugin/` are rewritten by compile.mjs and stay.
 
 import { rm, lstat } from "node:fs/promises";
 import { dirname, join, relative } from "node:path";

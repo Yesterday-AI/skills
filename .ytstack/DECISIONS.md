@@ -46,7 +46,7 @@ Format for each entry:
 
 ---
 
-## 2026-05-08: Symlink source folder, generate manifest only when missing
+## 2026-05-08: Symlink source folder, generate manifest only when missing  _(SUPERSEDED 2026-09-03 -- copies, never symlinks; see entry at end of file)_
 
 **Context:** Per ~GOAL.md "symlink (when .plugin.json exists) or generate {.claude-plugin,.cursor-plugin}/plugin.json".
 
@@ -290,3 +290,28 @@ Mirror entry added to `lx-0/skills/marketplace.json` as its first external plugi
 **Touched (committed d977b89):** `SKILL.md`, `references/color-palette.md`, `references/signature-elements.md`, `references/infographic_builder.py`, `references/libraries/` (5 MIT libs + in-house lib + previews + README), `references/examples/` (9 worked examples), `references/font-catalog.png`, `references/render_template.html` (light theme respects file bg).
 
 **Process learning:** every infographic went through a render → view PNG → fix → re-render loop; the user repeatedly caught visual-polish defects (speech-bubble tail must point at the speaker; numbers must be centered in circles — see `Scene.numbered_circle`; top accent bars must be inset+rounded on rounded cards — see `Scene.top_accent`). These are baked into the builder + documented in `color-palette.md` / `signature-elements.md`.
+
+---
+
+## 2026-09-03: compile.mjs writes copies, never symlinks (Windows installs)
+
+**Context:** `/plugin marketplace add` of this catalog failed on Windows with `Failed to parse marketplace file ... JSON Parse error: Unexpected token '.'`. Cause: `.claude-plugin/marketplace.json` was a git symlink to `../.compiled/marketplace.json`. Git on Windows without Developer Mode (`core.symlinks=false`, the default) checks a symlink out as a 29-byte text file containing the target path, and Claude Code parses that as JSON. Reproduced with a fresh clone on a Windows machine -- for this catalog and for the private sister `yesterday-skills`. The same defect sat behind every later step: all 49 tracked symlinks (bundle `.claude-plugin/plugin.json`, standalone `.compiled/skill-plugins/<slug>/skills/<slug>`, `.plugin.json` copies) would have failed the install one step after the manifest. This is the "check what `git clone` does with symlinks across platforms" item that STATE.md had listed as required evidence since May.
+
+**Options considered:**
+
+- A) Ask every Windows user to enable Developer Mode + `git config --global core.symlinks true`. Per-machine, invisible when forgotten, and the failure message names none of it.
+- B) `compile.mjs` copies instead of symlinking. Same file layout, same docs, same CI; the generated tree is rebuilt on every push so copies cannot drift in the committed state.
+- C) Restructure so no second file is needed (make `.claude-plugin/plugin.json` canonical, write the marketplace straight to `.claude-plugin/`). Cleanest, but changes every convention in AGENTS.md / README / CONTRIBUTING and the private sister at once.
+
+**Chose:** B, with the owner's explicit requirement that the catalog work for Windows users WITHOUT enabling symlinks. `ensureSymlink` -> `ensureCopy` (`fs.cp`, lstat-based replace so a stale symlink from an older checkout is removed too). Everything Claude Code or Cursor reads is a regular file; `git ls-files -s | grep ^120000` must stay empty.
+
+**Reason:** B is the smallest change that makes the checkout itself correct on every platform. The 2026-05-08 reason for symlinks -- "copy would silently drift" -- no longer holds: `compile.yml` regenerates `.compiled/`, the root manifests and the bundle manifests on every push to `main`, so a committed copy is always the compile of its source.
+
+**Consequences:**
+
+- The repo carries copies of skill folders under `.compiled/skill-plugins/` -- including large reference assets (the Excalidraw libraries alone are ~50k lines). Git handles it; reviewers should read `.compiled/` diffs as generated.
+- Git mode of every former symlink changes `120000 -> 100644` once. On a checkout with `core.symlinks=false` a plain `git add` keeps the OLD mode and commits the JSON text as a symlink target -- re-register such paths with `git rm --cached` + `git add`, and assert the `120000` count is zero before committing.
+- Hand-editing a `.claude-plugin/plugin.json` now drifts silently until the next compile instead of being impossible. AGENTS.md forbids it.
+- The private sister `yesterday-skills` carries the identical change (its `compile.mjs` additionally hoists `agents/`, also as a copy).
+
+**Supersedes:** 2026-05-08 "Symlink source folder, generate manifest only when missing".

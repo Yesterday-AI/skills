@@ -1,1 +1,319 @@
-../.compiled/marketplace.json
+{
+  "name": "yesterday-public-plugins",
+  "description": "Yesterday's PUBLIC plugin catalog.",
+  "owner": {
+    "name": "Yesterday"
+  },
+  "allowCrossMarketplaceDependenciesOn": [
+    "claude-plugins-official"
+  ],
+  "plugins": [
+    {
+      "name": "ytstack",
+      "description": "BUNDLE: Yesterday Technologies Stack -- opinionated software-development OS for AI agents. Curated superpowers + gstack skills plus Project-OS artifact discipline (PROJECT.md, DECISIONS.md, KNOWLEDGE.md, milestone/slice/task hierarchy), orchestrated via SessionStart hooks.",
+      "source": {
+        "source": "github",
+        "repo": "Yesterday-AI/ytstack"
+      },
+      "author": {
+        "name": "Yesterday"
+      },
+      "homepage": "https://github.com/Yesterday-AI/ytstack",
+      "repository": "https://github.com/Yesterday-AI/ytstack",
+      "license": "MIT",
+      "keywords": [
+        "claude-code",
+        "agentic",
+        "development-methodology",
+        "project-management",
+        "artifact-discipline",
+        "yesterday"
+      ]
+    },
+    {
+      "name": "office",
+      "description": "BUNDLE: Daily-work core tier. Generic productivity, creative, and knowledge skills for daily work; nothing requires external SaaS keys at install time. Optional SaaS integrations (Figma, Miro, Voxtral TTS, VRR transit) live in office-extras.",
+      "source": "./plugins/office",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "productivity",
+        "daily-work",
+        "knowledge-management",
+        "creative"
+      ]
+    },
+    {
+      "name": "office-extras",
+      "description": "BUNDLE: Daily-work extras tier. Optional integrations needing external SaaS accounts/keys (Figma, Miro, Voxtral TTS, VRR transit). Install alongside office when you actually use these services.",
+      "source": "./plugins/office-extras",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "productivity",
+        "daily-work",
+        "extras"
+      ]
+    },
+    {
+      "name": "personal-agent",
+      "description": "BUNDLE: Yesterday Agent Stack -- generic skills for AI agents in human-AI collaboration and AI-as-expert workflows (Levels of AGI 3-4). Stateful patrols, agent-to-agent orchestration, self-improvement, durable infra ops. No Yesterday-infra dependencies; works for any team running long-running Claude Code agents.",
+      "source": "./plugins/personal-agent",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "agentic",
+        "autonomous-agents",
+        "agent-orchestration",
+        "yesterday"
+      ]
+    },
+    {
+      "name": "systems-operations",
+      "description": "BUNDLE: SysOps -- generic infrastructure-provisioning, deployment, and observability skills for agents. opentofu + railway-deploy + butler-deploy + land-and-deploy + canary + setup-deploy.",
+      "source": "./plugins/systems-operations",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "ops",
+        "deployment",
+        "infrastructure",
+        "observability",
+        "opentofu",
+        "railway",
+        "itch.io",
+        "yesterday"
+      ]
+    },
+    {
+      "name": "webflow",
+      "description": "Ships the Webflow MCP server (remote HTTP, OAuth at mcp.webflow.com) plus the `webflow` skill, so any project or bundle can declare a single dependency to read and edit Webflow sites -- pages, CMS, assets, components, styles, variables, custom code, comments, localization, and publishing.",
+      "source": "./plugins/webflow",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "webflow",
+        "mcp",
+        "cms",
+        "web"
+      ]
+    },
+    {
+      "name": "y-context7",
+      "description": "Single-source MCP plugin that adds the Context7 server (npx @upstash/context7-mcp) for live, version-accurate library documentation lookups. Lets any bundle depend on one shared definition instead of redeclaring the server (avoids the Claude Code MCP-name dedupe warning). No API key required.",
+      "source": "./plugins/y-context7",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "context7",
+        "mcp",
+        "docs"
+      ]
+    },
+    {
+      "name": "y-exa",
+      "description": "Single-source MCP plugin that adds the Exa semantic-web-search server (npx exa-mcp-server), giving agents full-text web search and content retrieval. Lets any bundle depend on one shared definition instead of redeclaring the server (avoids the Claude Code MCP-name dedupe warning). Prompts for an Exa API key on enable via userConfig; get one at https://exa.ai/.",
+      "source": "./plugins/y-exa",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "exa",
+        "mcp",
+        "web-search"
+      ]
+    },
+    {
+      "name": "create-shareable-skill",
+      "description": "Turn an existing skill or a fresh idea into a catalog-ready shareable skill -- run the quality gate, decide catalog and standalone-vs-bundle placement, pick the category, scaffold SKILL.md (+ optional .plugin.json), update the catalog docs, and open a PR. Use when adding a new skill to the catalog or promoting a personal skill into a shareable one.",
+      "source": "./.compiled/skill-plugins/create-shareable-skill",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "skill-authoring",
+        "meta",
+        "contributing"
+      ]
+    },
+    {
+      "name": "creative-productivity",
+      "description": "Generate professional consulting deliverables: Excalidraw diagrams, Mermaid visualizations, Reveal.js/Marp presentations, draw.io architecture diagrams, one-pagers, proposal documents. Orchestrator with enriched assets over the underlying tool plugins.",
+      "source": "./.compiled/skill-plugins/creative-productivity",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "deliverables",
+        "consulting",
+        "diagrams",
+        "presentations"
+      ]
+    },
+    {
+      "name": "excalidraw-diagram",
+      "description": "Generate Excalidraw diagrams. Create various types of diagrams, such as flowcharts, wireframes, infographics, and mind maps, to help visualize ideas and concepts.",
+      "source": "./.compiled/skill-plugins/excalidraw-diagram",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "excalidraw",
+        "diagram",
+        "mcp",
+        "ui"
+      ]
+    },
+    {
+      "name": "figma-console-mcp",
+      "description": "Connect AI agents to Figma via the Figma Console MCP server. Design system extraction, UI component creation, variable/token management, visual debugging, FigJam boards, Slides presentations.",
+      "source": "./.compiled/skill-plugins/figma-console-mcp",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "figma",
+        "design-system",
+        "mcp",
+        "ui"
+      ]
+    },
+    {
+      "name": "miro-board",
+      "description": "Create and read Miro board content via MCP tools. Diagrams (flowcharts, mindmaps, UML, ER), documents (markdown), tables, and context extraction.",
+      "source": "./.compiled/skill-plugins/miro-board",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "miro",
+        "diagrams",
+        "mcp",
+        "whiteboard"
+      ]
+    },
+    {
+      "name": "paperclip-api",
+      "description": "Manage Paperclip AI companies, agents, issues, projects, goals, routines, costs, and secrets via REST API. Use when creating companies, hiring agents, assigning tasks, managing budgets, or checking dashboards on a Paperclip instance.",
+      "source": "./.compiled/skill-plugins/paperclip-api",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "paperclip",
+        "agents",
+        "api-client"
+      ]
+    },
+    {
+      "name": "para-memory-files",
+      "description": "File-based memory system using Tiago Forte's PARA method. Agent-side persistence across sessions: knowledge graph in PARA folders, working memory, journal entries.",
+      "source": "./.compiled/skill-plugins/para-memory-files",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "memory",
+        "persistence",
+        "para",
+        "knowledge-management"
+      ]
+    },
+    {
+      "name": "voxtral-tts-api",
+      "description": "Mistral Voxtral TTS API client. Natural, emotionally expressive speech in 9 languages. Voice cloning from 3s samples, preset voices, streaming, cross-lingual synthesis.",
+      "source": "./.compiled/skill-plugins/voxtral-tts-api",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "tts",
+        "voice",
+        "mistral",
+        "api-client"
+      ]
+    },
+    {
+      "name": "vrr-efa-api",
+      "description": "VRR (Verkehrsverbund Rhein-Ruhr) live transit API client. Departures, connections, stops via EFA API -- real-time, free, no API key. Niche regional vertical (German public transit).",
+      "source": "./.compiled/skill-plugins/vrr-efa-api",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "transit",
+        "vrr",
+        "germany",
+        "api-client"
+      ]
+    },
+    {
+      "name": "web-design",
+      "description": "Build distinctive, production-grade frontend interfaces with high design quality. Use when building websites, landing pages, dashboards, web apps, or any UI that should look polished and modern.",
+      "source": "./.compiled/skill-plugins/web-design",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "design",
+        "frontend",
+        "ui",
+        "ux"
+      ]
+    },
+    {
+      "name": "wrapup",
+      "description": "Wrapup of the conversation -- memorize features and requirements, extend roadmap / changelog / planning / agent context / decisions / specs, distill learnings, and prepare a resume prompt for after /compact. Lightweight, project-agnostic counterpart to ytstack:summarize-task / ytstack:handoff-session.",
+      "source": "./.compiled/skill-plugins/wrapup",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "claude-code",
+        "yesterday",
+        "session-lifecycle",
+        "wrapup",
+        "documentation",
+        "compact"
+      ]
+    }
+  ]
+}

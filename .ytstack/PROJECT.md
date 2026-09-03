@@ -25,4 +25,4 @@ Single source of truth for shared, depersonalized skills/plugins that can be con
 
 ## Current status
 
-Compile pipeline (`compile.mjs`) initial implementation done: skill discovery, per-plugin scaffolding (skills symlink + .claude-plugin / .cursor-plugin manifests), marketplace.json generation from header + auto-discovered bundles + standalone.
+Compile pipeline (`compile.mjs`) initial implementation done: skill discovery, per-plugin scaffolding (skills folder copy + .claude-plugin / .cursor-plugin manifest copies), marketplace.json generation from header + auto-discovered bundles + standalone.

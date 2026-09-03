@@ -9,7 +9,7 @@ Contributor guide for AI agents working on this repo. Humans: see [README.md](./
 - **Standalone skills** under `./skills/<category>/<slug>/SKILL.md` (+ optional `.plugin.json`)
 - **Bundle plugins** under `./plugins/<name>/plugin.json` (canonical) with optional `skills/` subfolder
 
-A single Node script (`compile.mjs`) discovers both and produces `.compiled/skill-plugins/` plus `.compiled/marketplace.json`. The marketplace is exposed at `./.claude-plugin/marketplace.json` and `./.cursor-plugin/marketplace.json` via symlinks.
+A single Node script (`compile.mjs`) discovers both and produces `.compiled/skill-plugins/` plus `.compiled/marketplace.json`. The marketplace is exposed at `./.claude-plugin/marketplace.json` and `./.cursor-plugin/marketplace.json` as copies. **Nothing in the tree is a symlink** -- a Windows checkout turns a symlink into a text file and every install fails on it (decision 2026-09-03 in `.ytstack/DECISIONS.md`).
 
 ## Hard rules (do not violate)
 
@@ -44,8 +44,8 @@ When you make a non-trivial architectural decision, append to `DECISIONS.md` (do
 ## Build and verify
 
 ```bash
-node clean.mjs          # wipe .compiled/ + root marketplace symlinks
-node compile.mjs        # rebuild from sources
+node clean.mjs          # wipe .compiled/ + root marketplace copies
+node compile.mjs        # rebuild from sources (rewrites bundle manifest copies)
 ```
 
 Verify after any source change:
