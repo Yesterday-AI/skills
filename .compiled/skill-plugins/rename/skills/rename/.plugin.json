@@ -1,0 +1,14 @@
+{
+  "name": "rename",
+  "description": "Ordnet und benennt Agenten-Tasks nach ihrem tats\u00e4chlichen Thema und Arbeitsstand. Nutzen bei einem ausdr\u00fccklichen Auftrag, Task-Titel zu verbessern oder eine Priorisierung vorzuschlagen; direkte \u00c4nderungen ben\u00f6tigen verf\u00fcgbare Titelwerkzeuge.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/rename",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "rename"
+  ]
+}

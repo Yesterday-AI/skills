@@ -1,0 +1,14 @@
+{
+  "name": "yesterday-pages",
+  "description": "Use when Markdown, research, concepts, analyses, offers, image folders, or mechanisms need to become a branded Yesterday HTML page, visual report, whitepaper, visual story, data narrative, interactive explainer, or lightweight prototype.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/yesterday-pages",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "yesterday-pages"
+  ]
+}

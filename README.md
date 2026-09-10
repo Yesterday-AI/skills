@@ -56,7 +56,7 @@ No auth required -- this catalog is public.
 
 ## What's in the catalog
 
-18 plugins total: 1 external, 5 bundles, 2 MCP servers, 10 standalone skills.
+25 plugins total: 1 external, 5 bundles, 2 MCP servers, 17 standalone skills.
 
 ### Bundles (`./plugins/`)
 
@@ -95,6 +95,11 @@ Single-source MCP-server plugins -- depend on one of these from a bundle instead
 | [figma-console-mcp](./skills/productivity/figma-console-mcp) | Figma + FigJam + Slides via MCP |
 | [miro-board](./skills/productivity/miro-board) | Miro board content via MCP |
 | [web-design](./skills/concepts/web-design) | Build distinctive, production-grade frontend interfaces |
+| [chat-recall](./skills/productivity/chat-recall) | Search authorized local Codex and Claude transcript excerpts |
+| [jamie](./skills/productivity/jamie) | Retrieve meetings and create source-grounded records or extractions |
+| [rename](./skills/productivity/rename) | Improve task titles through available APIs or produce a title proposal |
+| [yesterday-app-style](./skills/productivity/yesterday-app-style) | Calm product UI rules with a self-contained design contract |
+| [yesterday-pages](./skills/productivity/yesterday-pages) | Branded HTML reports, visual stories and interactive explainers |
 
 #### Development operations
 
@@ -102,6 +107,8 @@ Single-source MCP-server plugins -- depend on one of these from a bundle instead
 |---|---|
 | [create-shareable-skill](./skills/operations/create-shareable-skill) | Author a catalog-ready skill: quality gate, placement routing, scaffold, docs, PR |
 | [paperclip-api](./skills/development-operations/paperclip-api) | Paperclip AI REST API client (companies, agents, issues, budgets) |
+| [wrapup](./skills/operations/wrapup) | Capture session learnings and prepare a resumable handoff |
+| [copilot-cowork-plugin](./skills/operations/copilot-cowork-plugin) | Build and locally validate Microsoft 365 skill packages |
 
 #### Travel
 
