@@ -142,6 +142,30 @@
       ]
     },
     {
+      "name": "chat-recall",
+      "description": "Durchsucht lokale Codex- und Claude-Code-Transkripte nach früherer Arbeit zu einem benannten Thema. Nutze ihn, wenn die nutzende Person wissen möchte, was er dazu schon gemacht hat, oder eine frühere Session fortsetzen möchte.",
+      "source": "./.compiled/skill-plugins/chat-recall",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "skills",
+        "chat-recall"
+      ]
+    },
+    {
+      "name": "copilot-cowork-plugin",
+      "description": "Verpackt einen bestehenden Agent-Skill als Microsoft-365-App-Paket für Copilot Cowork — Manifest, Icons, Konvertierung abgelehnter Dateiformate und Vorab-Validierung per CLI. Für den Weg vom lokalen SKILL.md-Ordner in den M365-Tenant; schreibt selbst keine Skills und betrifft nicht Anthropics Claude Cowork.",
+      "source": "./.compiled/skill-plugins/copilot-cowork-plugin",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "skills",
+        "copilot-cowork-plugin"
+      ]
+    },
+    {
       "name": "create-shareable-skill",
       "description": "Turn an existing skill or a fresh idea into a catalog-ready shareable skill -- run the quality gate, decide catalog and standalone-vs-bundle placement, pick the category, scaffold SKILL.md (+ optional .plugin.json), update the catalog docs, and open a PR. Use when adding a new skill to the catalog or promoting a personal skill into a shareable one.",
       "source": "./.compiled/skill-plugins/create-shareable-skill",
@@ -205,6 +229,18 @@
       ]
     },
     {
+      "name": "jamie",
+      "description": "Meetings aus Jamie holen und verwerten — als Protokoll (bereinigtes Transkript, Entscheidungen, Action Items), als Rohtranskript, oder als themensortierte Extraktion dessen, was nach dem Meeting gilt. Nutze ihn bei „Meeting aufbereiten\", „Transkript aufräumen\", „was wurde entschieden\", oder wenn eine `raw_*.md` weitersoll.",
+      "source": "./.compiled/skill-plugins/jamie",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "skills",
+        "jamie"
+      ]
+    },
+    {
       "name": "miro-board",
       "description": "Create and read Miro board content via MCP tools. Diagrams (flowcharts, mindmaps, UML, ER), documents (markdown), tables, and context extraction.",
       "source": "./.compiled/skill-plugins/miro-board",
@@ -249,6 +285,18 @@
         "persistence",
         "para",
         "knowledge-management"
+      ]
+    },
+    {
+      "name": "rename",
+      "description": "Ordnet und benennt Agenten-Tasks nach ihrem tatsächlichen Thema und Arbeitsstand. Nutzen bei einem ausdrücklichen Auftrag, Task-Titel zu verbessern oder eine Priorisierung vorzuschlagen; direkte Änderungen benötigen verfügbare Titelwerkzeuge.",
+      "source": "./.compiled/skill-plugins/rename",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "skills",
+        "rename"
       ]
     },
     {
@@ -313,6 +361,30 @@
         "wrapup",
         "documentation",
         "compact"
+      ]
+    },
+    {
+      "name": "yesterday-app-style",
+      "description": "Build or review Yesterday Academy app prototypes and features in the calm, clear, quietly confident product style. Use when a UI should feel like the Yesterday app rather than a generic AI dashboard.",
+      "source": "./.compiled/skill-plugins/yesterday-app-style",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "skills",
+        "yesterday-app-style"
+      ]
+    },
+    {
+      "name": "yesterday-pages",
+      "description": "Use when Markdown, research, concepts, analyses, offers, image folders, or mechanisms need to become a branded Yesterday HTML page, visual report, whitepaper, visual story, data narrative, interactive explainer, or lightweight prototype.",
+      "source": "./.compiled/skill-plugins/yesterday-pages",
+      "author": {
+        "name": "Yesterday"
+      },
+      "keywords": [
+        "skills",
+        "yesterday-pages"
       ]
     }
   ]

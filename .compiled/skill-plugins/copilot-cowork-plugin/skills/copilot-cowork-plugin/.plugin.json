@@ -1,0 +1,14 @@
+{
+  "name": "copilot-cowork-plugin",
+  "description": "Verpackt einen bestehenden Agent-Skill als Microsoft-365-App-Paket f\u00fcr Copilot Cowork \u2014 Manifest, Icons, Konvertierung abgelehnter Dateiformate und Vorab-Validierung per CLI. F\u00fcr den Weg vom lokalen SKILL.md-Ordner in den M365-Tenant; schreibt selbst keine Skills und betrifft nicht Anthropics Claude Cowork.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/copilot-cowork-plugin",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "copilot-cowork-plugin"
+  ]
+}
