@@ -39,7 +39,7 @@ active_task: none
 
 **M001 (done):** `create-shareable-skill` standalone catalog skill at `skills/operations/create-shareable-skill/` + contributor docs; marketplace/compile infra. Executed directly (no formal slice/task pass) on explicit user instruction. `.agents/` placement reversed on user review (see DECISIONS.md supersede entry).
 
-**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 14 plugins (1 external + 4 bundles + 10 standalone). Compile pipeline working, marketplace manifests generated as copies, GitHub Actions workflow in place. The plugin-install blocker (symlinks in a Windows checkout) was resolved 2026-09-03.
+**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 18 plugins (1 external + 4 bundles + 2 MCP servers `y-exa`/`y-context7` + 11 standalone). The `webflow` MCP plugin was removed 2026-10-10. Compile pipeline working, marketplace manifests generated as copies, GitHub Actions workflow in place. The plugin-install blocker (symlinks in a Windows checkout) was resolved 2026-09-03.
 
 **2026-05-15 marketplace surgery:** `sunoflow` external listing moved out to `lx-0/skills` (lx-0's personal public catalog). `personal-agent` no longer depends on it. README + plugin counts updated. Commit `8dafe09`.
 
@@ -48,7 +48,8 @@ active_task: none
 - Compile pipeline (`compile.mjs`, `clean.mjs`) -- copy-based since 2026-09-03 (no symlinks anywhere in the tree; writes bundle `.claude-plugin` + `.cursor-plugin` manifests as copies)
 - Top-level `marketplace.json` header with `name=yesterday-public-plugins`, `allowCrossMarketplaceDependenciesOn=["claude-plugins-official"]`, externals incl. `ytstack` via github source
 - 4 bundle plugins (office, office-extras, personal-agent, systems-operations) -- canonical `plugin.json` at bundle root, editor-folder manifests written as copies by `compile.mjs`
-- 9 standalone skills under `skills/<category>/<slug>/` (concepts, capabilities, productivity, development-operations, travel)
+- 11 standalone skills under `skills/<category>/<slug>/` (capabilities, operations, productivity, travel)
+- 2 single-source MCP-server plugins (`y-exa`, `y-context7`) -- bundles depend on them instead of redeclaring the server
 - OSS scaffold: README, LICENSE (MIT), CONTRIBUTING, NOTICE, AGENTS.md
 - `.ytstack/` project memory (this file + DECISIONS, KNOWLEDGE, RUNTIME, PROJECT, PREFERENCES)
 - `.agents/skills/audit-skills/` -- 3-axis repo audit skill (leaks, consistency, spec compliance)

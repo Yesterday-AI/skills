@@ -96,22 +96,6 @@
       ]
     },
     {
-      "name": "webflow",
-      "description": "Ships the Webflow MCP server (remote HTTP, OAuth at mcp.webflow.com) plus the `webflow` skill, so any project or bundle can declare a single dependency to read and edit Webflow sites -- pages, CMS, assets, components, styles, variables, custom code, comments, localization, and publishing.",
-      "source": "./plugins/webflow",
-      "author": {
-        "name": "Yesterday"
-      },
-      "keywords": [
-        "claude-code",
-        "yesterday",
-        "webflow",
-        "mcp",
-        "cms",
-        "web"
-      ]
-    },
-    {
       "name": "y-context7",
       "description": "Single-source MCP plugin that adds the Context7 server (npx @upstash/context7-mcp) for live, version-accurate library documentation lookups. Lets any bundle depend on one shared definition instead of redeclaring the server (avoids the Claude Code MCP-name dedupe warning). No API key required.",
       "source": "./plugins/y-context7",
