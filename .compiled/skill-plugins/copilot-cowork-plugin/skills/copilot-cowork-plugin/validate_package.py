@@ -9,6 +9,7 @@ Endungs-Allowlist (siehe REFERENCE.md).
 import json
 import posixpath
 import re
+import struct
 import sys
 import zipfile
 
@@ -20,6 +21,7 @@ RESERVED = {"CON", "AUX", "PRN", "NUL", *[f"COM{i}" for i in range(1, 10)],
             *[f"LPT{i}" for i in range(1, 10)]}
 KEBAB = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 SAFE_NAME = re.compile(r"^[A-Za-z0-9 ._!-]+$")
+GUID = re.compile(r"^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$")
 # Cowork veroeffentlicht keine Allowlist. Empirisch belegt (Upload-Fehler
 # 'InvalidAgentSkill: File extension X is not supported'):
 BLOCKED_EXT = {".svg", ".css"}
@@ -31,6 +33,13 @@ errors, warnings, checks = [], [], []
 
 def check(ok, code, msg):
     (checks if ok else errors).append(f"{'PASS' if ok else 'FAIL'}  {code}  {msg}")
+
+
+def png_size(data):
+    """(Breite, Hoehe) aus dem IHDR-Chunk, None wenn kein PNG."""
+    if len(data) < 24 or data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
+        return None
+    return struct.unpack(">II", data[16:24])
 
 
 def main(path):
@@ -62,7 +71,7 @@ def main(path):
     check(not extra, "MANIFEST-01",
           f"keine unerlaubten Root-Felder (additionalProperties:false) {extra if extra else ''}")
     check(m.get("manifestVersion") == "1.28", "MANIFEST-02", "manifestVersion == 1.28")
-    check(bool(re.fullmatch(r"[0-9a-f-]{36}", str(m.get("id", "")))), "MANIFEST-03", "id ist eine GUID")
+    check(bool(GUID.fullmatch(str(m.get("id", "")))), "MANIFEST-03", "id ist eine GUID")
     for f in ("name", "websiteUrl", "privacyUrl", "termsOfUseUrl"):
         check(f in m.get("developer", {}), "MANIFEST-04", f"developer.{f} gesetzt")
     check(len(m.get("name", {}).get("short", "")) <= 30, "MANIFEST-05", "name.short <= 30 Zeichen")
@@ -70,9 +79,12 @@ def main(path):
           "description.short <= 80 Zeichen")
 
     # --- Icons ---
-    for key, want in (("color", "color.png"), ("outline", "outline.png")):
+    for key, size in (("color", 192), ("outline", 32)):
         ref = m.get("icons", {}).get(key)
         check(ref in names, "ICON-01", f"icons.{key} -> '{ref}' liegt im ZIP")
+        if ref in names:
+            check(png_size(z.read(ref)) == (size, size), "ICON-02",
+                  f"icons.{key} ist ein PNG mit {size}x{size} Pixeln")
 
     # --- agentSkills ---
     skills = m.get("agentSkills", [])

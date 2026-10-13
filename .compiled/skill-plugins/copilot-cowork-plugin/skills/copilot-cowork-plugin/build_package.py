@@ -36,10 +36,27 @@ SAFE_EXT = {".md", ".html", ".png", ".jpg", ".py", ".json", ".yaml", ".txt", ".c
 LANG = {".svg": "svg", ".css": "css", ".js": "js", ".json": "json",
         ".yaml": "yaml", ".yml": "yaml", ".ts": "ts", ".sh": "bash"}
 KEBAB = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+GUID = re.compile(r"^[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12}$")
+ICON_SIZES = {"color": 192, "outline": 32}
 
 
 def die(msg):
     sys.exit(f"FEHLER: {msg}")
+
+
+def read_text_or_die(f: Path, hint: str) -> str:
+    """Companion als Text lesen; Binaerdateien lassen sich nicht einbetten."""
+    try:
+        return f.read_text()
+    except UnicodeDecodeError:
+        die(f"{f.name} ist eine Binaerdatei und kann nicht als Text eingebettet werden. {hint}")
+
+
+def png_size(data: bytes):
+    """(Breite, Hoehe) aus dem IHDR-Chunk, None wenn kein PNG."""
+    if len(data) < 24 or data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
+        return None
+    return struct.unpack(">II", data[16:24])
 
 
 def frontmatter(skill_md: Path) -> dict:
@@ -91,6 +108,10 @@ def make_icons(pkg: Path, letter: str, accent: str, given_color, given_outline):
     if bool(given_color) != bool(given_outline):
         die("Both --icon-color and --icon-outline are required together")
     if given_color:
+        for key, given in (("color", given_color), ("outline", given_outline)):
+            size = ICON_SIZES[key]
+            if png_size(Path(given).read_bytes()) != (size, size):
+                die(f"--icon-{key} muss ein PNG mit {size}x{size} Pixeln sein: {given}")
         shutil.copyfile(given_color, pkg / "color.png")
         shutil.copyfile(given_outline, pkg / "outline.png")
         return "supplied"
@@ -152,6 +173,8 @@ def main():
     for url in (a.website, a.privacy, a.terms):
         if not url.startswith("https://"):
             die("Publisher URLs must use HTTPS")
+    if a.app_id and not GUID.fullmatch(a.app_id):
+        die("--app-id muss eine GUID sein (8-4-4-4-12 Hex-Zeichen)")
     blocked = BLOCKED_EXT.copy()
 
     sources = [Path(s).expanduser().resolve() for s in a.skills]
@@ -188,13 +211,15 @@ def main():
         # disable-model-invocation wuerde dort nie ausloesen (stiller Fehler).
         md = dst / "SKILL.md"
         text = md.read_text()
-        cleaned = re.sub(r"^disable-model-invocation:.*\n", "", text, flags=re.M)
-        if cleaned != text:
-            if not a.allow_auto_invocation:
+        flag = re.search(r"^disable-model-invocation:[ \t]*(.*?)[ \t]*$", text, flags=re.M)
+        if flag:
+            manual_only = flag.group(1).strip("\"'").lower() in {"true", "yes", "on"}
+            if manual_only and not a.allow_auto_invocation:
                 die("Manual-only skill: review side effects before using --allow-auto-invocation")
-            md.write_text(cleaned)
-            print(f"  entfernt: disable-model-invocation (Cowork kennt kein "
-                  f"manuelles Aufrufen - Skill wuerde sonst nie ausloesen)")
+            md.write_text(re.sub(r"^disable-model-invocation:.*\n", "", text, flags=re.M))
+            if manual_only:
+                print(f"  entfernt: disable-model-invocation (Cowork kennt kein "
+                      f"manuelles Aufrufen - Skill wuerde sonst nie ausloesen)")
 
         # Verzeichnisse zu je einer .md buendeln (gegen das 20-Dateien-Limit)
         bundled = {}
@@ -206,7 +231,10 @@ def main():
                 for f in sorted(d.rglob("*")):
                     if not f.is_file() or f.name.startswith("."):
                         continue
-                    text, sub = f.read_text(), f.relative_to(d)
+                    sub = f.relative_to(d)
+                    text = read_text_or_die(
+                        f, f"'{d.relative_to(dst)}' nicht per --bundle buendeln oder "
+                           f"'{sub}' per --exclude ausschliessen.")
                     if f.suffix.lower() == ".md":  # Markdown direkt, Ebene tiefer
                         parts.append(f"## {sub}\n\n"
                                      + re.sub(r"^(#+ )", r"#\1", text, flags=re.M).strip())
@@ -259,7 +287,9 @@ def main():
         for f in sorted(dst.rglob("*")):
             if not f.is_file() or f.suffix.lower() not in blocked:
                 continue
-            body = f.read_text()
+            body = read_text_or_die(
+                f, f"Endung '{f.suffix}' kann nicht konvertiert werden; "
+                   f"'{f.relative_to(dst)}' per --exclude ausschliessen.")
             fence = fence_for(body)
             new = f.with_suffix(".md")
             i = 1

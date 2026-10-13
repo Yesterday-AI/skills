@@ -33,17 +33,23 @@ Erst hochladen, wenn der Validator **0 Fehler** meldet. Warnungen sind Absicht:
 sie markieren Dateiendungen, deren Zulässigkeit noch niemand nachgewiesen hat.
 
 Nützliche Flags: `--exclude 'agents/*'` wirft nicht portierbare Teile raus,
-`--convert-unknown` wandelt auch unbelegte Endungen in `.md`,
+`--convert-unknown` wandelt auch unbelegte Endungen in `.md` (nur Textdateien;
+Binärdateien wie `.pdf` oder `.woff2` bricht der Build mit Hinweis ab, dann `--exclude`),
 `--package-name`, `--version`, `--icon-color/-outline` überschreiben die Defaults.
+Eigene Icons müssen PNGs mit 192×192 (color) bzw. 32×32 (outline) Pixeln sein,
+`--app-id` eine GUID; beides prüfen Builder und Validator.
 Mehrere Skill-Ordner in einem Aufruf ergeben ein Paket (max. 20).
 
 **Zu viele Companion-Dateien?** Das Limit von 20 ist die häufigste harte Grenze bei
 gewachsenen Skills. `--bundle 'kit/components/*'` fasst jedes passende Verzeichnis zu
 **einer** `.md` zusammen — Markdown direkt, Code als Codeblock, Verweise darauf werden
 mitgezogen. Der Agent liest ein Bündel genauso gut, hat sogar alle Teile auf einmal.
+Gebündelt wird nur Text: liegt ein Bild oder eine andere Binärdatei im Verzeichnis,
+bricht der Build mit Hinweis ab — die Datei per `--exclude` ausschließen oder das
+Verzeichnis nicht bündeln.
 
 
-Manual-only Skills werden standardmäßig gestoppt. Erst nach Prüfung ihrer Seiteneffekte darf `--allow-auto-invocation` die entsprechende Frontmatter-Einschränkung entfernen. Eine Formatkonvertierung erteilt keine neue Ausführungsbefugnis.
+Manual-only Skills (`disable-model-invocation: true`) werden standardmäßig gestoppt; `false` gilt nicht als manual-only. Erst nach Prüfung ihrer Seiteneffekte darf `--allow-auto-invocation` die entsprechende Frontmatter-Einschränkung entfernen. Eine Formatkonvertierung erteilt keine neue Ausführungsbefugnis.
 
 ## Paketstruktur
 

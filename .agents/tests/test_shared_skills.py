@@ -71,6 +71,61 @@ class SharedSkills(unittest.TestCase):
         result=self.build('--allow-auto-invocation')
         self.assertEqual(result.returncode,0,result.stderr)
 
+    def test_explicit_false_invocation_flag_is_not_manual_only(self):
+        p=self.skill/'SKILL.md';p.write_text(p.read_text().replace('name: example-skill','disable-model-invocation: false\nname: example-skill'))
+        result=self.build()
+        self.assertEqual(result.returncode,0,result.stderr)
+
+    def test_binary_companion_is_rejected_with_hint(self):
+        (self.skill/'manual.pdf').write_bytes(b'%PDF-1.4\n\xff\xfe\x00binary')
+        result=self.build('--convert-unknown')
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('--exclude',result.stderr)
+        result=self.build('--convert-unknown','--exclude','*.pdf')
+        self.assertEqual(result.returncode,0,result.stderr)
+
+    def test_binary_file_in_bundled_directory_is_rejected_with_hint(self):
+        comp=self.skill/'kit'/'button';comp.mkdir(parents=True)
+        (comp/'README.md').write_text('# Button\n')
+        (comp/'preview.png').write_bytes(b'\x89PNG\r\n\x1a\n\xff\xfe\x00binary')
+        result=self.build('--bundle','kit/*')
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('--exclude',result.stderr)
+
+    def test_supplied_icons_must_have_documented_dimensions(self):
+        sys.path.insert(0,str(BUILD.parent))
+        sys.dont_write_bytecode=True  # keep __pycache__ out of the skill payload
+        from build_package import png_bytes
+        (self.root/'tiny.png').write_bytes(png_bytes(1,(0,0,0)))
+        (self.root/'color.png').write_bytes(png_bytes(192,(0,0,0)))
+        (self.root/'outline.png').write_bytes(png_bytes(32,(0,0,0),outline=True))
+        result=self.build('--icon-color',self.root/'tiny.png','--icon-outline',self.root/'tiny.png')
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('192x192',result.stderr)
+        result=self.build('--icon-color',self.root/'color.png','--icon-outline',self.root/'outline.png')
+        self.assertEqual(result.returncode,0,result.stderr)
+
+    def test_app_id_must_be_a_guid(self):
+        result=self.build('--app-id='+'-'*36)
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('GUID',result.stderr)
+
+    def test_validator_rejects_bad_guid_and_icon_size(self):
+        self.assertEqual(self.build().returncode,0)
+        archive=self.root/'out/example-skill-cowork.zip'
+        with zipfile.ZipFile(archive) as z:
+            files={n:z.read(n) for n in z.namelist()}
+        m=json.loads(files['manifest.json']);m['id']='-'*36
+        files['manifest.json']=json.dumps(m).encode()
+        files['outline.png']=files['color.png']
+        broken=self.root/'broken.zip'
+        with zipfile.ZipFile(broken,'w') as z:
+            for n,data in files.items(): z.writestr(n,data)
+        result=run(VALIDATE,broken)
+        self.assertNotEqual(result.returncode,0)
+        self.assertIn('FAIL  MANIFEST-03',result.stdout)
+        self.assertIn('FAIL  ICON-02',result.stdout)
+
     def test_recall_ignores_tools_and_injected_context(self):
         codex=self.root/'codex';codex.mkdir()
         events=[
