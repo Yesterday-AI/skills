@@ -1,0 +1,14 @@
+{
+  "name": "yesterday-app-style",
+  "description": "Build or review Yesterday Academy app prototypes and features in the calm, clear, quietly confident product style. Use when a UI should feel like the Yesterday app rather than a generic AI dashboard.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/yesterday-app-style",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "yesterday-app-style"
+  ]
+}

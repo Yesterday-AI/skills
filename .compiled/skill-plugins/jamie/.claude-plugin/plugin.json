@@ -1,0 +1,14 @@
+{
+  "name": "jamie",
+  "description": "Meetings aus Jamie holen und verwerten \u2014 als Protokoll (bereinigtes Transkript, Entscheidungen, Action Items), als Rohtranskript, oder als themensortierte Extraktion dessen, was nach dem Meeting gilt. Nutze ihn bei \u201eMeeting aufbereiten\", \u201eTranskript aufr\u00e4umen\", \u201ewas wurde entschieden\", oder wenn eine `raw_*.md` weitersoll.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/jamie",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "jamie"
+  ]
+}

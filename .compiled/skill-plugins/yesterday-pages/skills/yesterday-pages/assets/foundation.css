@@ -1,0 +1,246 @@
+:root {
+  color-scheme: only light;
+  --y-paper: #fbfaf8;
+  --y-surface: #ffffff;
+  --y-ink: #181b30;
+  --y-body: #2a2d42;
+  --y-muted: #71758a;
+  --y-hairline: #e3e1db;
+  --y-orange: #fc4e14;
+  --y-orange-mid: #f08b61;
+  --y-orange-soft: #f9ddd1;
+  --y-purple: #8977ff;
+  --y-purple-deep: #5748d0;
+  --y-purple-soft: #e3e3ff;
+  --y-green: #17b169;
+  --y-green-soft: #e0f3e9;
+  --y-yellow: #ffbb38;
+  --y-yellow-soft: #fff7df;
+  --y-serif: "Source Serif 4", Georgia, serif;
+  --y-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --y-reading: 70ch;
+  --y-page: 76rem;
+  --y-radius: 1rem;
+  --y-radius-large: 2rem;
+  --y-shadow: 0 1.5rem 4rem -2.5rem rgb(24 27 48 / 35%);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--y-paper);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--y-paper);
+  color: var(--y-body);
+  font-family: var(--y-serif);
+  font-size: 1.125rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+}
+
+a {
+  color: var(--y-purple-deep);
+}
+
+:focus-visible {
+  outline: 3px solid var(--y-purple);
+  outline-offset: 3px;
+}
+
+.y-skip-link {
+  position: fixed;
+  z-index: 100;
+  left: 1rem;
+  top: 1rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  background: var(--y-ink);
+  color: white;
+  font: 700 0.8rem/1 var(--y-sans);
+  transform: translateY(-200%);
+}
+
+.y-skip-link:focus {
+  transform: translateY(0);
+}
+
+.y-shell {
+  width: min(calc(100% - 2rem), var(--y-page));
+  margin-inline: auto;
+}
+
+.y-reading {
+  max-width: var(--y-reading);
+}
+
+.y-masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-block: 1.25rem;
+  border-bottom: 2px solid var(--y-ink);
+  font: 800 0.68rem/1.2 var(--y-sans);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.y-wordmark {
+  width: min(15rem, 48vw);
+  height: auto;
+}
+
+.y-kicker {
+  margin: 0 0 1rem;
+  color: var(--y-purple-deep);
+  font: 800 0.72rem/1.2 var(--y-sans);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.y-display {
+  margin: 0;
+  color: var(--y-ink);
+  font: 700 clamp(2.65rem, 7vw, 6rem) / 0.98 var(--y-serif);
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.y-standfirst {
+  max-width: 58ch;
+  color: #4a4e66;
+  font: 600 clamp(1rem, 2.4vw, 1.3rem) / 1.55 var(--y-sans);
+}
+
+.y-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  padding-block: 0.9rem;
+  border-block: 1px solid var(--y-hairline);
+  color: var(--y-muted);
+  font: 700 0.75rem/1.4 var(--y-sans);
+}
+
+.y-panel {
+  border: 1px solid var(--y-hairline);
+  border-radius: var(--y-radius);
+  background: var(--y-surface);
+}
+
+.y-pill {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: var(--y-purple-soft);
+  color: var(--y-purple-deep);
+  font: 800 0.7rem/1 var(--y-sans);
+}
+
+.y-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  padding: 0.7rem 1.15rem;
+  border: 0;
+  border-radius: 999px;
+  background: var(--y-purple-deep);
+  color: white;
+  cursor: pointer;
+  font: 800 0.82rem/1 var(--y-sans);
+}
+
+.y-button:hover {
+  background: var(--y-ink);
+}
+
+.y-muted {
+  color: var(--y-muted);
+}
+
+.y-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 42rem) {
+  body {
+    font-size: 1rem;
+  }
+
+  .y-masthead {
+    align-items: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+@media print {
+  @page {
+    margin: 18mm;
+  }
+
+  body {
+    background: white;
+    color: black;
+    font-size: 10.5pt;
+  }
+
+  .y-shell {
+    width: 100%;
+  }
+
+  .y-no-print {
+    display: none !important;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}

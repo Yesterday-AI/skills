@@ -1,0 +1,14 @@
+{
+  "name": "chat-recall",
+  "description": "Durchsucht lokale Codex- und Claude-Code-Transkripte nach fr\u00fcherer Arbeit zu einem benannten Thema. Nutze ihn, wenn die nutzende Person wissen m\u00f6chte, was er dazu schon gemacht hat, oder eine fr\u00fchere Session fortsetzen m\u00f6chte.",
+  "author": {
+    "name": "Yesterday"
+  },
+  "homepage": "https://github.com/Yesterday-AI/skills/tree/main/.compiled/skill-plugins/chat-recall",
+  "repository": "https://github.com/Yesterday-AI/skills",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "chat-recall"
+  ]
+}

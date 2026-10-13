@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="only light">
+  <title>Arbeit, die sichtbar wird · Yesterday Visual Story</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../assets/foundation.css">
+  <style>
+    body {
+      background: #f2f0eb;
+    }
+
+    .story-shell {
+      width: min(calc(100% - 2rem), 88rem);
+      margin-inline: auto;
+    }
+
+    .cover {
+      display: grid;
+      grid-template-columns: 0.85fr 1.15fr;
+      min-height: min(78rem, calc(100vh - 5rem));
+      padding-block: 2rem;
+    }
+
+    .cover-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: clamp(2rem, 6vw, 6rem);
+      border-radius: var(--y-radius-large) 0 0 var(--y-radius-large);
+      background: var(--y-ink);
+      color: white;
+    }
+
+    .cover-copy .y-kicker {
+      color: var(--y-yellow);
+    }
+
+    .cover-copy .y-display {
+      max-width: 8ch;
+      color: white;
+    }
+
+    .cover-copy p:last-child {
+      max-width: 34ch;
+      margin-bottom: 0;
+      font-family: var(--y-sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .visual {
+      position: relative;
+      min-height: 28rem;
+      overflow: hidden;
+      background-color: #d6c2a8;
+      isolation: isolate;
+      opacity: 0;
+      transform: translateY(1.5rem);
+      transition: opacity 600ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .visual.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .visual::before,
+    .visual::after {
+      content: "";
+      position: absolute;
+      z-index: -1;
+    }
+
+    .visual::before {
+      inset: 0;
+      background:
+        linear-gradient(115deg, rgb(255 255 255 / 55%) 0 23%, transparent 23% 100%),
+        linear-gradient(165deg, transparent 0 63%, rgb(24 27 48 / 18%) 63% 100%);
+    }
+
+    .visual::after {
+      width: 44%;
+      aspect-ratio: 1;
+      right: 8%;
+      bottom: 12%;
+      border-radius: 50% 50% 42% 58%;
+      background: var(--y-orange);
+      box-shadow: -17rem -7rem 0 -3rem #efe4d6, -7rem 9rem 0 -5rem var(--y-purple);
+    }
+
+    .cover .visual {
+      min-height: 46rem;
+      border-radius: 0 var(--y-radius-large) var(--y-radius-large) 0;
+      background: #caaa86;
+    }
+
+    .image-label {
+      position: absolute;
+      z-index: 2;
+      left: 1rem;
+      bottom: 1rem;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      background: rgb(255 255 255 / 88%);
+      color: var(--y-ink);
+      font: 800 0.68rem/1 var(--y-sans);
+      backdrop-filter: blur(8px);
+    }
+
+    .beat {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 8vw, 8rem);
+      align-items: center;
+      min-height: 80vh;
+      padding-block: clamp(5rem, 12vw, 10rem);
+    }
+
+    .beat:nth-child(even) .beat-copy {
+      order: 2;
+    }
+
+    .beat-copy {
+      max-width: 30rem;
+    }
+
+    .beat-index {
+      color: var(--y-orange);
+      font: 800 0.75rem/1 var(--y-sans);
+      letter-spacing: 0.15em;
+    }
+
+    .beat h2 {
+      margin: 0.8rem 0 1.25rem;
+      color: var(--y-ink);
+      font: 700 clamp(2rem, 5vw, 4.5rem) / 1 var(--y-serif);
+      letter-spacing: -0.04em;
+    }
+
+    .beat-copy p {
+      font-family: var(--y-sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      line-height: 1.65;
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    figcaption {
+      padding-top: 0.8rem;
+      color: var(--y-muted);
+      font: 600 0.72rem/1.5 var(--y-sans);
+    }
+
+    .visual-note {
+      background: #d7b590;
+    }
+
+    .visual-note::after {
+      right: 20%;
+      bottom: 18%;
+      border-radius: 0.5rem;
+      background: var(--y-yellow);
+      box-shadow: 9rem -8rem 0 -3rem #fff, -8rem 8rem 0 -4rem var(--y-orange);
+      transform: rotate(-7deg);
+    }
+
+    .visual-focus {
+      background: #a98f7a;
+    }
+
+    .visual-focus::after {
+      right: 7%;
+      bottom: 8%;
+      border-radius: 48% 52% 35% 65%;
+      background: var(--y-purple);
+      box-shadow: -16rem -9rem 0 -4rem var(--y-yellow), -12rem 9rem 0 -6rem #fff;
+    }
+
+    .closing {
+      margin-bottom: 2rem;
+      padding: clamp(3rem, 8vw, 7rem);
+      border-radius: var(--y-radius-large);
+      background: var(--y-orange);
+      color: white;
+    }
+
+    .closing p {
+      max-width: 24ch;
+      margin: 0;
+      font: 600 clamp(1.8rem, 4.5vw, 4rem) / 1.1 var(--y-serif);
+      letter-spacing: -0.025em;
+    }
+
+    @media (max-width: 48rem) {
+      .cover,
+      .beat {
+        grid-template-columns: 1fr;
+      }
+
+      .cover-copy {
+        min-height: 30rem;
+        border-radius: var(--y-radius-large) var(--y-radius-large) 0 0;
+      }
+
+      .cover .visual {
+        min-height: 32rem;
+        border-radius: 0 0 var(--y-radius-large) var(--y-radius-large);
+      }
+
+      .beat:nth-child(even) .beat-copy {
+        order: initial;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .visual {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media print {
+      .cover,
+      .beat {
+        min-height: 0;
+        break-inside: avoid;
+      }
+
+      .visual {
+        min-height: 12cm;
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <p class="y-shell" role="note">Gestaltungsbeispiel: Texte, Kurven und Schwellen sind illustrative Demodaten, keine Nutzerbefunde.</p>
+  <a class="y-skip-link" href="#content">Zum Inhalt</a>
+
+  <header class="story-shell y-masthead">
+    <img class="y-wordmark" src="../assets/yesterday-wordmark.svg" alt="yesterday academy">
+    <span>Visual Essay · 03 Bilder</span>
+  </header>
+
+  <main id="content" class="story-shell">
+    <section class="cover">
+      <div class="cover-copy">
+        <p class="y-kicker">Arbeit beobachten</p>
+        <h1 class="y-display">Der Moment, in dem Wissen <em>weiterlebt.</em></h1>
+        <p>Eine visuelle Geschichte über Notizen, Gespräche und kleine Artefakte, aus denen eine gemeinsame Arbeitsweise entsteht.</p>
+      </div>
+      <div class="visual" role="img" aria-label="Platz für ein warmes, beobachtetes Arbeitsszenario mit ruhiger Textfläche" data-reveal>
+        <span class="image-label">Hero · Zusammenarbeit</span>
+      </div>
+    </section>
+
+    <section class="beat" aria-labelledby="beat-one">
+      <div class="beat-copy">
+        <span class="beat-index">01 · Beobachten</span>
+        <h2 id="beat-one">Erst die echte Arbeit. Dann das System.</h2>
+        <p>Das Bild zeigt nicht „Menschen mit Laptop“, sondern einen konkreten Moment: erklären, markieren, vergleichen. Die Bildunterschrift verbindet das Motiv mit der Aussage.</p>
+      </div>
+      <figure>
+        <div class="visual visual-note" role="img" aria-label="Platz für eine Detailaufnahme von Notizen und Arbeitsmaterial" data-reveal>
+          <span class="image-label">Detail · Arbeitsartefakt</span>
+        </div>
+        <figcaption>Ein Motiv bekommt eine Aufgabe: Hier macht es das entstehende Artefakt sichtbar.</figcaption>
+      </figure>
+    </section>
+
+    <section class="beat" aria-labelledby="beat-two">
+      <div class="beat-copy">
+        <span class="beat-index">02 · Verdichten</span>
+        <h2 id="beat-two">Freiraum ist Teil der Information.</h2>
+        <p>Ruhige Flächen im Bild schaffen Platz für Gedanken, Zitate oder kleine Annotationen. Der Text konkurriert nicht mit Gesichtern, Händen oder dem eigentlichen Arbeitsmoment.</p>
+      </div>
+      <figure>
+        <div class="visual visual-focus" role="img" aria-label="Platz für ein fokussiertes Einzelmotiv mit natürlichem Seitenlicht" data-reveal>
+          <span class="image-label">Portrait · Fokus</span>
+        </div>
+        <figcaption>Warm, beobachtet, glaubwürdig. Farbe entsteht bevorzugt im Motiv selbst.</figcaption>
+      </figure>
+    </section>
+
+    <section class="closing">
+      <p>Gute Bebilderung dekoriert den Text nicht. Sie trägt einen eigenen Teil der Argumentation.</p>
+    </section>
+  </main>
+
+  <script>
+    const visuals = document.querySelectorAll("[data-reveal]");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    visuals[0]?.classList.add("is-visible");
+
+    if (reducedMotion || !("IntersectionObserver" in window)) {
+      visuals.forEach((visual) => visual.classList.add("is-visible"));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.22 });
+
+      visuals.forEach((visual, index) => {
+        if (index > 0) observer.observe(visual);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="only light">
+  <title>Wann wird Arbeit wiederverwendbar? · Yesterday Explainer</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../assets/foundation.css">
+  <style>
+    body {
+      min-height: 100vh;
+      background: #f1f0ed;
+      font-family: var(--y-sans);
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 17rem minmax(0, 1fr);
+      min-height: calc(100vh - 2rem);
+      margin: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--y-hairline);
+      border-radius: var(--y-radius-large);
+      background: var(--y-surface);
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding: 2rem 1.25rem;
+      border-right: 1px solid var(--y-hairline);
+    }
+
+    .sidebar .y-wordmark {
+      width: 12rem;
+    }
+
+    .step-list {
+      display: grid;
+      gap: 0.5rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .step-list li {
+      padding: 0.8rem 0.9rem;
+      border-radius: 0.75rem;
+      color: var(--y-muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .step-list li:first-child {
+      background: var(--y-purple-soft);
+      color: var(--y-purple-deep);
+    }
+
+    .sidebar-note {
+      margin-top: auto;
+      padding: 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-width: 0;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.25rem clamp(1rem, 4vw, 3rem);
+      border-bottom: 1px solid var(--y-hairline);
+    }
+
+    .toolbar strong {
+      color: var(--y-ink);
+      font-size: 0.9rem;
+    }
+
+    .toolbar .y-button {
+      min-height: 2.35rem;
+      background: var(--y-paper);
+      color: var(--y-ink);
+    }
+
+    .canvas {
+      display: grid;
+      grid-template-columns: minmax(16rem, 0.72fr) minmax(22rem, 1.28fr);
+      gap: clamp(1.5rem, 5vw, 4rem);
+      align-items: center;
+      padding: clamp(2rem, 7vw, 6rem);
+      background: var(--y-paper);
+    }
+
+    .control-panel {
+      padding: clamp(1.5rem, 4vw, 2.5rem);
+    }
+
+    .control-panel h1 {
+      max-width: 13ch;
+      margin: 0 0 1rem;
+      color: var(--y-ink);
+      font: 800 clamp(1.8rem, 4vw, 3.2rem) / 1.05 var(--y-sans);
+      letter-spacing: -0.04em;
+    }
+
+    .control-panel > p {
+      margin-bottom: 2.5rem;
+      color: var(--y-muted);
+      font-size: 0.86rem;
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .range-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .range-row label {
+      color: var(--y-ink);
+      font-size: 0.78rem;
+      font-weight: 800;
+    }
+
+    .range-value {
+      color: var(--y-orange);
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--y-purple-deep);
+      cursor: pointer;
+    }
+
+    .range-scale {
+      display: flex;
+      justify-content: space-between;
+      color: var(--y-muted);
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+
+    .model {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .stage {
+      display: grid;
+      grid-template-columns: 3.3rem 1fr auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.1rem;
+      border: 1px solid var(--y-hairline);
+      border-radius: var(--y-radius);
+      background: var(--y-surface);
+      opacity: 0.48;
+      transform: translateX(0);
+      transition: opacity 220ms ease, transform 220ms ease, border-color 220ms ease;
+    }
+
+    .stage.is-active {
+      border-color: var(--stage-color);
+      opacity: 1;
+      transform: translateX(0.75rem);
+      box-shadow: var(--y-shadow);
+    }
+
+    .stage-icon {
+      display: grid;
+      place-items: center;
+      width: 3.3rem;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: var(--stage-soft);
+      color: var(--stage-color);
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .stage strong,
+    .stage span {
+      display: block;
+    }
+
+    .stage strong {
+      color: var(--y-ink);
+      font-size: 0.9rem;
+    }
+
+    .stage-copy span {
+      margin-top: 0.2rem;
+      color: var(--y-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .stage-tag {
+      color: var(--stage-color);
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .stage-prompt {
+      --stage-color: var(--y-orange);
+      --stage-soft: var(--y-orange-soft);
+    }
+
+    .stage-agent {
+      --stage-color: var(--y-purple-deep);
+      --stage-soft: var(--y-purple-soft);
+    }
+
+    .stage-skill {
+      --stage-color: var(--y-green);
+      --stage-soft: var(--y-green-soft);
+    }
+
+    .result {
+      margin-top: 1.5rem;
+      padding: 1.2rem 1.3rem;
+      border-left: 4px solid var(--result-color, var(--y-orange));
+      border-radius: 0 var(--y-radius) var(--y-radius) 0;
+      background: white;
+    }
+
+    .result strong {
+      color: var(--y-ink);
+      font-size: 0.85rem;
+    }
+
+    .result p {
+      margin: 0.35rem 0 0;
+      color: var(--y-muted);
+      font-size: 0.76rem;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    @media (max-width: 64rem) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+    }
+
+    @media (max-width: 46rem) {
+      .app {
+        min-height: calc(100vh - 1rem);
+        margin: 0.5rem;
+        border-radius: 1.25rem;
+      }
+
+      .canvas {
+        grid-template-columns: 1fr;
+      }
+
+      .toolbar {
+        align-items: flex-start;
+      }
+
+      .stage {
+        grid-template-columns: 3rem 1fr;
+      }
+
+      .stage-tag {
+        grid-column: 2;
+      }
+    }
+
+    @media print {
+      .app {
+        display: block;
+        min-height: 0;
+        margin: 0;
+        border: 0;
+      }
+
+      .sidebar,
+      .toolbar {
+        display: none;
+      }
+
+      .canvas {
+        grid-template-columns: 1fr 1fr;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <p class="y-shell" role="note">Gestaltungsbeispiel: Texte, Kurven und Schwellen sind illustrative Demodaten, keine Nutzerbefunde.</p>
+  <a class="y-skip-link" href="#content">Zum Inhalt</a>
+
+  <main id="content" class="app">
+    <aside class="sidebar" aria-label="Explainer-Navigation">
+      <img class="y-wordmark" src="../assets/yesterday-wordmark.svg" alt="yesterday academy">
+      <ol class="step-list">
+        <li>Mechanismus verstehen</li>
+        <li>Grenzen erkennen</li>
+        <li>Entscheidung ableiten</li>
+      </ol>
+      <p class="sidebar-note y-panel">Ein fokussierter Prototyp erklärt eine Sache. Alle Controls müssen die zentrale Aussage verändern.</p>
+    </aside>
+
+    <section class="workspace">
+      <header class="toolbar">
+        <strong>Wiederverwendbarkeits-Labor</strong>
+        <button class="y-button" type="button" data-reset>Zurücksetzen</button>
+      </header>
+
+      <div class="canvas">
+        <section class="control-panel y-panel" aria-labelledby="explainer-title">
+          <p class="y-kicker">Ein Mechanismus, ein Regler</p>
+          <h1 id="explainer-title">Wann wird eine Aufgabe zum System?</h1>
+          <p>Verändere, wie oft dieselbe Aufgabe pro Monat wiederkehrt. Die passende Form steigt mit der Wiederholung.</p>
+
+          <div class="range-row">
+            <label for="frequency">Wiederholungen pro Monat</label>
+            <output class="range-value" for="frequency" data-frequency>3</output>
+          </div>
+          <input id="frequency" type="range" min="1" max="12" value="3" step="1" aria-describedby="range-help">
+          <div id="range-help" class="range-scale" aria-hidden="true">
+            <span>einmalig</span>
+            <span>mehrmals pro Woche</span>
+          </div>
+
+          <div class="result" data-result aria-live="polite">
+            <strong data-result-title>Prompt</strong>
+            <p data-result-copy>Die Aufgabe wiederholt sich selten. Ein guter gespeicherter Prompt hält den Aufwand klein.</p>
+          </div>
+        </section>
+
+        <section class="model" aria-label="Stufen der Wiederverwendbarkeit">
+          <article class="stage stage-prompt is-active" data-stage="prompt">
+            <span class="stage-icon">P</span>
+            <div class="stage-copy">
+              <strong>Prompt</strong>
+              <span>Wiederkehrender Auftrag</span>
+            </div>
+            <span class="stage-tag">leicht</span>
+          </article>
+          <article class="stage stage-agent" data-stage="agent">
+            <span class="stage-icon">A</span>
+            <div class="stage-copy">
+              <strong>Agent</strong>
+              <span>Wiederkehrende Rolle mit Kontext</span>
+            </div>
+            <span class="stage-tag">geführt</span>
+          </article>
+          <article class="stage stage-skill" data-stage="skill">
+            <span class="stage-icon">S</span>
+            <div class="stage-copy">
+              <strong>Skill</strong>
+              <span>Konservierte Arbeitsweise</span>
+            </div>
+            <span class="stage-tag">systemisch</span>
+          </article>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const DEFAULT_FREQUENCY = 3;
+    const AGENT_THRESHOLD = 4;
+    const SKILL_THRESHOLD = 8;
+    const levels = {
+      prompt: {
+        title: "Prompt",
+        copy: "Die Aufgabe wiederholt sich selten. Ein guter gespeicherter Prompt hält den Aufwand klein.",
+        color: "var(--y-orange)"
+      },
+      agent: {
+        title: "Agent",
+        copy: "Die Aufgabe kehrt regelmäßig zurück und braucht Kontext. Eine definierte Rolle führt sie verlässlich aus.",
+        color: "var(--y-purple-deep)"
+      },
+      skill: {
+        title: "Skill",
+        copy: "Die Arbeitsweise ist häufig und stabil. Jetzt lohnt es sich, Ablauf und Qualitätsmaßstab dauerhaft zu konservieren.",
+        color: "var(--y-green)"
+      }
+    };
+
+    const frequency = document.querySelector("#frequency");
+    const frequencyOutput = document.querySelector("[data-frequency]");
+    const result = document.querySelector("[data-result]");
+    const resultTitle = document.querySelector("[data-result-title]");
+    const resultCopy = document.querySelector("[data-result-copy]");
+    const stages = document.querySelectorAll("[data-stage]");
+    const resetButton = document.querySelector("[data-reset]");
+
+    function getLevel(value) {
+      if (value >= SKILL_THRESHOLD) return "skill";
+      if (value >= AGENT_THRESHOLD) return "agent";
+      return "prompt";
+    }
+
+    function render() {
+      const value = Number(frequency.value);
+      const level = getLevel(value);
+      const content = levels[level];
+
+      frequencyOutput.value = String(value);
+      frequencyOutput.textContent = String(value);
+      resultTitle.textContent = content.title;
+      resultCopy.textContent = content.copy;
+      result.style.setProperty("--result-color", content.color);
+      stages.forEach((stage) => stage.classList.toggle("is-active", stage.dataset.stage === level));
+    }
+
+    frequency.addEventListener("input", render);
+    resetButton.addEventListener("click", () => {
+      frequency.value = String(DEFAULT_FREQUENCY);
+      render();
+      frequency.focus();
+    });
+
+    render();
+  </script>
+</body>
+</html>
