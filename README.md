@@ -56,7 +56,7 @@ No auth required -- this catalog is public.
 
 ## What's in the catalog
 
-25 plugins total: 1 external, 5 bundles, 2 MCP servers, 17 standalone skills.
+24 plugins total: 1 external, 4 bundles, 2 MCP servers, 17 standalone skills.
 
 ### Bundles (`./plugins/`)
 
@@ -66,7 +66,6 @@ No auth required -- this catalog is public.
 | [office-extras](./plugins/office-extras) | Daily-work extras tier -- 4 SaaS integrations (Figma, Miro, Voxtral TTS, VRR) |
 | [personal-agent](./plugins/personal-agent) | Agent core -- 14 generic agent skills (multi-agent, patrols, self-improvement) |
 | [systems-operations](./plugins/systems-operations) | Ops core -- 6 skills (opentofu, railway-deploy, butler-deploy, land-and-deploy, canary, setup-deploy) |
-| [webflow](./plugins/webflow) | Ships the Webflow MCP server (`.mcp.json`, HTTP/OAuth) + the `webflow` skill -- manage Webflow sites (pages, CMS, assets, styles, publish) |
 
 ### MCP servers (`./plugins/`)
 
@@ -107,7 +106,7 @@ Single-source MCP-server plugins -- depend on one of these from a bundle instead
 |---|---|
 | [create-shareable-skill](./skills/operations/create-shareable-skill) | Author a catalog-ready skill: quality gate, placement routing, scaffold, docs, PR |
 | [paperclip-api](./skills/development-operations/paperclip-api) | Paperclip AI REST API client (companies, agents, issues, budgets) |
-| [wrapup](./skills/operations/wrapup) | Capture session learnings and prepare a resumable handoff |
+| [wrapup](./skills/operations/wrapup) | End-of-conversation sweep: propose doc/plan/memory updates + paste-ready resume prompt |
 | [copilot-cowork-plugin](./skills/operations/copilot-cowork-plugin) | Build and locally validate Microsoft 365 skill packages |
 
 #### Travel
