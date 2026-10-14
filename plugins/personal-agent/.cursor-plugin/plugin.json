@@ -16,7 +16,6 @@
   ],
   "dependencies": [
     "creative-productivity",
-    "para-memory-files",
     "office"
   ]
 }

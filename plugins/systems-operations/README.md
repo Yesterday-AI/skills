@@ -10,7 +10,7 @@
   </p>
 
   <p>
-    <a href="./LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue"></a>
+    <a href="../../LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue"></a>
     <img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-plugin-0A0A0A">
     <img alt="visibility" src="https://img.shields.io/badge/visibility-public-22C55E">
   </p>
@@ -38,12 +38,6 @@ The ops layer of the Yesterday plugin family. Skills for the deploy-arc that com
 | canary | Post-deploy visual monitor (console errors, perf regressions, broken links) |
 | setup-deploy | Initialize deploy infrastructure |
 
-Plus one cross-marketplace dependency (auto-pulled via plugin.json):
-
-| Plugin | Purpose |
-|---|---|
-| `skill-creator` (from `claude-plugins-official`) | Meta-skill for creating new agent skills |
-
 ## Install
 
 ```bash
@@ -68,19 +62,17 @@ Part of Yesterday's plugin family alongside `ytstack` (engineering OS), `office`
 ```
 systems-operations/
 ├── .claude-plugin/
-│   └── plugin.json -> ../plugin.json
+│   └── plugin.json             copy of ../plugin.json (written by compile.mjs)
 ├── .cursor-plugin/
-│   └── plugin.json -> ../plugin.json
+│   └── plugin.json             copy of ../plugin.json (written by compile.mjs)
 ├── plugin.json
 ├── skills/
-├── README.md
-├── LICENSE                     MIT
-└── NOTICE                      attribution
+└── README.md
 ```
 
 ## License
 
-MIT. See [LICENSE](./LICENSE).
+MIT. See [LICENSE](../../LICENSE).
 
 ---
 

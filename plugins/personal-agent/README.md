@@ -10,7 +10,7 @@
   </p>
 
   <p>
-    <a href="./LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue"></a>
+    <a href="../../LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-blue"></a>
     <img alt="Claude Code" src="https://img.shields.io/badge/Claude%20Code-plugin-0A0A0A">
     <img alt="visibility" src="https://img.shields.io/badge/visibility-public-22C55E">
   </p>
@@ -50,8 +50,7 @@ Plus cross-marketplace dependencies (auto-pulled via plugin.json):
 
 | Plugin | Purpose |
 |---|---|
-| [creative-productivity](../../skills/concepts/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
-| [para-memory-files](../../skills/capabilities/memory/para-memory-files) | Agent-side persistence using the PARA method |
+| [creative-productivity](../../skills/productivity/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
 | [office](../office) | Daily-work skills (excalidraw, exa search, GitHub, slack, web/x scrapers) -- maintained for humans, equally useful when an agent needs them |
 
 ## Install
@@ -78,19 +77,17 @@ Part of Yesterday's plugin family alongside `ytstack` (engineering OS), `office`
 ```
 personal-agent/
 ├── .claude-plugin/
-│   └── plugin.json -> ../plugin.json
+│   └── plugin.json           copy of ../plugin.json (written by compile.mjs)
 ├── .cursor-plugin/
-│   └── plugin.json -> ../plugin.json
+│   └── plugin.json           copy of ../plugin.json (written by compile.mjs)
 ├── plugin.json
 ├── skills/
-├── README.md
-├── LICENSE                   MIT
-└── NOTICE                    attribution
+└── README.md
 ```
 
 ## License
 
-MIT. See [LICENSE](./LICENSE).
+MIT. See [LICENSE](../../LICENSE).
 
 ---
 

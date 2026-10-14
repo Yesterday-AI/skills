@@ -7,6 +7,11 @@
   "allowCrossMarketplaceDependenciesOn": [
     "claude-plugins-official"
   ],
+  "renames": {
+    "webflow": null,
+    "paperclip-api": null,
+    "para-memory-files": null
+  },
   "plugins": [
     {
       "name": "ytstack",
