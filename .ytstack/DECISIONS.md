@@ -326,4 +326,6 @@ Mirror entry added to `lx-0/skills/marketplace.json` as its first external plugi
 
 **Not chosen:** `forceRemoveDeletedPlugins: true` -- it would also uninstall the cached copies, and it is catalog-wide, so it applies to every future removal as well. `renames: null` already deactivates; force-removal stays an explicit owner decision.
 
-**Consequences:** `renames` is append-only history -- never delete an entry, even after everyone migrated. Re-activating a deprecated skill means removing the flag AND its `renames` entry (`claude plugin validate` rejects a `null`-mapped name that is also listed in `plugins`? -- unverified; check when it first happens).
+**Consequences:** `renames` is append-only history -- never delete an entry, even after everyone migrated. Re-activating a deprecated skill means removing the `deprecated` flag; a listed plugin wins over its own `null` rename (tested 2026-10-14 in an isolated `CLAUDE_CONFIG_DIR`: `claude plugin validate` passes, the plugin stays enabled after `marketplace update`). Remove the `renames` entry anyway in that case -- it would otherwise claim the plugin is gone.
+
+**Verified (2026-10-14):** isolated `CLAUDE_CONFIG_DIR`, local clone as directory marketplace. On `main`: installed `paperclip-api`, `para-memory-files`, `office`. Switched the clone to this change, `claude plugin marketplace update`: both deprecated plugins report `Status: ✘ disabled` and are gone from `enabledPlugins`; `office` and its dependencies (`creative-productivity`, `excalidraw-diagram`, `wrapup`) stay enabled.
