@@ -56,13 +56,13 @@ No auth required -- this catalog is public.
 
 ## What's in the catalog
 
-24 plugins total: 1 external, 4 bundles, 2 MCP servers, 17 standalone skills.
+22 plugins total: 1 external, 4 bundles, 2 MCP servers, 15 standalone skills.
 
 ### Bundles (`./plugins/`)
 
 | Plugin | Purpose |
 |---|---|
-| [office](./plugins/office) | Daily-work core -- 6 generic skills (exa search, excalidraw, slack, GitHub, web/x scrapers) |
+| [office](./plugins/office) | Daily-work core -- 5 generic skills (exa search, slack, GitHub, web/x scrapers) + creative-productivity, excalidraw-diagram, wrapup as dependencies |
 | [office-extras](./plugins/office-extras) | Daily-work extras tier -- 4 SaaS integrations (Figma, Miro, Voxtral TTS, VRR) |
 | [personal-agent](./plugins/personal-agent) | Agent core -- 14 generic agent skills (multi-agent, patrols, self-improvement) |
 | [systems-operations](./plugins/systems-operations) | Ops core -- 6 skills (opentofu, railway-deploy, butler-deploy, land-and-deploy, canary, setup-deploy) |
@@ -82,18 +82,17 @@ Single-source MCP-server plugins -- depend on one of these from a bundle instead
 
 | Skill | Purpose |
 |---|---|
-| [para-memory-files](./skills/capabilities/memory/para-memory-files) | PARA-method file-based agent memory |
 | [voxtral-tts-api](./skills/capabilities/tts/voxtral-tts-api) | Mistral Voxtral TTS API client |
 
 #### Productivity
 
 | Skill | Purpose |
 |---|---|
-| [creative-productivity](./skills/concepts/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
+| [creative-productivity](./skills/productivity/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
 | [excalidraw-diagram](./skills/productivity/excalidraw-diagram) | Hand-drawn diagrams as Excalidraw JSON |
 | [figma-console-mcp](./skills/productivity/figma-console-mcp) | Figma + FigJam + Slides via MCP |
 | [miro-board](./skills/productivity/miro-board) | Miro board content via MCP |
-| [web-design](./skills/concepts/web-design) | Build distinctive, production-grade frontend interfaces |
+| [web-design](./skills/productivity/web-design) | Build distinctive, production-grade frontend interfaces |
 | [chat-recall](./skills/productivity/chat-recall) | Search authorized local Codex and Claude transcript excerpts |
 | [jamie](./skills/productivity/jamie) | Retrieve meetings and create source-grounded records or extractions |
 | [rename](./skills/productivity/rename) | Improve task titles through available APIs or produce a title proposal |
@@ -105,7 +104,6 @@ Single-source MCP-server plugins -- depend on one of these from a bundle instead
 | Skill | Purpose |
 |---|---|
 | [create-shareable-skill](./skills/operations/create-shareable-skill) | Author a catalog-ready skill: quality gate, placement routing, scaffold, docs, PR |
-| [paperclip-api](./skills/development-operations/paperclip-api) | Paperclip AI REST API client (companies, agents, issues, budgets) |
 | [wrapup](./skills/operations/wrapup) | End-of-conversation sweep: propose doc/plan/memory updates + paste-ready resume prompt |
 | [copilot-cowork-plugin](./skills/operations/copilot-cowork-plugin) | Build and locally validate Microsoft 365 skill packages |
 
@@ -121,11 +119,22 @@ Single-source MCP-server plugins -- depend on one of these from a bundle instead
 |---|---|---|
 | ytstack | github `Yesterday-AI/ytstack` | Engineering OS for AI coding agents -- project-OS artifact discipline + curated skill wrappers |
 
+### Deprecated
+
+Not published in the marketplace. The source stays in the repo for reference; existing installs are dropped via `renames` (`null`) in `./marketplace.json`.
+
+| Skill | Purpose | Deprecated |
+|---|---|---|
+| [paperclip-api](./skills/operations/paperclip-api) | Paperclip AI REST API client (companies, agents, issues, budgets) | 2026-10-14 |
+| [para-memory-files](./skills/capabilities/memory/para-memory-files) | PARA-method file-based agent memory | 2026-10-14 |
+
 ---
 
 ## Compile pipeline
 
 `compile.mjs` discovers `skills/**/SKILL.md`, generates per-skill plugin scaffolds in `.compiled/skill-plugins/`, and produces `.compiled/marketplace.json` from the top-level header (`./marketplace.json`) merged with auto-discovered bundles + standalone.
+
+To deprecate a standalone skill, set `deprecated: true` in its `SKILL.md` frontmatter (compile then skips it), map its name to `null` under `renames` in `./marketplace.json`, and remove it from every bundle's `dependencies`. Claude Code's marketplace format has no deprecated state; `renames: null` is the documented way to drop a removed plugin from users' `enabledPlugins`.
 
 ```bash
 node clean.mjs    # wipe .compiled/ + root manifest copies

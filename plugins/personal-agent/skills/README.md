@@ -19,6 +19,6 @@
 | `self-improving` | Corrections become improvements |
 | `systemic-persistence` | Fixes that survive reboots |
 
-See parent [README.md](../README.md#whats-in-it) for cross-marketplace plugin imports (`creative-productivity`, `para-memory-files`, `skill-creator`) auto-pulled via `plugin.json`.
+See parent [README.md](../README.md#whats-in-it) for the plugin dependencies (`creative-productivity`, `office`) auto-pulled via `plugin.json`.
 
 Per the [agentic-foundation MIGRATION-TRIAGE.md](https://github.com/Yesterday-AI/agentic-foundation/blob/main/MIGRATION-TRIAGE.md) (FROZEN v8).

@@ -11,7 +11,11 @@
 // ------------
 // 1. Wipes and rebuilds `.compiled/skill-plugins/`.
 // 2. Discovers every `skills/**/SKILL.md`. Slug = parent-folder name.
-//    Collisions are skipped with a warning.
+//    Collisions are skipped with a warning. A skill whose frontmatter has
+//    `deprecated: true` is skipped too: its source stays in the repo, but it
+//    gets no plugin and no marketplace entry. Map its name to `null` under
+//    `renames` in `./marketplace.json` so Claude Code drops it from existing
+//    users' `enabledPlugins` (the marketplace format has no deprecated state).
 // 3. Per skill, creates `.compiled/skill-plugins/<slug>/`:
 //      - skills/<slug>                 -> copy of the source folder
 //      - .claude-plugin/plugin.json    -> copy of source `.plugin.json` if it
@@ -212,6 +216,10 @@ async function compile() {
     seen.set(slug, sourceDir);
 
     const fm = parseFrontmatter(await readFile(skillMd, "utf8"));
+    if (fm.deprecated === "true") {
+      console.log(`  ${slug}  (deprecated -- skipped)`);
+      continue;
+    }
     const pluginDir = join(OUT_DIR, slug);
 
     // 1. skills/<slug> -> copy of the source folder

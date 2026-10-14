@@ -6,25 +6,23 @@ Yesterday Daily Stack -- **core tier**. Generic productivity, creative, and know
 
 Skills that are useful in day-to-day work and do NOT require `.ytstack/` project state. Engineering-focused skills belong in `ytstack` (engineering OS); autonomous-agent skills belong in `personal-agent`; ops skills belong in `systems-operations`.
 
-## Skills shipped (6)
+## Skills shipped (5)
 
 | Skill | Purpose |
 |---|---|
 | `exa-search-api` | Semantic web search via Exa AI |
-| `excalidraw-diagram` | Hand-drawn diagrams as Excalidraw JSON |
 | `slack-best-practices` | Slack formatting + communication etiquette |
 | `using-github` | GitHub interaction policies |
 | `web-scraper` | Tiered web scraping (lightweight fetch -> full browser) |
 | `x-reader` | Twitter/X reader with login-wall + JS handling |
 
-## Cross-marketplace plugins (3, auto-pulled via plugin.json)
+## Dependencies (3, auto-pulled via plugin.json)
 
 | Plugin | Purpose |
 |---|---|
-| [creative-productivity](../../skills/concepts/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
-| [para-memory-files](../../skills/capabilities/memory/para-memory-files) | PARA-method agent memory |
+| [creative-productivity](../../skills/productivity/creative-productivity) | Deliverables orchestrator (excalidraw + miro + reveal/marp + draw.io) |
+| [excalidraw-diagram](../../skills/productivity/excalidraw-diagram) | Hand-drawn diagrams as Excalidraw JSON |
 | [wrapup](../../skills/operations/wrapup) | End-of-conversation sweep -- memorize learnings, extend project docs, prep resume prompt for after `/compact` |
-| `skill-creator` (from `claude-plugins-official`) | Meta-skill for creating new skills |
 
 For optional SaaS integrations (Figma, Miro, Voxtral TTS, VRR transit) install [office-extras](../office-extras) alongside.
 

@@ -315,3 +315,15 @@ Mirror entry added to `lx-0/skills/marketplace.json` as its first external plugi
 - The private sister `yesterday-skills` carries the identical change (its `compile.mjs` additionally hoists `agents/`, also as a copy).
 
 **Supersedes:** 2026-05-08 "Symlink source folder, generate manifest only when missing".
+
+---
+
+## 2026-10-14: Deprecating a skill = `deprecated: true` + `renames: null`
+
+**Context:** `paperclip-api` and `para-memory-files` were to be deprecated and deactivated. The Claude Code marketplace format has no deprecated/disabled state; the documented path (code.claude.com/docs/en/plugins/host-marketplace, "Work around what a marketplace can't do") is to remove the entry and map its name to `null` in a top-level `renames` map, which drops the key from users' `enabledPlugins` with the notice `Removed from the "<marketplace>" marketplace`.
+
+**Chose:** a `deprecated: true` frontmatter flag in `SKILL.md` that `compile.mjs` honours by skipping the skill (no `.compiled/skill-plugins/<slug>`, no marketplace entry), plus `renames: { "<slug>": null }` in `./marketplace.json` (passed through by compile), plus removal from every bundle's `dependencies`. The source folder stays in `skills/` with a deprecation banner, listed under "Deprecated" in the catalog README. `webflow` (removed 2026-10-10) got its `renames: null` entry retroactively.
+
+**Not chosen:** `forceRemoveDeletedPlugins: true` -- it would also uninstall the cached copies, and it is catalog-wide, so it applies to every future removal as well. `renames: null` already deactivates; force-removal stays an explicit owner decision.
+
+**Consequences:** `renames` is append-only history -- never delete an entry, even after everyone migrated. Re-activating a deprecated skill means removing the flag AND its `renames` entry (`claude plugin validate` rejects a `null`-mapped name that is also listed in `plugins`? -- unverified; check when it first happens).

@@ -1,5 +1,6 @@
 ---
 name: paperclip-api
+deprecated: true
 description: Manage Paperclip AI companies, agents, issues, projects, goals, routines, costs, and secrets via REST API. Use when creating companies, hiring agents, assigning tasks, managing budgets, approving hires, or checking dashboards on a Paperclip instance.
 metadata:
   category: ops
@@ -10,6 +11,10 @@ metadata:
       env: [PAPERCLIP_API_URL, PAPERCLIP_EMAIL, PAPERCLIP_PASSWORD]
     primaryEnv: PAPERCLIP_API_URL
 ---
+
+> **Deprecated (2026-10-14).** No longer published in the `yesterday-public-plugins`
+> marketplace; existing installs are dropped via `renames` in `marketplace.json`.
+> The source is kept for reference only.
 
 # Paperclip AI
 

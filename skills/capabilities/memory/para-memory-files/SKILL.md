@@ -1,5 +1,6 @@
 ---
 name: para-memory-files
+deprecated: true
 description: >
   File-based memory system using Tiago Forte's PARA method. Use this skill whenever
   you need to store, retrieve, update, or organize knowledge across sessions. Covers
@@ -11,6 +12,11 @@ description: >
 metadata:
   category: platform
 ---
+
+> **Deprecated (2026-10-14).** No longer published in the `yesterday-public-plugins`
+> marketplace and no longer a dependency of the `office` / `personal-agent` bundles;
+> existing installs are dropped via `renames` in `marketplace.json`. The source is
+> kept for reference only.
 
 # PARA Memory Files
 
