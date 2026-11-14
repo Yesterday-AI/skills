@@ -39,7 +39,7 @@ active_task: none
 
 **M001 (done):** `create-shareable-skill` standalone catalog skill at `skills/operations/create-shareable-skill/` + contributor docs; marketplace/compile infra. Executed directly (no formal slice/task pass) on explicit user instruction. `.agents/` placement reversed on user review (see DECISIONS.md supersede entry).
 
-**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 22 plugins (1 external + 4 bundles + 2 MCP servers `y-exa`/`y-context7` + 15 standalone). The `webflow` MCP plugin was removed 2026-10-10; `paperclip-api` and `para-memory-files` were deprecated 2026-10-14 (source kept, not published, `renames: null`). Compile pipeline working, marketplace manifests generated as copies, GitHub Actions workflow in place. The plugin-install blocker (symlinks in a Windows checkout) was resolved 2026-09-03.
+**Catalog context:** Public catalog live at `Yesterday-AI/skills` with 22 plugins (1 external + 4 bundles + 2 MCP servers `y-exa`/`y-context7` + 15 standalone). The `webflow` MCP plugin was removed 2026-10-10; `paperclip-api` and `para-memory-files` were deprecated 2026-10-14 (not published, `renames: null`); the `para-memory-files` source is kept, the `paperclip-api` source was deleted 2026-11-14. Compile pipeline working, marketplace manifests generated as copies, GitHub Actions workflow in place. The plugin-install blocker (symlinks in a Windows checkout) was resolved 2026-09-03.
 
 **2026-05-15 marketplace surgery:** `sunoflow` external listing moved out to `lx-0/skills` (lx-0's personal public catalog). `personal-agent` no longer depends on it. README + plugin counts updated. Commit `8dafe09`.
 

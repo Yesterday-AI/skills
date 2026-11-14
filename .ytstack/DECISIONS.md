@@ -329,3 +329,11 @@ Mirror entry added to `lx-0/skills/marketplace.json` as its first external plugi
 **Consequences:** `renames` is append-only history -- never delete an entry, even after everyone migrated. Re-activating a deprecated skill means removing the `deprecated` flag; a listed plugin wins over its own `null` rename (tested 2026-10-14 in an isolated `CLAUDE_CONFIG_DIR`: `claude plugin validate` passes, the plugin stays enabled after `marketplace update`). Remove the `renames` entry anyway in that case -- it would otherwise claim the plugin is gone.
 
 **Verified (2026-10-14):** isolated `CLAUDE_CONFIG_DIR`, local clone as directory marketplace. On `main`: installed `paperclip-api`, `para-memory-files`, `office`. Switched the clone to this change, `claude plugin marketplace update`: both deprecated plugins report `Status: ✘ disabled` and are gone from `enabledPlugins`; `office` and its dependencies (`creative-productivity`, `excalidraw-diagram`, `wrapup`) stay enabled.
+
+## 2026-11-14: `paperclip-api` source deleted, `renames` entry kept
+
+**Context:** Paperclip is out of use entirely; the deprecated `paperclip-api` source (kept since 2026-10-14) was still in `skills/operations/`, and the private catalog's bundles still declared it as a dependency, which Claude Code reported as a broken dependency on every bundle install.
+
+**Chose:** delete `skills/operations/paperclip-api/` and its row in the README "Deprecated" table; replace it as the slug-naming example in `create-shareable-skill`. Keep `renames: { "paperclip-api": null }` -- per the 2026-10-14 decision, `renames` is append-only and is what drops existing installs from `enabledPlugins`. The private catalog drops the dependency in the same change-set (Yesterday-AI/yesterday-skills#15).
+
+**Verified (2026-11-14):** isolated `CLAUDE_CONFIG_DIR`, both catalogs from their branches as directory marketplaces: `yesterday-office`, `yesterday-office-extras`, `yesterday-systems-operations`, `yesterday-personal-agent` install with all dependencies resolved.

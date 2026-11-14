@@ -121,7 +121,7 @@ Single-source MCP-server plugins -- depend on one of these from a bundle instead
 
 ### Deprecated
 
-Not published in the marketplace. The source stays in the repo for reference; existing installs are dropped via `renames` (`null`) in `./marketplace.json`. `paperclip-api` (deprecated 2026-10-14) is removed entirely; its `renames` entry stays so existing installs keep being dropped.
+Not published in the marketplace. The source stays in the repo for reference; existing installs are dropped via `renames` (`null`) in `./marketplace.json`.
 
 | Skill | Purpose | Deprecated |
 |---|---|---|
