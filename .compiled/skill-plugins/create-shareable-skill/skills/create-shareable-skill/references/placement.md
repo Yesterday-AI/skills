@@ -61,7 +61,7 @@ Propose a **new category** only when no existing one is a reasonable fit, and co
 
 Naming rules for the slug (also enforced by `audit-skills`):
 
-- Names the concrete capability, not the tool or domain in general: `github-worktrees`, not `github`; `web-design`, not `wd`; `paperclip-api`, not `pc`.
+- Names the concrete capability, not the tool or domain in general: `github-worktrees`, not `github`; `web-design`, not `wd`; `voxtral-tts-api`, not `tts`.
 - Self-explanatory in a `/skills` list with no conversation context.
 - kebab-case, no spaces, collision-free across all of `skills/**` (a collision makes `compile.mjs` skip one skill with a warning).
 

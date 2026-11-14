@@ -42,7 +42,7 @@ The frontmatter `description` is the single thing the model routes on (Anthropic
 
 ### 5. Non-ambiguous slug
 
-- Names the concrete capability, not the tool or domain in general: `github-worktrees` not `github`, `web-design` not `wd`, `paperclip-api` not `pc`.
+- Names the concrete capability, not the tool or domain in general: `github-worktrees` not `github`, `web-design` not `wd`, `voxtral-tts-api` not `tts`.
 - Self-explanatory in a bare `/skills` list with no conversation context.
 - kebab-case, no spaces, collision-free across `skills/**`.
 - Slug = folder name = `.plugin.json` `name`. Drift between the three is caught by `audit-skills`.

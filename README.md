@@ -125,7 +125,6 @@ Not published in the marketplace. The source stays in the repo for reference; ex
 
 | Skill | Purpose | Deprecated |
 |---|---|---|
-| [paperclip-api](./skills/operations/paperclip-api) | Paperclip AI REST API client (companies, agents, issues, budgets) | 2026-10-14 |
 | [para-memory-files](./skills/capabilities/memory/para-memory-files) | PARA-method file-based agent memory | 2026-10-14 |
 
 ---
